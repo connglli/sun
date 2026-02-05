@@ -6,7 +6,7 @@
 namespace sun {
 
 Node::Node(NodeID id, Opcode opcode)
-    : id_(id), opcode_(opcode), type_(TypeKind::TOP) {}
+    : id_(id), opcode_(opcode), type_(TypeKind::kTop) {}
 
 Node* Node::input(size_t i) const {
   if (i >= inputs_.size()) {

@@ -9,30 +9,30 @@ namespace sun {
  * Type/stamp information for nodes (simplified for prototype).
  */
 enum class TypeKind {
-  BOTTOM,   // Bottom type (unreachable)
-  TOP,      // Top type (unknown)
-  INT32,    // int32
-  INT64,    // int64
-  BOOL,     // boolean
-  PTR,      // pointer/reference
-  CONTROL,  // control token
-  MEMORY,   // memory state
-  VOID      // void (no value)
+  kBottom,   // Bottom type (unreachable)
+  kTop,      // Top type (unknown)
+  kInt32,    // int32
+  kInt64,    // int64
+  kBool,     // boolean
+  kPtr,      // pointer/reference
+  kControl,  // control token
+  kMemory,   // memory state
+  kVoid      // void (no value)
 };
 
 class TypeStamp {
  public:
-  TypeStamp() : kind_(TypeKind::TOP) {}
+  TypeStamp() : kind_(TypeKind::kTop) {}
   explicit TypeStamp(TypeKind kind) : kind_(kind) {}
 
-  TypeKind GetKind() const { return kind_; }
+  TypeKind kind() const { return kind_; }
 
-  bool IsInt32() const { return kind_ == TypeKind::INT32; }
-  bool IsInt64() const { return kind_ == TypeKind::INT64; }
-  bool IsBool() const { return kind_ == TypeKind::BOOL; }
-  bool IsPtr() const { return kind_ == TypeKind::PTR; }
-  bool IsControl() const { return kind_ == TypeKind::CONTROL; }
-  bool IsMemory() const { return kind_ == TypeKind::MEMORY; }
+  bool IsInt32() const { return kind_ == TypeKind::kInt32; }
+  bool IsInt64() const { return kind_ == TypeKind::kInt64; }
+  bool IsBool() const { return kind_ == TypeKind::kBool; }
+  bool IsPtr() const { return kind_ == TypeKind::kPtr; }
+  bool IsControl() const { return kind_ == TypeKind::kControl; }
+  bool IsMemory() const { return kind_ == TypeKind::kMemory; }
 
   std::string ToString() const;
 

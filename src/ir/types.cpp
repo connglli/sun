@@ -4,23 +4,23 @@ namespace sun {
 
 std::string TypeStamp::ToString() const {
   switch (kind_) {
-    case TypeKind::BOTTOM:
+    case TypeKind::kBottom:
       return "⊥";
-    case TypeKind::TOP:
+    case TypeKind::kTop:
       return "⊤";
-    case TypeKind::INT32:
+    case TypeKind::kInt32:
       return "int32";
-    case TypeKind::INT64:
+    case TypeKind::kInt64:
       return "int64";
-    case TypeKind::BOOL:
+    case TypeKind::kBool:
       return "bool";
-    case TypeKind::PTR:
+    case TypeKind::kPtr:
       return "ptr";
-    case TypeKind::CONTROL:
+    case TypeKind::kControl:
       return "ctrl";
-    case TypeKind::MEMORY:
+    case TypeKind::kMemory:
       return "mem";
-    case TypeKind::VOID:
+    case TypeKind::kVoid:
       return "void";
     default:
       return "unknown";

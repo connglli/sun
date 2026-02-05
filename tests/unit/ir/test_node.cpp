@@ -66,11 +66,11 @@ TEST(NodeTest, TypeStamp) {
   Node n(1, Opcode::kAddI);
 
   // Default type is TOP
-  EXPECT_EQ(n.type().GetKind(), TypeKind::TOP);
+  EXPECT_EQ(n.type().kind(), TypeKind::kTop);
 
   // Set type
-  n.set_type(TypeStamp(TypeKind::INT32));
-  EXPECT_EQ(n.type().GetKind(), TypeKind::INT32);
+  n.set_type(TypeStamp(TypeKind::kInt32));
+  EXPECT_EQ(n.type().kind(), TypeKind::kInt32);
   EXPECT_TRUE(n.type().IsInt32());
 }
 
