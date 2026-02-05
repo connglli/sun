@@ -17,7 +17,7 @@ add_library(sunigv
     igv/parser.cpp
     igv/canonicalizer.cpp
 )
-target_link_libraries(sunigv PUBLIC sunir sunutil)
+target_link_libraries(sunigv PUBLIC sunir sunutil pugixml::pugixml)
 
 # Interpreter library (for suni)
 add_library(suninterp

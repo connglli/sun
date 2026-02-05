@@ -29,6 +29,9 @@ class Graph {
   std::vector<Node*> parameter_nodes() const;
   std::vector<Node*> control_nodes() const;
 
+  // Debugging
+  void dump() const;  // Print graph structure to stdout
+
  private:
   std::vector<std::unique_ptr<Node>> owned_nodes_;
   std::vector<Node*> node_list_;  // All nodes (for iteration)

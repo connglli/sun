@@ -14,6 +14,20 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
 # Export compile commands for clangd/IDE support
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Module path for custom Find modules
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+# Dependencies
+include(FetchContent)
+
+# Pugixml for XML parsing
+FetchContent_Declare(
+  pugixml
+  GIT_REPOSITORY https://github.com/zeux/pugixml.git
+  GIT_TAG v1.14
+)
+FetchContent_MakeAvailable(pugixml)
+
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 

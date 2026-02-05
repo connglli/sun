@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Simple IGV graph: return 42 -->
+<graphDocument>
+  <group>
+    <properties>
+      <p name="name">TestCompilation</p>
+    </properties>
+
+    <method name="Test::returnConst" shortName="returnConst" bci="-1">
+      <properties>
+        <p name="bytes">3</p>
+      </properties>
+    </method>
+
+    <graph name="After Parsing">
+      <properties>
+        <p name="name">After Parsing</p>
+      </properties>
+
+      <nodes>
+        <node id="0">
+          <properties>
+            <p name="name">Root</p>
+          </properties>
+        </node>
+
+        <node id="1">
+          <properties>
+            <p name="name">Start</p>
+          </properties>
+        </node>
+
+        <node id="10">
+          <properties>
+            <p name="name">ConI</p>
+            <p name="value">42</p>
+          </properties>
+        </node>
+
+        <node id="20">
+          <properties>
+            <p name="name">Return</p>
+          </properties>
+        </node>
+      </nodes>
+
+      <edges>
+        <edge from="0" to="1" type="control"/>
+        <edge from="1" to="20" toIndex="0" type="control"/>
+        <edge from="10" to="20" toIndex="1" type="data"/>
+      </edges>
+    </graph>
+  </group>
+</graphDocument>

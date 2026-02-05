@@ -1,6 +1,9 @@
 #include "suntv/ir/graph.hpp"
 
 #include <algorithm>
+#include <iostream>
+
+#include "suntv/ir/opcode.hpp"
 
 namespace sun {
 
@@ -52,6 +55,27 @@ std::vector<Node*> Graph::control_nodes() const {
     }
   }
   return controls;
+}
+
+void Graph::dump() const {
+  std::cout << "=== Graph Dump ===" << std::endl;
+  std::cout << "Total nodes: " << node_list_.size() << std::endl;
+  std::cout << "Start: " << (start_ ? std::to_string(start_->id()) : "none")
+            << std::endl;
+  std::cout << "Root: " << (root_ ? std::to_string(root_->id()) : "none")
+            << std::endl;
+  std::cout << std::endl;
+
+  // Sort nodes by ID for consistent output
+  std::vector<Node*> sorted_nodes = node_list_;
+  std::sort(sorted_nodes.begin(), sorted_nodes.end(),
+            [](Node* a, Node* b) { return a->id() < b->id(); });
+
+  for (Node* n : sorted_nodes) {
+    std::cout << n->to_string() << std::endl;
+  }
+
+  std::cout << "==================" << std::endl;
 }
 
 }  // namespace sun
