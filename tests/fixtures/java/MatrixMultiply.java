@@ -26,23 +26,6 @@ public class MatrixMultiply {
     public static void main(String[] args) {
         int[][] a = {{1, 2}, {3, 4}};
         int[][] b = {{5, 6}, {7, 8}};
-
-        // Warm up
-        for (int i = 0; i < 1000; i++) {
-            compute(a, b);
-        }
-
-        // Test case
-        int[][] result = compute(a, b);
-        System.out.println("Result:");
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[0].length; j++) {
-                System.out.print(result[i][j] + " ");
-            }
-            System.out.println();
-        }
-        // Expected:
-        // 19 22
-        // 43 50
+        compute(a, b);
     }
 }

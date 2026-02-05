@@ -25,16 +25,6 @@ public class IsPrime {
     }
 
     public static void main(String[] args) {
-        // Warm up
-        for (int i = 0; i < 10000; i++) {
-            compute(97);
-        }
-
-        // Test cases
-        System.out.println("isPrime(2) = " + compute(2));     // true
-        System.out.println("isPrime(17) = " + compute(17));   // true
-        System.out.println("isPrime(97) = " + compute(97));   // true
-        System.out.println("isPrime(100) = " + compute(100)); // false
-        System.out.println("isPrime(4) = " + compute(4));     // false
+        compute(97);
     }
 }

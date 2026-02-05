@@ -12,15 +12,6 @@ public class Power {
     }
 
     public static void main(String[] args) {
-        // Warm up
-        for (int i = 0; i < 10000; i++) {
-            compute(2, 10);
-        }
-
-        // Test cases
-        System.out.println("2^0 = " + compute(2, 0));   // 1
-        System.out.println("2^10 = " + compute(2, 10)); // 1024
-        System.out.println("3^4 = " + compute(3, 4));   // 81
-        System.out.println("5^3 = " + compute(5, 3));   // 125
+        compute(2, 10);
     }
 }

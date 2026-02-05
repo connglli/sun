@@ -2,6 +2,7 @@
 build/
 *.o
 *.obj
+*.class
 
 # Dependency files
 *.d
