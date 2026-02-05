@@ -8,12 +8,14 @@
 namespace sun {
 
 struct Outcome {
-  enum class Kind { Return, Throw } kind;
+  enum class Kind { kReturn, kThrow };
+
+  Kind kind;
   std::optional<Value> return_value;
   std::string exception_kind;
   ConcreteHeap heap;
 
-  std::string to_string() const;
+  std::string ToString() const;
 };
 
 }  // namespace sun
