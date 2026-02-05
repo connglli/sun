@@ -106,8 +106,6 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   }
 
   // Find Return node
-  // In IGV graphs, Root exists but doesn't point to Return
-  // We need to search for the Return node directly
   Node* ret_node = nullptr;
   for (Node* n : graph_.nodes()) {
     if (n->opcode() == Opcode::kReturn) {
@@ -142,7 +140,7 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
 }
 
 Value Interpreter::EvalNode(const Node* n) {
-  // Check cache
+  // Check cache first
   auto it = value_cache_.find(n);
   if (it != value_cache_.end()) {
     return it->second;
@@ -196,7 +194,7 @@ Value Interpreter::EvalNode(const Node* n) {
                              OpcodeToString(n->opcode()));
   }
 
-  // Cache result
+  // Cache the result
   value_cache_[n] = result;
   return result;
 }

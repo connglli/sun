@@ -194,4 +194,90 @@ TEST_F(AlgorithmTest, IsPrime) {
 // tests require array support which is more complex. These will be added
 // once basic scalar tests are working.
 
+// Loop-free tests for verifying basic interpreter functionality
+
+// Test Max computation
+TEST_F(AlgorithmTest, Max) {
+  // max(5, 10) = 10
+  {
+    auto outcome =
+        ExecuteGraph("Max.xml", {Value::MakeI32(5), Value::MakeI32(10)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 10);
+  }
+
+  // max(15, 3) = 15
+  {
+    auto outcome =
+        ExecuteGraph("Max.xml", {Value::MakeI32(15), Value::MakeI32(3)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 15);
+  }
+
+  // max(-5, -10) = -5
+  {
+    auto outcome =
+        ExecuteGraph("Max.xml", {Value::MakeI32(-5), Value::MakeI32(-10)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), -5);
+  }
+}
+
+// Test Abs computation
+TEST_F(AlgorithmTest, Abs) {
+  // abs(-5) = 5
+  {
+    auto outcome = ExecuteGraph("Abs.xml", {Value::MakeI32(-5)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 5);
+  }
+
+  // abs(7) = 7
+  {
+    auto outcome = ExecuteGraph("Abs.xml", {Value::MakeI32(7)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 7);
+  }
+
+  // abs(0) = 0
+  {
+    auto outcome = ExecuteGraph("Abs.xml", {Value::MakeI32(0)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 0);
+  }
+}
+
+// Test Sign computation
+TEST_F(AlgorithmTest, Sign) {
+  // sign(5) = 1
+  {
+    auto outcome = ExecuteGraph("Sign.xml", {Value::MakeI32(5)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 1);
+  }
+
+  // sign(-7) = -1
+  {
+    auto outcome = ExecuteGraph("Sign.xml", {Value::MakeI32(-7)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), -1);
+  }
+
+  // sign(0) = 0
+  {
+    auto outcome = ExecuteGraph("Sign.xml", {Value::MakeI32(0)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 0);
+  }
+}
+
 }  // namespace sun

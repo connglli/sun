@@ -1,0 +1,4215 @@
+<graphDocument>
+<group>
+<properties>
+<p name='name'>
+static jint Abs.compute(jint)</p>
+<p name='public'>
+true</p>
+<p name='static'>
+true</p>
+<p name='compilationId'>
+1</p>
+</properties>
+<method name='static jint Abs.compute(jint)' shortName=' Abs::compute' bci='-1'>
+<bytecodes>
+<![CDATA[
+   0 iload_0
+   1 ifge 7
+  0    bci: 1    BranchData         taken(0) displacement(32)
+                                    not taken(0)
+   4 iload_0
+   5 ineg
+   6 ireturn
+   7 iload_0
+   8 ireturn
+]]>
+</bytecodes>
+</method>
+<graph name='After Parsing'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:1 (line 6)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+6</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:1 (line 6)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+6</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+6</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+6</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+6</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='13' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='0' to='22' index='0'/>
+<edge from='25' to='27' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='27' to='13' index='2'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Iter GVN 1'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='22' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Incremental Inline'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='22' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Incremental Boxing Inline'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='22' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='PhaseCCP 1'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Iter GVN 2'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Macro expand'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Barrier expand'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Optimize finished'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Before matching'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+AbsI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+31</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='After matching'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+0</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Ret</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+2</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+32</p>
+<p name='idealOpcode'>
+Return</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+absI_rReg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+31</p>
+<p name='idealOpcode'>
+AbsI</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='45'>
+<properties>
+<p name='name'>
+MachTemp</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+12</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+10</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+#5</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+4</p>
+<p name='category'>
+mixed</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+3</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+<p name='bci'>
+-1 </p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+9</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+#4</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+8</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+#3</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+7</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+#2/unmatched  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+6</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1/unmatched</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+5</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0/unmatched</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='46'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+11</p>
+<p name='category'>
+data</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+1</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='45' to='31' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='31' to='46' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Global code motion'>
+<nodes>
+<node id='32'>
+<properties>
+<p name='name'>
+Ret</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+2</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+32</p>
+<p name='idealOpcode'>
+Return</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+absI_rReg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+9</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+31</p>
+<p name='idealOpcode'>
+AbsI</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='45'>
+<properties>
+<p name='name'>
+MachTemp</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+1</p>
+<p name='block'>
+1</p>
+<p name='dom_depth'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+0</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+4</p>
+<p name='block'>
+2</p>
+<p name='idom'>
+1</p>
+<p name='dom_depth'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+mixed</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+3</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+<p name='bci'>
+-1 </p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+0</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+1</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+12</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+10</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+#5</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+8</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+9</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+#4</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+7</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+8</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+#3</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+6</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+7</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+#2/unmatched  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+5</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+6</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1/unmatched</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+3</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+5</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0/unmatched</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='46'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+11</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='45' to='31' index='2'/>
+<edge from='0' to='45' index='0'/>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='1' index='0'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='31' to='46' index='0'/>
+</edges>
+<controlFlow>
+<block name='1'>
+<successors>
+<successor name='2'/>
+</successors>
+<nodes>
+<node id='0'/>
+</nodes>
+</block>
+<block name='2'>
+<successors>
+<successor name='1'/>
+</successors>
+<nodes>
+<node id='3'/>
+<node id='5'/>
+<node id='6'/>
+<node id='7'/>
+<node id='8'/>
+<node id='9'/>
+<node id='10'/>
+<node id='1'/>
+<node id='45'/>
+<node id='31'/>
+<node id='46'/>
+<node id='32'/>
+</nodes>
+</block>
+</controlFlow>
+</graph>
+<graph name='Final Code'>
+<nodes>
+<node id='32'>
+<properties>
+<p name='name'>
+Ret</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+2</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+32</p>
+<p name='idealOpcode'>
+Return</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='31'>
+<properties>
+<p name='name'>
+absI_rReg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+9</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+31</p>
+<p name='idealOpcode'>
+AbsI</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+RAX</p>
+<p name='lrg'>
+4</p>
+</properties>
+</node>
+<node id='45'>
+<properties>
+<p name='name'>
+MachTemp</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+<p name='reg'>
+RAX</p>
+<p name='lrg'>
+4</p>
+</properties>
+</node>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+1</p>
+<p name='block'>
+0</p>
+<p name='dom_depth'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+0</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+4</p>
+<p name='block'>
+0</p>
+<p name='category'>
+mixed</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+3</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+<p name='bci'>
+-1 </p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+0</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+1</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+12</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+10</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+#5</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+RSI</p>
+<p name='lrg'>
+3</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+8</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+9</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+#4</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+rsp + #24</p>
+<p name='lrg'>
+2</p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+7</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+8</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+#3</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+RSP</p>
+<p name='lrg'>
+1</p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+6</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+7</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+#2/unmatched  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+5</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+6</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1/unmatched</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+3</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Abs::compute @ bci:-1 (line 6)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+5</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0/unmatched</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='46'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+11</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='reg'>
+RFLAGS</p>
+<p name='lrg'>
+6</p>
+</properties>
+</node>
+<node id='53'>
+<properties>
+<p name='name'>
+Epilog</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+18</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='52'>
+<properties>
+<p name='name'>
+Prolog</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+17</p>
+<p name='block'>
+1</p>
+<p name='idom'>
+0</p>
+<p name='dom_depth'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='5' to='32' index='0'/>
+<edge from='6' to='32' index='1'/>
+<edge from='7' to='32' index='2'/>
+<edge from='8' to='32' index='3'/>
+<edge from='9' to='32' index='4'/>
+<edge from='31' to='32' index='5'/>
+<edge from='10' to='31' index='1'/>
+<edge from='45' to='31' index='2'/>
+<edge from='0' to='45' index='0'/>
+<edge from='0' to='0' index='0'/>
+<edge from='32' to='0' index='1'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='1' index='0'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='31' to='46' index='0'/>
+</edges>
+<controlFlow>
+<block name='0'>
+<successors>
+<successor name='1'/>
+</successors>
+<nodes>
+</nodes>
+</block>
+<block name='1'>
+<successors>
+<successor name='0'/>
+</successors>
+<nodes>
+<node id='52'/>
+<node id='5'/>
+<node id='6'/>
+<node id='7'/>
+<node id='8'/>
+<node id='9'/>
+<node id='10'/>
+<node id='1'/>
+<node id='45'/>
+<node id='31'/>
+<node id='46'/>
+<node id='53'/>
+<node id='32'/>
+</nodes>
+</block>
+</controlFlow>
+</graph>
+</group>
+</graphDocument>

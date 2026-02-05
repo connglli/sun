@@ -1,0 +1,8755 @@
+<graphDocument>
+<group>
+<properties>
+<p name='name'>
+static jint Sign.compute(jint)</p>
+<p name='public'>
+true</p>
+<p name='static'>
+true</p>
+<p name='compilationId'>
+1</p>
+</properties>
+<method name='static jint Sign.compute(jint)' shortName=' Sign::compute' bci='-1'>
+<bytecodes>
+<![CDATA[
+   0 iload_0
+   1 ifge 6
+  0    bci: 1    BranchData         taken(0) displacement(32)
+                                    not taken(0)
+   4 iconst_m1
+   5 ireturn
+   6 iload_0
+   7 ifle 12
+  32   bci: 7    BranchData         taken(0) displacement(32)
+                                    not taken(0)
+  10 iconst_1
+  11 ireturn
+  12 iconst_0
+  13 ireturn
+]]>
+</bytecodes>
+</method>
+<graph name='After Parsing'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Iter GVN 1'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Incremental Inline'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Incremental Boxing Inline'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='PhaseCCP 1'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Iter GVN 2'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Macro expand'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Barrier expand'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Optimize finished'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Before matching'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Return</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+39</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+ #int:0</p>
+<p name='short_name'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+CmpI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+Parm0: int</p>
+<p name='short_name'>
+P0</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+mixed</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+ReturnAdr</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+FramePtr</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+Memory  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+I_O</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+Parm</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+Control</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+25</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='24'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+24</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+[lt]</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+27</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+If</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+33</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='32'>
+<properties>
+<p name='name'>
+Bool</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+32</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+[le]</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+26</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+38</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+ #int:1</p>
+<p name='short_name'>
+1</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+ConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+30</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+ #int:-1</p>
+<p name='short_name'>
+-1</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='10' to='23' index='1'/>
+<edge from='22' to='23' index='2'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='24' to='25' index='1'/>
+<edge from='23' to='25' index='2'/>
+<edge from='23' to='24' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='32' to='33' index='1'/>
+<edge from='23' to='33' index='2'/>
+<edge from='23' to='32' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='After matching'>
+<nodes>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+1</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+0</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Ret</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+2</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+39</p>
+<p name='idealOpcode'>
+Return</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+19</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+17</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+<p name='bci'>
+-1 </p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+loadConI0</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+22</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+</properties>
+</node>
+<node id='64'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='category'>
+data</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+loadConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+21</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+38</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#1/0x00000001</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+loadConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+20</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+30</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#-1/0xffffffff</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+3</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+13</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+14</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+34</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+jmpCon</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+11</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+33</p>
+<p name='idealOpcode'>
+If</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='53'>
+<properties>
+<p name='name'>
+testI_reg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+12</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+23</p>
+<p name='idealOpcode'>
+CmpI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+9</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+10</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+#5</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+8</p>
+<p name='category'>
+mixed</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+3</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+18</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+9</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+#4</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+17</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+8</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+#3</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+16</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+7</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+#2/unmatched  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+15</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+6</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1/unmatched</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+7</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+5</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0/unmatched</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+jmpCon</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+5</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+25</p>
+<p name='idealOpcode'>
+If</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+testI_reg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+6</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+23</p>
+<p name='idealOpcode'>
+CmpI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+27</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+4</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+26</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+10</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+35</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+0</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+1</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='22' to='64' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='26' to='13' index='1'/>
+<edge from='35' to='13' index='2'/>
+<edge from='34' to='13' index='3'/>
+<edge from='33' to='34' index='0'/>
+<edge from='27' to='33' index='0'/>
+<edge from='53' to='33' index='1'/>
+<edge from='10' to='53' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='5' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='23' to='25' index='1'/>
+<edge from='10' to='23' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='33' to='35' index='0'/>
+<edge from='0' to='1' index='0'/>
+</edges>
+</graph>
+<graph name='Global code motion'>
+<nodes>
+<node id='39'>
+<properties>
+<p name='name'>
+Ret</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+2</p>
+<p name='block'>
+5</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+39</p>
+<p name='idealOpcode'>
+Return</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+19</p>
+<p name='block'>
+5</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+17</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+<p name='bci'>
+-1 </p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+loadConI0</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='block'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+22</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+</properties>
+</node>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+1</p>
+<p name='block'>
+1</p>
+<p name='dom_depth'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+0</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+loadConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+21</p>
+<p name='block'>
+6</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+38</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#1/0x00000001</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+loadConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+20</p>
+<p name='block'>
+7</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+30</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#-1/0xffffffff</p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+8</p>
+<p name='block'>
+2</p>
+<p name='idom'>
+1</p>
+<p name='dom_depth'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+mixed</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+3</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+0</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+1</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+18</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+9</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+#4</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+17</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+8</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+#3</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+16</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+7</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+#2/unmatched  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+15</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+6</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1/unmatched</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+9</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+10</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+#5</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='53'>
+<properties>
+<p name='name'>
+testI_reg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+12</p>
+<p name='block'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+23</p>
+<p name='idealOpcode'>
+CmpI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+</properties>
+</node>
+<node id='33'>
+<properties>
+<p name='name'>
+jmpCon</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+11</p>
+<p name='block'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+33</p>
+<p name='idealOpcode'>
+If</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+</properties>
+</node>
+<node id='74'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+33</p>
+<p name='block'>
+3</p>
+<p name='idom'>
+2</p>
+<p name='dom_depth'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+27</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='25'>
+<properties>
+<p name='name'>
+jmpCon</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+5</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+25</p>
+<p name='idealOpcode'>
+If</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+testI_reg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+6</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+23</p>
+<p name='idealOpcode'>
+CmpI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+7</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+5</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0/unmatched</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+4</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+26</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='72'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+31</p>
+<p name='block'>
+7</p>
+<p name='idom'>
+2</p>
+<p name='dom_depth'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='71'>
+<properties>
+<p name='name'>
+jmpDir</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+30</p>
+<p name='block'>
+7</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+other</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Goto</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='debug_orig'>
+27</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+3</p>
+<p name='block'>
+5</p>
+<p name='idom'>
+2</p>
+<p name='dom_depth'>
+3</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+13</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='69'>
+<properties>
+<p name='name'>
+jmpDir</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+28</p>
+<p name='block'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+other</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Goto</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='debug_orig'>
+27</p>
+</properties>
+</node>
+<node id='75'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='block'>
+4</p>
+<p name='idom'>
+3</p>
+<p name='dom_depth'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+14</p>
+<p name='block'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+34</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='70'>
+<properties>
+<p name='name'>
+jmpDir</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+29</p>
+<p name='block'>
+6</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+other</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Goto</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='debug_orig'>
+27</p>
+</properties>
+</node>
+<node id='73'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+32</p>
+<p name='block'>
+6</p>
+<p name='idom'>
+3</p>
+<p name='dom_depth'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+10</p>
+<p name='block'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+35</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='debug_orig'>
+</p>
+</properties>
+</node>
+<node id='64'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='block'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+data</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='3' to='1' index='0'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='10' index='0'/>
+<edge from='10' to='53' index='1'/>
+<edge from='74' to='33' index='0'/>
+<edge from='53' to='33' index='1'/>
+<edge from='74' to='74' index='0'/>
+<edge from='27' to='74' index='1'/>
+<edge from='25' to='27' index='0'/>
+<edge from='5' to='25' index='0'/>
+<edge from='23' to='25' index='1'/>
+<edge from='10' to='23' index='1'/>
+<edge from='3' to='5' index='0'/>
+<edge from='25' to='26' index='0'/>
+<edge from='72' to='72' index='0'/>
+<edge from='26' to='72' index='1'/>
+<edge from='72' to='71' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='71' to='13' index='1'/>
+<edge from='70' to='13' index='2'/>
+<edge from='69' to='13' index='3'/>
+<edge from='75' to='69' index='0'/>
+<edge from='75' to='75' index='0'/>
+<edge from='34' to='75' index='1'/>
+<edge from='33' to='34' index='0'/>
+<edge from='73' to='70' index='0'/>
+<edge from='73' to='73' index='0'/>
+<edge from='35' to='73' index='1'/>
+<edge from='33' to='35' index='0'/>
+<edge from='22' to='64' index='0'/>
+</edges>
+<controlFlow>
+<block name='1'>
+<successors>
+<successor name='2'/>
+</successors>
+<nodes>
+<node id='0'/>
+</nodes>
+</block>
+<block name='2'>
+<successors>
+<successor name='7'/>
+<successor name='3'/>
+</successors>
+<nodes>
+<node id='3'/>
+<node id='5'/>
+<node id='10'/>
+<node id='6'/>
+<node id='7'/>
+<node id='8'/>
+<node id='9'/>
+<node id='1'/>
+<node id='23'/>
+<node id='25'/>
+<node id='26'/>
+<node id='27'/>
+</nodes>
+</block>
+<block name='7'>
+<successors>
+<successor name='5'/>
+</successors>
+<nodes>
+<node id='72'/>
+<node id='30'/>
+<node id='71'/>
+</nodes>
+</block>
+<block name='3'>
+<successors>
+<successor name='6'/>
+<successor name='4'/>
+</successors>
+<nodes>
+<node id='74'/>
+<node id='53'/>
+<node id='33'/>
+<node id='35'/>
+<node id='34'/>
+</nodes>
+</block>
+<block name='6'>
+<successors>
+<successor name='5'/>
+</successors>
+<nodes>
+<node id='73'/>
+<node id='38'/>
+<node id='70'/>
+</nodes>
+</block>
+<block name='4'>
+<successors>
+<successor name='5'/>
+</successors>
+<nodes>
+<node id='75'/>
+<node id='22'/>
+<node id='64'/>
+<node id='69'/>
+</nodes>
+</block>
+<block name='5'>
+<successors>
+<successor name='1'/>
+</successors>
+<nodes>
+<node id='13'/>
+<node id='17'/>
+<node id='39'/>
+</nodes>
+</block>
+</controlFlow>
+</graph>
+<graph name='Final Code'>
+<nodes>
+<node id='82'>
+<properties>
+<p name='name'>
+jmpDir_short</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+28</p>
+<p name='block'>
+6</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Goto</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='75'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+34</p>
+<p name='block'>
+6</p>
+<p name='idom'>
+5</p>
+<p name='dom_depth'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='34'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+14</p>
+<p name='block'>
+5</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+34</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='81'>
+<properties>
+<p name='name'>
+jmpCon_short</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+11</p>
+<p name='block'>
+5</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+33</p>
+<p name='idealOpcode'>
+If</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='53'>
+<properties>
+<p name='name'>
+testI_reg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+12</p>
+<p name='block'>
+5</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+23</p>
+<p name='idealOpcode'>
+CmpI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+<p name='reg'>
+RFLAGS</p>
+<p name='lrg'>
+6</p>
+</properties>
+</node>
+<node id='10'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+9</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+10</p>
+<p name='con'>
+5</p>
+<p name='dump_spec'>
+#5</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+RSI</p>
+<p name='lrg'>
+1</p>
+</properties>
+</node>
+<node id='3'>
+<properties>
+<p name='name'>
+Start</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+8</p>
+<p name='block'>
+0</p>
+<p name='category'>
+mixed</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+3</p>
+<p name='dump_spec'>
+ #{0:control, 1:abIO, 2:memory, 3:rawptr:BotPTR, 4:return_address, 5:int}</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='0'>
+<properties>
+<p name='name'>
+Root</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+1</p>
+<p name='block'>
+0</p>
+<p name='dom_depth'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+0</p>
+<p name='dump_spec'>
+inner </p>
+<p name='is_block_proj'>
+true</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='39'>
+<properties>
+<p name='name'>
+Ret</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+2</p>
+<p name='block'>
+4</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+39</p>
+<p name='idealOpcode'>
+Return</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='17'>
+<properties>
+<p name='name'>
+Phi</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+19</p>
+<p name='block'>
+4</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+17</p>
+<p name='dump_spec'>
+ #int:-1..1</p>
+<p name='bci'>
+-1 </p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+RAX</p>
+<p name='lrg'>
+5</p>
+</properties>
+</node>
+<node id='22'>
+<properties>
+<p name='name'>
+loadConI0</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+22</p>
+<p name='block'>
+6</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+22</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+<p name='reg'>
+RAX</p>
+<p name='lrg'>
+5</p>
+</properties>
+</node>
+<node id='64'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+23</p>
+<p name='block'>
+6</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+data</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='reg'>
+RFLAGS</p>
+<p name='lrg'>
+9</p>
+</properties>
+</node>
+<node id='38'>
+<properties>
+<p name='name'>
+loadConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+21</p>
+<p name='block'>
+3</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+38</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#1/0x00000001</p>
+<p name='reg'>
+RAX</p>
+<p name='lrg'>
+5</p>
+</properties>
+</node>
+<node id='30'>
+<properties>
+<p name='name'>
+loadConI</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+20</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+data</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+30</p>
+<p name='idealOpcode'>
+ConI</p>
+<p name='dump_spec'>
+#-1/0xffffffff</p>
+<p name='reg'>
+RAX</p>
+<p name='lrg'>
+5</p>
+</properties>
+</node>
+<node id='13'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+3</p>
+<p name='block'>
+4</p>
+<p name='idom'>
+1</p>
+<p name='dom_depth'>
+3</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+13</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='70'>
+<properties>
+<p name='name'>
+jmpDir</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+29</p>
+<p name='block'>
+3</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+other</p>
+<p name='may_be_short_branch'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Goto</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='debug_orig'>
+27</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='73'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+32</p>
+<p name='block'>
+3</p>
+<p name='idom'>
+5</p>
+<p name='dom_depth'>
+4</p>
+<p name='frequency'>
+0.25000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='35'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+10</p>
+<p name='block'>
+5</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:7 (line 9)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+35</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+7 </p>
+<p name='line'>
+9</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='80'>
+<properties>
+<p name='name'>
+jmpDir_short</p>
+<p name='type'>
+bottom</p>
+<p name='idx'>
+30</p>
+<p name='block'>
+2</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+other</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Goto</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_proj'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='72'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+31</p>
+<p name='block'>
+2</p>
+<p name='idom'>
+1</p>
+<p name='dom_depth'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='26'>
+<properties>
+<p name='name'>
+IfTrue</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+4</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+26</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+T</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='79'>
+<properties>
+<p name='name'>
+jmpCon_short</p>
+<p name='type'>
+tuple:</p>
+<p name='idx'>
+5</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+25</p>
+<p name='idealOpcode'>
+If</p>
+<p name='dump_spec'>
+P=0.500000, C=-1.000000</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='23'>
+<properties>
+<p name='name'>
+testI_reg</p>
+<p name='type'>
+int:</p>
+<p name='idx'>
+6</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+23</p>
+<p name='idealOpcode'>
+CmpI</p>
+<p name='dump_spec'>
+#0/0x00000000</p>
+<p name='reg'>
+RFLAGS</p>
+<p name='lrg'>
+4</p>
+</properties>
+</node>
+<node id='5'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+7</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+5</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0/unmatched</p>
+<p name='short_name'>
+C</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='27'>
+<properties>
+<p name='name'>
+IfFalse</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+13</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='jvms'>
+ Sign::compute @ bci:1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+27</p>
+<p name='con'>
+0</p>
+<p name='dump_spec'>
+#0</p>
+<p name='is_block_proj'>
+true</p>
+<p name='short_name'>
+F</p>
+<p name='bci'>
+1 </p>
+<p name='line'>
+7</p>
+<p name='debug_orig'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='74'>
+<properties>
+<p name='name'>
+Region</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+33</p>
+<p name='block'>
+5</p>
+<p name='idom'>
+1</p>
+<p name='dom_depth'>
+3</p>
+<p name='frequency'>
+0.50000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+false</p>
+<p name='dump_spec'>
+</p>
+<p name='is_block_start'>
+true</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='9'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+return_address</p>
+<p name='idx'>
+18</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+9</p>
+<p name='con'>
+4</p>
+<p name='dump_spec'>
+#4</p>
+<p name='short_name'>
+RA</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+rsp + #24</p>
+<p name='lrg'>
+3</p>
+</properties>
+</node>
+<node id='8'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+rawptr:</p>
+<p name='idx'>
+17</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+data</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+8</p>
+<p name='con'>
+3</p>
+<p name='dump_spec'>
+#3</p>
+<p name='short_name'>
+RP</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+RSP</p>
+<p name='lrg'>
+2</p>
+</properties>
+</node>
+<node id='7'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+memory</p>
+<p name='idx'>
+16</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+memory</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+7</p>
+<p name='con'>
+2</p>
+<p name='dump_spec'>
+#2/unmatched  Memory: @BotPTR *+bot, idx=Bot;</p>
+<p name='short_name'>
+M</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='6'>
+<properties>
+<p name='name'>
+MachProj</p>
+<p name='type'>
+abIO</p>
+<p name='idx'>
+15</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='jvms'>
+ Sign::compute @ bci:-1 (line 7)</p>
+<p name='is_dead_loop_safe'>
+true</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='old_node_idx'>
+6</p>
+<p name='con'>
+1</p>
+<p name='dump_spec'>
+#1/unmatched</p>
+<p name='short_name'>
+IO</p>
+<p name='bci'>
+-1 </p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='1'>
+<properties>
+<p name='name'>
+Con</p>
+<p name='type'>
+top</p>
+<p name='idx'>
+0</p>
+<p name='block'>
+1</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+other</p>
+<p name='is_con'>
+true</p>
+<p name='is_shared'>
+true</p>
+<p name='is_dontcare'>
+true</p>
+<p name='old_node_idx'>
+1</p>
+<p name='dump_spec'>
+ #top</p>
+<p name='short_name'>
+^</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='77'>
+<properties>
+<p name='name'>
+Epilog</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+36</p>
+<p name='block'>
+4</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+false</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+<node id='76'>
+<properties>
+<p name='name'>
+Prolog</p>
+<p name='type'>
+control</p>
+<p name='idx'>
+35</p>
+<p name='block'>
+1</p>
+<p name='idom'>
+0</p>
+<p name='dom_depth'>
+2</p>
+<p name='frequency'>
+1.00000000</p>
+<p name='category'>
+control</p>
+<p name='is_shared'>
+false</p>
+<p name='is_dontcare'>
+true</p>
+<p name='idealOpcode'>
+Node</p>
+<p name='dump_spec'>
+</p>
+<p name='reg'>
+&lt;OptoReg::-1&gt;</p>
+<p name='lrg'>
+0</p>
+</properties>
+</node>
+</nodes>
+<edges>
+<edge from='75' to='82' index='0'/>
+<edge from='75' to='75' index='0'/>
+<edge from='34' to='75' index='1'/>
+<edge from='81' to='34' index='0'/>
+<edge from='74' to='81' index='0'/>
+<edge from='53' to='81' index='1'/>
+<edge from='10' to='53' index='1'/>
+<edge from='3' to='10' index='0'/>
+<edge from='3' to='3' index='0'/>
+<edge from='0' to='3' index='1'/>
+<edge from='0' to='0' index='0'/>
+<edge from='39' to='0' index='1'/>
+<edge from='13' to='39' index='0'/>
+<edge from='6' to='39' index='1'/>
+<edge from='7' to='39' index='2'/>
+<edge from='8' to='39' index='3'/>
+<edge from='9' to='39' index='4'/>
+<edge from='17' to='39' index='5'/>
+<edge from='13' to='17' index='0'/>
+<edge from='30' to='17' index='1'/>
+<edge from='38' to='17' index='2'/>
+<edge from='22' to='17' index='3'/>
+<edge from='0' to='22' index='0'/>
+<edge from='22' to='64' index='0'/>
+<edge from='0' to='38' index='0'/>
+<edge from='0' to='30' index='0'/>
+<edge from='13' to='13' index='0'/>
+<edge from='80' to='13' index='1'/>
+<edge from='70' to='13' index='2'/>
+<edge from='82' to='13' index='3'/>
+<edge from='73' to='70' index='0'/>
+<edge from='73' to='73' index='0'/>
+<edge from='35' to='73' index='1'/>
+<edge from='81' to='35' index='0'/>
+<edge from='72' to='80' index='0'/>
+<edge from='72' to='72' index='0'/>
+<edge from='26' to='72' index='1'/>
+<edge from='79' to='26' index='0'/>
+<edge from='5' to='79' index='0'/>
+<edge from='23' to='79' index='1'/>
+<edge from='10' to='23' index='1'/>
+<edge from='3' to='5' index='0'/>
+<edge from='79' to='27' index='0'/>
+<edge from='74' to='74' index='0'/>
+<edge from='27' to='74' index='1'/>
+<edge from='3' to='9' index='0'/>
+<edge from='3' to='8' index='0'/>
+<edge from='3' to='7' index='0'/>
+<edge from='3' to='6' index='0'/>
+<edge from='3' to='1' index='0'/>
+</edges>
+<controlFlow>
+<block name='0'>
+<successors>
+<successor name='1'/>
+</successors>
+<nodes>
+</nodes>
+</block>
+<block name='1'>
+<successors>
+<successor name='5'/>
+<successor name='2'/>
+</successors>
+<nodes>
+<node id='76'/>
+<node id='5'/>
+<node id='10'/>
+<node id='6'/>
+<node id='7'/>
+<node id='8'/>
+<node id='9'/>
+<node id='1'/>
+<node id='23'/>
+<node id='79'/>
+</nodes>
+</block>
+<block name='2'>
+<successors>
+<successor name='4'/>
+</successors>
+<nodes>
+<node id='72'/>
+<node id='30'/>
+<node id='80'/>
+</nodes>
+</block>
+<block name='3'>
+<successors>
+<successor name='4'/>
+</successors>
+<nodes>
+<node id='73'/>
+<node id='38'/>
+</nodes>
+</block>
+<block name='4'>
+<successors>
+<successor name='0'/>
+</successors>
+<nodes>
+<node id='13'/>
+<node id='17'/>
+<node id='77'/>
+<node id='39'/>
+</nodes>
+</block>
+<block name='5'>
+<successors>
+<successor name='3'/>
+<successor name='6'/>
+</successors>
+<nodes>
+<node id='74'/>
+<node id='53'/>
+<node id='81'/>
+</nodes>
+</block>
+<block name='6'>
+<successors>
+<successor name='4'/>
+</successors>
+<nodes>
+<node id='75'/>
+<node id='22'/>
+<node id='64'/>
+<node id='82'/>
+</nodes>
+</block>
+</controlFlow>
+</graph>
+</group>
+</graphDocument>
