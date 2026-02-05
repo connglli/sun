@@ -17,20 +17,20 @@ class Graph {
   ~Graph();
 
   // Node access
-  Node* node(NodeID id) const;
-  Node* start() const { return start_; }
-  Node* root() const { return root_; }
-  const std::vector<Node*>& nodes() const { return node_list_; }
+  Node* GetNode(NodeID id) const;
+  Node* GetStart() const { return start_; }
+  Node* GetRoot() const { return root_; }
+  const std::vector<Node*>& GetNodes() const { return node_list_; }
 
   // Node creation
-  Node* add_node(NodeID id, Opcode op);
+  Node* AddNode(NodeID id, Opcode op);
 
   // Graph queries
-  std::vector<Node*> parameter_nodes() const;
-  std::vector<Node*> control_nodes() const;
+  std::vector<Node*> GetParameterNodes() const;
+  std::vector<Node*> GetControlNodes() const;
 
   // Debugging
-  void dump() const;  // Print graph structure to stdout
+  void Dump() const;  // Print graph structure to stdout
 
  private:
   std::vector<std::unique_ptr<Node>> owned_nodes_;

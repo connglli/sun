@@ -2,7 +2,7 @@
 
 namespace sun {
 
-std::string TypeStamp::to_string() const {
+std::string TypeStamp::ToString() const {
   switch (kind_) {
     case TypeKind::BOTTOM:
       return "⊥";

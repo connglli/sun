@@ -7,24 +7,24 @@
 
 namespace sun {
 
-Graph* Canonicalizer::canonicalize(Graph* raw) {
+Graph* Canonicalizer::Canonicalize(Graph* raw) {
   if (!raw) {
     return nullptr;
   }
 
   std::string error;
-  if (!validate_well_formed(raw, error)) {
-    Logger::error("Graph validation failed: " + error);
+  if (!ValidateWellFormed(raw, error)) {
+    Logger::Error("Graph validation failed: " + error);
     return nullptr;
   }
 
-  Logger::info("Graph canonicalization successful");
+  Logger::Info("Graph canonicalization successful");
   return raw;
 }
 
-bool Canonicalizer::validate_well_formed(Graph* g, std::string& error) {
+bool Canonicalizer::ValidateWellFormed(Graph* g, std::string& error) {
   // Check for single Start and Root nodes
-  if (!check_single_start_root(g, error)) {
+  if (!CheckSingleStartRoot(g, error)) {
     return false;
   }
 
@@ -37,26 +37,26 @@ bool Canonicalizer::validate_well_formed(Graph* g, std::string& error) {
   return true;
 }
 
-bool Canonicalizer::check_single_start_root(Graph* g, std::string& error) {
+bool Canonicalizer::CheckSingleStartRoot(Graph* g, std::string& error) {
   Node* start_node = nullptr;
   Node* root_node = nullptr;
 
-  for (Node* n : g->nodes()) {
-    if (n->opcode() == Opcode::Start) {
+  for (Node* n : g->GetNodes()) {
+    if (n->GetOpcode() == Opcode::Start) {
       if (start_node) {
         error = "Multiple Start nodes found (IDs: " +
-                std::to_string(start_node->id()) + ", " +
-                std::to_string(n->id()) + ")";
+                std::to_string(start_node->Id()) + ", " +
+                std::to_string(n->Id()) + ")";
         return false;
       }
       start_node = n;
     }
 
-    if (n->opcode() == Opcode::Root) {
+    if (n->GetOpcode() == Opcode::Root) {
       if (root_node) {
         error = "Multiple Root nodes found (IDs: " +
-                std::to_string(root_node->id()) + ", " +
-                std::to_string(n->id()) + ")";
+                std::to_string(root_node->Id()) + ", " +
+                std::to_string(n->Id()) + ")";
         return false;
       }
       root_node = n;
@@ -74,12 +74,12 @@ bool Canonicalizer::check_single_start_root(Graph* g, std::string& error) {
   }
 
   // Note: We don't set g's start_ and root_ pointers here because Graph's
-  // constructor or add_node should handle that automatically when Start/Root
+  // constructor or AddNode should handle that automatically when Start/Root
   // nodes are added. If needed, we could add setter methods to Graph and
   // call them here.
 
-  Logger::debug("Found Start node (ID " + std::to_string(start_node->id()) +
-                ") and Root node (ID " + std::to_string(root_node->id()) + ")");
+  Logger::Debug("Found Start node (ID " + std::to_string(start_node->Id()) +
+                ") and Root node (ID " + std::to_string(root_node->Id()) + ")");
 
   return true;
 }

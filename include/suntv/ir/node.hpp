@@ -25,26 +25,26 @@ class Node {
  public:
   Node(NodeID id, Opcode opcode);
 
-  NodeID id() const { return id_; }
-  Opcode opcode() const { return opcode_; }
+  NodeID Id() const { return id_; }
+  Opcode GetOpcode() const { return opcode_; }
 
   // Inputs (edges)
-  size_t num_inputs() const { return inputs_.size(); }
-  Node* input(size_t i) const;
-  void add_input(Node* n);
-  void set_input(size_t i, Node* n);
+  size_t NumInputs() const { return inputs_.size(); }
+  Node* GetInput(size_t i) const;
+  void AddInput(Node* n);
+  void SetInput(size_t i, Node* n);
 
   // Properties
-  bool has_prop(const std::string& key) const;
-  Property get_prop(const std::string& key) const;
-  void set_prop(const std::string& key, Property value);
+  bool HasProp(const std::string& key) const;
+  Property GetProp(const std::string& key) const;
+  void SetProp(const std::string& key, Property value);
 
   // Type
-  TypeStamp type() const { return type_; }
-  void set_type(TypeStamp type) { type_ = type; }
+  TypeStamp GetType() const { return type_; }
+  void SetType(TypeStamp type) { type_ = type; }
 
   // Debugging
-  std::string to_string() const;
+  std::string ToString() const;
 
  private:
   NodeID id_;

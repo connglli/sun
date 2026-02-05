@@ -4,7 +4,7 @@
 
 namespace sun {
 
-std::string opcode_to_string(Opcode op) {
+std::string OpcodeToString(Opcode op) {
   switch (op) {
     // Control
     case Opcode::Start:
@@ -193,7 +193,7 @@ std::string opcode_to_string(Opcode op) {
   }
 }
 
-Opcode string_to_opcode(const std::string& name) {
+Opcode StringToOpcode(const std::string& name) {
   // Build static map on first call
   static std::unordered_map<std::string, Opcode> map = []() {
     std::unordered_map<std::string, Opcode> m;
@@ -313,7 +313,7 @@ Opcode string_to_opcode(const std::string& name) {
   return Opcode::Unknown;
 }
 
-bool is_control(Opcode op) {
+bool IsControl(Opcode op) {
   switch (op) {
     case Opcode::Start:
     case Opcode::If:
@@ -329,7 +329,7 @@ bool is_control(Opcode op) {
   }
 }
 
-bool is_pure(Opcode op) {
+bool IsPure(Opcode op) {
   // Pure operations have no side effects
   switch (op) {
     // Constants
@@ -389,7 +389,7 @@ bool is_pure(Opcode op) {
   }
 }
 
-bool is_memory(Opcode op) {
+bool IsMemory(Opcode op) {
   switch (op) {
     // Loads
     case Opcode::LoadB:
@@ -418,7 +418,7 @@ bool is_memory(Opcode op) {
   }
 }
 
-bool is_merge(Opcode op) {
+bool IsMerge(Opcode op) {
   return op == Opcode::Phi || op == Opcode::Region || op == Opcode::MergeMem;
 }
 

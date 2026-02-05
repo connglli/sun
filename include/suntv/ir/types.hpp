@@ -25,16 +25,16 @@ class TypeStamp {
   TypeStamp() : kind_(TypeKind::TOP) {}
   explicit TypeStamp(TypeKind kind) : kind_(kind) {}
 
-  TypeKind kind() const { return kind_; }
+  TypeKind GetKind() const { return kind_; }
 
-  bool is_int32() const { return kind_ == TypeKind::INT32; }
-  bool is_int64() const { return kind_ == TypeKind::INT64; }
-  bool is_bool() const { return kind_ == TypeKind::BOOL; }
-  bool is_ptr() const { return kind_ == TypeKind::PTR; }
-  bool is_control() const { return kind_ == TypeKind::CONTROL; }
-  bool is_memory() const { return kind_ == TypeKind::MEMORY; }
+  bool IsInt32() const { return kind_ == TypeKind::INT32; }
+  bool IsInt64() const { return kind_ == TypeKind::INT64; }
+  bool IsBool() const { return kind_ == TypeKind::BOOL; }
+  bool IsPtr() const { return kind_ == TypeKind::PTR; }
+  bool IsControl() const { return kind_ == TypeKind::CONTROL; }
+  bool IsMemory() const { return kind_ == TypeKind::MEMORY; }
 
-  std::string to_string() const;
+  std::string ToString() const;
 
  private:
   TypeKind kind_;

@@ -24,12 +24,12 @@ class Canonicalizer {
    * Returns the same graph pointer on success, nullptr on failure.
    * Error messages are logged.
    */
-  Graph* canonicalize(Graph* raw);
+  Graph* Canonicalize(Graph* raw);
 
  private:
-  bool validate_well_formed(Graph* g, std::string& error);
-  bool check_single_start_root(Graph* g, std::string& error);
-  // Future: check_acyclicity, infer_types, normalize_comparisons
+  bool ValidateWellFormed(Graph* g, std::string& error);
+  bool CheckSingleStartRoot(Graph* g, std::string& error);
+  // Future: CheckAcyclicity, InferTypes, NormalizeComparisons
 };
 
 }  // namespace sun

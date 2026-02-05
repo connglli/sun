@@ -8,27 +8,27 @@ namespace sun {
 Node::Node(NodeID id, Opcode opcode)
     : id_(id), opcode_(opcode), type_(TypeKind::TOP) {}
 
-Node* Node::input(size_t i) const {
+Node* Node::GetInput(size_t i) const {
   if (i >= inputs_.size()) {
     throw std::out_of_range("Input index out of range");
   }
   return inputs_[i];
 }
 
-void Node::add_input(Node* n) { inputs_.push_back(n); }
+void Node::AddInput(Node* n) { inputs_.push_back(n); }
 
-void Node::set_input(size_t i, Node* n) {
+void Node::SetInput(size_t i, Node* n) {
   if (i >= inputs_.size()) {
     inputs_.resize(i + 1, nullptr);
   }
   inputs_[i] = n;
 }
 
-bool Node::has_prop(const std::string& key) const {
+bool Node::HasProp(const std::string& key) const {
   return props_.find(key) != props_.end();
 }
 
-Property Node::get_prop(const std::string& key) const {
+Property Node::GetProp(const std::string& key) const {
   auto it = props_.find(key);
   if (it == props_.end()) {
     throw std::runtime_error("Property not found: " + key);
@@ -36,13 +36,13 @@ Property Node::get_prop(const std::string& key) const {
   return it->second;
 }
 
-void Node::set_prop(const std::string& key, Property value) {
+void Node::SetProp(const std::string& key, Property value) {
   props_[key] = value;
 }
 
-std::string Node::to_string() const {
+std::string Node::ToString() const {
   std::ostringstream oss;
-  oss << opcode_to_string(opcode_) << " [id=" << id_ << "]";
+  oss << OpcodeToString(opcode_) << " [id=" << id_ << "]";
   return oss.str();
 }
 

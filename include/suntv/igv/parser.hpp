@@ -18,7 +18,7 @@ class IGVParser {
    * Parse an IGV XML file and return a Graph.
    * Returns nullptr on parse error.
    */
-  std::unique_ptr<Graph> parse(const std::string& path);
+  std::unique_ptr<Graph> Parse(const std::string& path);
 
  private:
   class Impl;

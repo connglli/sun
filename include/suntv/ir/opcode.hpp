@@ -125,32 +125,32 @@ enum class Opcode {
 /**
  * Convert opcode to string name.
  */
-std::string opcode_to_string(Opcode op);
+std::string OpcodeToString(Opcode op);
 
 /**
  * Parse string to opcode.
  * Returns Opcode::Unknown if not recognized.
  */
-Opcode string_to_opcode(const std::string& name);
+Opcode StringToOpcode(const std::string& name);
 
 /**
  * Check if opcode is a control node.
  */
-bool is_control(Opcode op);
+bool IsControl(Opcode op);
 
 /**
  * Check if opcode is a pure (side-effect-free) computation.
  */
-bool is_pure(Opcode op);
+bool IsPure(Opcode op);
 
 /**
  * Check if opcode has memory effects (loads, stores, allocation).
  */
-bool is_memory(Opcode op);
+bool IsMemory(Opcode op);
 
 /**
  * Check if opcode is a merge/phi node.
  */
-bool is_merge(Opcode op);
+bool IsMerge(Opcode op);
 
 }  // namespace sun
