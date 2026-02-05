@@ -33,6 +33,8 @@ Interpreter::Interpreter(const Graph& g) : graph_(g) {}
 
 Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   value_cache_.clear();
+  control_active_.clear();
+  if_decisions_.clear();
   heap_ = ConcreteHeap();  // Reset heap
 
   // Cache parameter values first
@@ -40,6 +42,12 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   for (Node* parm_node : params) {
     Value parm_val = EvalParm(parm_node, inputs);
     value_cache_[parm_node] = parm_val;
+  }
+
+  // Compute control flow starting from Start node
+  Node* start = graph_.start();
+  if (start) {
+    ComputeControlFlow(start);
   }
 
   // Find Return node
@@ -93,6 +101,11 @@ Value Interpreter::EvalNode(const Node* n) {
     result = EvalConst(n);
   } else if (op == Opcode::kParm) {
     throw std::runtime_error("Parm node should be handled separately");
+  } else if (op == Opcode::kBool) {
+    result = EvalBool(n);
+  } else if (op == Opcode::kCMoveI || op == Opcode::kCMoveL ||
+             op == Opcode::kCMoveP) {
+    result = EvalCMove(n);
   } else if (op == Opcode::kPhi) {
     result = EvalPhi(n);
   } else if (IsArithmetic(op) || IsBitwise(op)) {
@@ -227,26 +240,223 @@ Value Interpreter::EvalCmpOp(const Node* n) {
   Value b = EvalNode(n->input(1));
 
   Opcode op = n->opcode();
+
+  // CmpI/CmpL/CmpP return tri-state: -1 (less), 0 (equal), 1 (greater)
   switch (op) {
-    case Opcode::kCmpI:
-      // For now, treat CmpI as equality check
-      return Evaluator::EvalCmpEqI(a, b);
-    case Opcode::kCmpL:
-      return Evaluator::EvalCmpEqI(a, b);  // Simplified
-    case Opcode::kCmpP:
-      return Evaluator::EvalCmpEqP(a, b);
+    case Opcode::kCmpI: {
+      int32_t av = a.as_i32();
+      int32_t bv = b.as_i32();
+      if (av < bv)
+        return Value::MakeI32(-1);
+      else if (av > bv)
+        return Value::MakeI32(1);
+      else
+        return Value::MakeI32(0);
+    }
+    case Opcode::kCmpL: {
+      int64_t av = a.as_i64();
+      int64_t bv = b.as_i64();
+      if (av < bv)
+        return Value::MakeI32(-1);
+      else if (av > bv)
+        return Value::MakeI32(1);
+      else
+        return Value::MakeI32(0);
+    }
+    case Opcode::kCmpP: {
+      // For pointers, compare refs
+      if (!a.is_ref() && !a.is_null()) {
+        throw std::runtime_error("CmpP expects ref or null for first operand");
+      }
+      if (!b.is_ref() && !b.is_null()) {
+        throw std::runtime_error("CmpP expects ref or null for second operand");
+      }
+      // Compare: null < ref, refs by numeric value
+      int32_t av = a.is_null() ? 0 : a.as_ref();
+      int32_t bv = b.is_null() ? 0 : b.as_ref();
+      if (av < bv)
+        return Value::MakeI32(-1);
+      else if (av > bv)
+        return Value::MakeI32(1);
+      else
+        return Value::MakeI32(0);
+    }
     default:
       throw std::runtime_error("Unsupported comparison opcode");
   }
 }
 
 Value Interpreter::EvalPhi(const Node* n) {
-  // Simplified Phi evaluation: just return first input
-  // Full implementation would track control flow and PC
-  if (n->num_inputs() == 0) {
-    throw std::runtime_error("Phi node has no inputs");
+  // Phi selects value based on which control predecessor is active
+  // Phi structure: input(0) = Region control, input(1..k) = values
+  if (n->num_inputs() < 2) {
+    throw std::runtime_error("Phi node needs at least control + 1 value");
   }
-  return EvalNode(n->input(0));
+
+  Node* region = n->input(0);
+  if (!region || region->opcode() != Opcode::kRegion) {
+    // Simplified case: no region, just take first value
+    return EvalNode(n->input(1));
+  }
+
+  // Find which Region predecessor is active
+  for (size_t i = 0; i < region->num_inputs(); ++i) {
+    Node* pred_ctrl = region->input(i);
+    if (IsControlActive(pred_ctrl)) {
+      // Select corresponding value (input index = i + 1)
+      if (i + 1 < n->num_inputs()) {
+        return EvalNode(n->input(i + 1));
+      }
+    }
+  }
+
+  // Fallback: return first value
+  return EvalNode(n->input(1));
+}
+
+Value Interpreter::EvalBool(const Node* n) {
+  // Bool node converts comparison result to boolean
+  // Input(0) = comparison result (CmpI/CmpL/CmpP returns i32)
+  // Property "mask" = condition code (e.g., 4 = GT, 2 = LT, 1 = EQ, etc.)
+  if (n->num_inputs() < 1) {
+    throw std::runtime_error("Bool node needs comparison input");
+  }
+
+  Value cmp_result = EvalNode(n->input(0));
+  if (!cmp_result.is_i32()) {
+    throw std::runtime_error("Bool node expects i32 comparison result");
+  }
+
+  int32_t cmp_val = cmp_result.as_i32();
+
+  // Get mask property (condition code)
+  int32_t mask = 0;
+  if (n->has_prop("mask")) {
+    mask = std::get<int32_t>(n->prop("mask"));
+  }
+
+  // HotSpot condition codes (simplified):
+  // 1 = EQ, 2 = LT, 4 = GT, 8 = LE (LT|EQ), 5 = NE (LT|GT), etc.
+  // Comparison returns: -1 (less), 0 (equal), 1 (greater)
+  bool result = false;
+  if (cmp_val < 0 && (mask & 2))
+    result = true;  // LT
+  else if (cmp_val == 0 && (mask & 1))
+    result = true;  // EQ
+  else if (cmp_val > 0 && (mask & 4))
+    result = true;  // GT
+
+  return Value::MakeBool(result);
+}
+
+Value Interpreter::EvalCMove(const Node* n) {
+  // CMoveI/L/P: conditional move
+  // Input(0) = condition (boolean)
+  // Input(1) = value if true
+  // Input(2) = value if false
+  if (n->num_inputs() < 3) {
+    throw std::runtime_error("CMove needs 3 inputs");
+  }
+
+  Value cond = EvalNode(n->input(0));
+  if (!cond.is_bool()) {
+    throw std::runtime_error("CMove condition must be boolean");
+  }
+
+  if (cond.as_bool()) {
+    return EvalNode(n->input(1));
+  } else {
+    return EvalNode(n->input(2));
+  }
+}
+
+void Interpreter::ComputeControlFlow(const Node* start_node) {
+  // Mark Start as active
+  control_active_[start_node] = true;
+
+  // Recursively compute control flow for the graph
+  // We need to process control nodes in a specific order
+  // For simplicity, we'll do a forward traversal
+
+  // Process all nodes to find control flow
+  for (Node* n : graph_.nodes()) {
+    Opcode op = n->opcode();
+
+    if (op == Opcode::kStart) {
+      control_active_[n] = true;
+    } else if (op == Opcode::kIf) {
+      // If node: evaluate condition and mark branches
+      if (n->num_inputs() >= 2) {
+        Node* pred_ctrl = n->input(0);
+        if (IsControlActive(pred_ctrl)) {
+          // Evaluate condition
+          Value cond = EvalNode(n->input(1));
+          bool branch_taken = false;
+          if (cond.is_bool()) {
+            branch_taken = cond.as_bool();
+          } else {
+            throw std::runtime_error("If condition must be boolean");
+          }
+          // Store decision
+          if_decisions_[n] = branch_taken;
+          control_active_[n] = true;
+        }
+      }
+    } else if (op == Opcode::kIfTrue) {
+      // IfTrue: active if parent If is active and condition is true
+      if (n->num_inputs() >= 1) {
+        Node* if_node = n->input(0);
+        if (if_node && if_node->opcode() == Opcode::kIf) {
+          auto it = if_decisions_.find(if_node);
+          if (it != if_decisions_.end() && it->second == true) {
+            control_active_[n] = true;
+          }
+        }
+      }
+    } else if (op == Opcode::kIfFalse) {
+      // IfFalse: active if parent If is active and condition is false
+      if (n->num_inputs() >= 1) {
+        Node* if_node = n->input(0);
+        if (if_node && if_node->opcode() == Opcode::kIf) {
+          auto it = if_decisions_.find(if_node);
+          if (it != if_decisions_.end() && it->second == false) {
+            control_active_[n] = true;
+          }
+        }
+      }
+    } else if (op == Opcode::kRegion) {
+      // Region: active if any predecessor is active
+      for (size_t i = 0; i < n->num_inputs(); ++i) {
+        Node* pred = n->input(i);
+        if (IsControlActive(pred)) {
+          control_active_[n] = true;
+          break;
+        }
+      }
+    } else if (op == Opcode::kGoto) {
+      // Goto: active if predecessor is active
+      if (n->num_inputs() >= 1) {
+        Node* pred = n->input(0);
+        if (IsControlActive(pred)) {
+          control_active_[n] = true;
+        }
+      }
+    } else if (op == Opcode::kReturn) {
+      // Return: active if predecessor is active
+      if (n->num_inputs() >= 1) {
+        Node* pred = n->input(0);
+        if (IsControlActive(pred)) {
+          control_active_[n] = true;
+        }
+      }
+    }
+  }
+}
+
+bool Interpreter::IsControlActive(const Node* ctrl) {
+  if (!ctrl) return false;
+  auto it = control_active_.find(ctrl);
+  return it != control_active_.end() && it->second;
 }
 
 }  // namespace sun

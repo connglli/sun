@@ -21,6 +21,7 @@ add_executable(sun_unit_tests
     unit/interp/test_value.cpp
     unit/interp/test_heap.cpp
     unit/interp/test_interpreter.cpp
+    unit/interp/test_control_flow.cpp
 )
 target_link_libraries(sun_unit_tests
     PRIVATE

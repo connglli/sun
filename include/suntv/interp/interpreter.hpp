@@ -33,6 +33,12 @@ class Interpreter {
   // Memoization: node -> computed value
   std::map<const Node*, Value> value_cache_;
 
+  // Control flow tracking: control node -> is active
+  std::map<const Node*, bool> control_active_;
+
+  // If node -> which branch was taken (true/false)
+  std::map<const Node*, bool> if_decisions_;
+
   // Heap state
   ConcreteHeap heap_;
 
@@ -51,8 +57,18 @@ class Interpreter {
   // Evaluate comparison operation
   Value EvalCmpOp(const Node* n);
 
+  // Evaluate Bool node (comparison to boolean)
+  Value EvalBool(const Node* n);
+
+  // Evaluate CMoveI/L/P (conditional move)
+  Value EvalCMove(const Node* n);
+
   // Evaluate Phi node (value merge)
   Value EvalPhi(const Node* n);
+
+  // Control flow helpers
+  void ComputeControlFlow(const Node* start_node);
+  bool IsControlActive(const Node* ctrl);
 };
 
 }  // namespace sun
