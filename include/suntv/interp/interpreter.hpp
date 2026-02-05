@@ -1,18 +1,58 @@
 #pragma once
+#include <map>
 #include <vector>
 
+#include "suntv/interp/evaluator.hpp"
+#include "suntv/interp/heap.hpp"
 #include "suntv/interp/outcome.hpp"
+#include "suntv/interp/value.hpp"
 
 namespace sun {
 class Graph;
+class Node;
 
+/**
+ * Concrete interpreter for Sea-of-Nodes graphs.
+ *
+ * Executes graphs concretely by evaluating nodes in topological order,
+ * tracking control flow and managing heap state.
+ */
 class Interpreter {
  public:
   explicit Interpreter(const Graph& g);
-  Outcome execute(const std::vector<Value>& inputs);
+
+  /**
+   * Execute the graph with given input values.
+   * Returns the outcome (Return or Throw) with final heap state.
+   */
+  Outcome Execute(const std::vector<Value>& inputs);
 
  private:
   const Graph& graph_;
+
+  // Memoization: node -> computed value
+  std::map<const Node*, Value> value_cache_;
+
+  // Heap state
+  ConcreteHeap heap_;
+
+  // Evaluate a value-producing node
+  Value EvalNode(const Node* n);
+
+  // Evaluate constant node
+  Value EvalConst(const Node* n);
+
+  // Evaluate parameter node
+  Value EvalParm(const Node* n, const std::vector<Value>& inputs);
+
+  // Evaluate arithmetic/bitwise operation
+  Value EvalArithOp(const Node* n);
+
+  // Evaluate comparison operation
+  Value EvalCmpOp(const Node* n);
+
+  // Evaluate Phi node (value merge)
+  Value EvalPhi(const Node* n);
 };
 
 }  // namespace sun
