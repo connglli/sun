@@ -4,6 +4,7 @@
 #include "suntv/interp/interpreter.hpp"
 #include "suntv/interp/value.hpp"
 #include "suntv/ir/graph.hpp"
+#include "suntv/util/logging.hpp"
 
 namespace sun {
 
@@ -198,6 +199,9 @@ TEST_F(AlgorithmTest, IsPrime) {
 
 // Test Max computation
 TEST_F(AlgorithmTest, Max) {
+  // Enable debug logging for this test
+  Logger::SetLevel(LogLevel::DEBUG);
+
   // max(5, 10) = 10
   {
     auto outcome =
@@ -224,6 +228,9 @@ TEST_F(AlgorithmTest, Max) {
     ASSERT_TRUE(outcome.return_value.has_value());
     EXPECT_EQ(outcome.return_value->as_i32(), -5);
   }
+
+  // Reset log level
+  Logger::SetLevel(LogLevel::INFO);
 }
 
 // Test Abs computation

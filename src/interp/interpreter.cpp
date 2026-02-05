@@ -1,6 +1,8 @@
 #include "suntv/interp/interpreter.hpp"
 
 #include <algorithm>
+#include <queue>
+#include <set>
 
 #include "suntv/ir/graph.hpp"
 #include "suntv/ir/node.hpp"
@@ -12,10 +14,10 @@ namespace sun {
 // Helper functions to categorize opcodes
 static bool IsArithmetic(Opcode op) {
   return op == Opcode::kAddI || op == Opcode::kSubI || op == Opcode::kMulI ||
-         op == Opcode::kDivI || op == Opcode::kModI || op == Opcode::kAddL ||
-         op == Opcode::kSubL || op == Opcode::kMulL || op == Opcode::kDivL ||
-         op == Opcode::kModL || op == Opcode::kConvI2L ||
-         op == Opcode::kConvL2I;
+         op == Opcode::kDivI || op == Opcode::kModI || op == Opcode::kAbsI ||
+         op == Opcode::kAddL || op == Opcode::kSubL || op == Opcode::kMulL ||
+         op == Opcode::kDivL || op == Opcode::kModL || op == Opcode::kAbsL ||
+         op == Opcode::kConvI2L || op == Opcode::kConvL2I;
 }
 
 static bool IsBitwise(Opcode op) {
@@ -37,6 +39,7 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   value_cache_.clear();
   control_active_.clear();
   if_decisions_.clear();
+  active_predecessor_.clear();
   heap_ = ConcreteHeap();  // Reset heap
 
   // Cache parameter values first
@@ -122,9 +125,21 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   Outcome outcome;
   outcome.kind = Outcome::Kind::kReturn;
 
-  // Return node has: control (input 0), optional value (input 1)
-  if (ret_node->num_inputs() > 1) {
-    Node* value_node = ret_node->input(1);
+  // C2 Return node structure:
+  // input[0] = control
+  // input[1..n-1] = various (memory, frame pointer, etc.)
+  // Last input = return value (if method returns non-void)
+  // Find the return value: it's typically the last input that's not a Parm
+  Node* value_node = nullptr;
+  for (int i = ret_node->num_inputs() - 1; i >= 1; --i) {
+    Node* inp = ret_node->input(i);
+    if (inp && inp->opcode() != Opcode::kParm) {
+      value_node = inp;
+      break;
+    }
+  }
+
+  if (value_node) {
     try {
       Value result = EvalNode(value_node);
       outcome.return_value = result;
@@ -140,11 +155,18 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
 }
 
 Value Interpreter::EvalNode(const Node* n) {
+  if (!n) {
+    throw std::runtime_error("EvalNode called with null node");
+  }
+
   // Check cache first
   auto it = value_cache_.find(n);
   if (it != value_cache_.end()) {
     return it->second;
   }
+
+  std::cerr << "EvalNode: " << n->id() << " (" << OpcodeToString(n->opcode())
+            << ")\n";
 
   Value result;
   Opcode op = n->opcode();
@@ -203,17 +225,43 @@ Value Interpreter::EvalConst(const Node* n) {
   Opcode op = n->opcode();
 
   if (op == Opcode::kConI) {
-    if (!n->has_prop("value")) {
-      throw std::runtime_error("ConI node missing 'value' property");
+    // Try 'value' property first (manually constructed graphs)
+    if (n->has_prop("value")) {
+      int32_t val = std::get<int32_t>(n->prop("value"));
+      return Value::MakeI32(val);
     }
-    int32_t val = std::get<int32_t>(n->prop("value"));
-    return Value::MakeI32(val);
+    // C2 graphs encode value in dump_spec: " #int:42" or " #int:-5"
+    if (n->has_prop("dump_spec")) {
+      std::string spec = std::get<std::string>(n->prop("dump_spec"));
+      // Format: " #int:<value>"
+      size_t colon = spec.find(':');
+      if (colon != std::string::npos) {
+        std::string val_str = spec.substr(colon + 1);
+        int32_t val = std::stoi(val_str);
+        return Value::MakeI32(val);
+      }
+    }
+    throw std::runtime_error(
+        "ConI node missing 'value' or parseable 'dump_spec' property");
   } else if (op == Opcode::kConL) {
-    if (!n->has_prop("value")) {
-      throw std::runtime_error("ConL node missing 'value' property");
+    // Try 'value' property first (manually constructed graphs)
+    if (n->has_prop("value")) {
+      int64_t val = std::get<int64_t>(n->prop("value"));
+      return Value::MakeI64(val);
     }
-    int64_t val = std::get<int64_t>(n->prop("value"));
-    return Value::MakeI64(val);
+    // C2 graphs encode value in dump_spec: " #long:42" or " #long:-5"
+    if (n->has_prop("dump_spec")) {
+      std::string spec = std::get<std::string>(n->prop("dump_spec"));
+      // Format: " #long:<value>"
+      size_t colon = spec.find(':');
+      if (colon != std::string::npos) {
+        std::string val_str = spec.substr(colon + 1);
+        int64_t val = std::stoll(val_str);
+        return Value::MakeI64(val);
+      }
+    }
+    throw std::runtime_error(
+        "ConL node missing 'value' or parseable 'dump_spec' property");
   } else if (op == Opcode::kConP) {
     // Null pointer constant
     return Value::MakeNull();
@@ -273,9 +321,49 @@ Value Interpreter::EvalParm(const Node* n, const std::vector<Value>& inputs) {
 Value Interpreter::EvalArithOp(const Node* n) {
   Opcode op = n->opcode();
 
+  // Handle unary operations (AbsI, AbsL, conversions)
+  if (op == Opcode::kAbsI || op == Opcode::kAbsL || op == Opcode::kConvI2L ||
+      op == Opcode::kConvL2I) {
+    std::cerr << "EvalArithOp unary: node has " << n->num_inputs()
+              << " inputs\n";
+    for (size_t i = 0; i < n->num_inputs(); i++) {
+      std::cerr << "  input[" << i << "] = "
+                << (n->input(i) ? OpcodeToString(n->input(i)->opcode())
+                                : "nullptr")
+                << "\n";
+    }
+
+    // C2 format check: if input[0] is null, try input[1]
+    const Node* operand = nullptr;
+    if (n->num_inputs() >= 2 && n->input(0) == nullptr) {
+      operand = n->input(1);
+      std::cerr << "  Using input[1] (C2 format)\n";
+    } else if (n->num_inputs() >= 1) {
+      operand = n->input(0);
+      std::cerr << "  Using input[0] (old format)\n";
+    } else {
+      throw std::runtime_error("Unary op needs at least 1 input");
+    }
+
+    Value a = EvalNode(operand);
+
+    switch (op) {
+      case Opcode::kAbsI:
+        return Evaluator::EvalAbsI(a);
+      case Opcode::kAbsL:
+        return Evaluator::EvalAbsL(a);
+      case Opcode::kConvI2L:
+        return Evaluator::EvalConvI2L(a);
+      case Opcode::kConvL2I:
+        return Evaluator::EvalConvL2I(a);
+      default:
+        throw std::runtime_error("Unsupported unary opcode");
+    }
+  }
+
   // Binary operations
   if (n->num_inputs() < 2) {
-    throw std::runtime_error("Arithmetic op needs at least 2 inputs");
+    throw std::runtime_error("Binary op needs at least 2 inputs");
   }
 
   Value a = EvalNode(n->input(0));
@@ -334,24 +422,30 @@ Value Interpreter::EvalArithOp(const Node* n) {
     case Opcode::kURShiftL:
       return Evaluator::EvalURShiftL(a, b);
 
-    // Conversions
-    case Opcode::kConvI2L:
-      return Evaluator::EvalConvI2L(a);
-    case Opcode::kConvL2I:
-      return Evaluator::EvalConvL2I(a);
-
     default:
       throw std::runtime_error("Unsupported arithmetic opcode");
   }
 }
 
 Value Interpreter::EvalCmpOp(const Node* n) {
-  if (n->num_inputs() < 2) {
-    throw std::runtime_error("Comparison op needs 2 inputs");
-  }
+  // Support both old format and C2 format:
+  // Old format (manually constructed): input[0] = first operand, input[1] =
+  // second operand C2 format: input[0] = unused/region, input[1] = first
+  // operand, input[2] = second operand
 
-  Value a = EvalNode(n->input(0));
-  Value b = EvalNode(n->input(1));
+  Value a, b;
+
+  if (n->num_inputs() >= 3 && n->input(0) == nullptr) {
+    // C2 format: inputs at [1] and [2]
+    a = EvalNode(n->input(1));
+    b = EvalNode(n->input(2));
+  } else if (n->num_inputs() >= 2) {
+    // Old format: inputs at [0] and [1]
+    a = EvalNode(n->input(0));
+    b = EvalNode(n->input(1));
+  } else {
+    throw std::runtime_error("Comparison op needs at least 2 inputs");
+  }
 
   Opcode op = n->opcode();
 
@@ -413,40 +507,158 @@ Value Interpreter::EvalPhi(const Node* n) {
     return EvalNode(n->input(1));
   }
 
-  // Find which Region predecessor is active
-  for (size_t i = 0; i < region->num_inputs(); ++i) {
-    Node* pred_ctrl = region->input(i);
-    if (IsControlActive(pred_ctrl)) {
-      // Select corresponding value (input index = i + 1)
-      if (i + 1 < n->num_inputs()) {
-        return EvalNode(n->input(i + 1));
+  // Debug logging
+  std::cerr << "==== EvalPhi node " << n->id() << " ====\n";
+  std::cerr << "  Phi has " << n->num_inputs() << " inputs\n";
+  for (size_t i = 0; i < n->num_inputs(); ++i) {
+    Node* inp = n->input(i);
+    if (inp) {
+      std::cerr << "    [" << i << "] -> Node " << inp->id() << " ("
+                << OpcodeToString(inp->opcode()) << ")\n";
+      if (inp->opcode() == Opcode::kParm && inp->has_prop("dump_spec")) {
+        std::cerr << "        " << std::get<std::string>(inp->prop("dump_spec"))
+                  << "\n";
+      }
+      // Try to evaluate value inputs
+      if (i > 0) {
+        try {
+          Value v = EvalNode(inp);
+          if (v.is_i32()) {
+            std::cerr << "        Value: " << v.as_i32() << "\n";
+          }
+        } catch (...) {
+        }
       }
     }
   }
 
+  std::cerr << "  Region " << region->id() << " has " << region->num_inputs()
+            << " inputs:\n";
+  for (size_t i = 0; i < region->num_inputs(); ++i) {
+    Node* pred = region->input(i);
+    if (pred) {
+      std::cerr << "    [" << i << "] -> Node " << pred->id() << " ("
+                << OpcodeToString(pred->opcode()) << ")";
+      if (IsControlActive(pred)) {
+        std::cerr << " [ACTIVE]";
+      }
+      std::cerr << "\n";
+    }
+  }
+
+  // Look up which control predecessor was actually taken
+  auto it = active_predecessor_.find(region);
+  if (it != active_predecessor_.end()) {
+    const Node* active_pred = it->second;
+    std::cerr << "  Active predecessor from map: Node " << active_pred->id()
+              << " (" << OpcodeToString(active_pred->opcode()) << ")\n";
+
+    // Find the index of this predecessor in the Region's inputs
+    // Note: Phi inputs map to Region inputs, but Region may have a self-loop at
+    // input[0] We need to find the "real" index (excluding self-loop)
+    int phi_input_index = 1;  // Phi inputs start at 1 (0 is control)
+
+    for (size_t i = 0; i < region->num_inputs(); ++i) {
+      Node* pred = region->input(i);
+      // Skip self-loops
+      if (pred == region) continue;
+
+      if (pred == active_pred) {
+        std::cerr << "  Found at Region index " << i << ", selecting Phi input "
+                  << phi_input_index << "\n";
+        // Select corresponding Phi value
+        if (phi_input_index < static_cast<int>(n->num_inputs())) {
+          Value result = EvalNode(n->input(phi_input_index));
+          if (result.is_i32()) {
+            std::cerr << "  Returning value: " << result.as_i32() << "\n";
+          }
+          return result;
+        }
+        break;
+      }
+      phi_input_index++;
+    }
+  } else {
+    std::cerr << "  No active predecessor found in map!\n";
+  }
+
   // Fallback: return first value
-  return EvalNode(n->input(1));
+  std::cerr << "  Fallback: returning first value (input 1)\n";
+  Value result = EvalNode(n->input(1));
+  if (result.is_i32()) {
+    std::cerr << "  Fallback value: " << result.as_i32() << "\n";
+  }
+  return result;
 }
 
 Value Interpreter::EvalBool(const Node* n) {
   // Bool node converts comparison result to boolean
-  // Input(0) = comparison result (CmpI/CmpL/CmpP returns i32)
-  // Property "mask" = condition code (e.g., 4 = GT, 2 = LT, 1 = EQ, etc.)
+
+  std::cerr << "EvalBool: node " << n->id() << " has " << n->num_inputs()
+            << " inputs\n";
+  for (size_t i = 0; i < n->num_inputs(); ++i) {
+    Node* inp = n->input(i);
+    if (inp) {
+      std::cerr << "  input[" << i << "] = Node " << inp->id() << " ("
+                << OpcodeToString(inp->opcode()) << ")\n";
+    } else {
+      std::cerr << "  input[" << i << "] = nullptr\n";
+    }
+  }
+
   if (n->num_inputs() < 1) {
     throw std::runtime_error("Bool node needs comparison input");
   }
 
-  Value cmp_result = EvalNode(n->input(0));
+  // Support both old format and C2 format:
+  // Old format (manually constructed): input[0] = comparison
+  // C2 format: input[0] = unused/nullptr, input[1] = comparison
+  Node* cmp_node = nullptr;
+  if (n->num_inputs() >= 2 && n->input(0) == nullptr) {
+    // C2 format: comparison at input[1]
+    cmp_node = n->input(1);
+  } else {
+    // Old format: comparison at input[0]
+    cmp_node = n->input(0);
+  }
+
+  if (!cmp_node) {
+    throw std::runtime_error("Bool node comparison input is null");
+  }
+
+  Value cmp_result = EvalNode(cmp_node);
   if (!cmp_result.is_i32()) {
     throw std::runtime_error("Bool node expects i32 comparison result");
   }
 
   int32_t cmp_val = cmp_result.as_i32();
+  std::cerr << "EvalBool: cmp_val = " << cmp_val << "\n";
 
   // Get mask property (condition code)
   int32_t mask = 0;
   if (n->has_prop("mask")) {
     mask = std::get<int32_t>(n->prop("mask"));
+    std::cerr << "EvalBool: mask = " << mask << "\n";
+  } else if (n->has_prop("dump_spec")) {
+    // Parse dump_spec for condition (e.g., "[le]")
+    std::string spec = std::get<std::string>(n->prop("dump_spec"));
+    std::cerr << "EvalBool: dump_spec = " << spec << "\n";
+    // Map dump_spec to mask
+    // le = LT|EQ = 1|2 = 3, gt = 4, ge = GT|EQ = 4|2 = 6, etc.
+    if (spec.find("le") != std::string::npos) {
+      mask = 3;  // LT | EQ
+    } else if (spec.find("lt") != std::string::npos) {
+      mask = 1;  // LT
+    } else if (spec.find("ge") != std::string::npos) {
+      mask = 6;  // GT | EQ
+    } else if (spec.find("gt") != std::string::npos) {
+      mask = 4;  // GT
+    } else if (spec.find("eq") != std::string::npos) {
+      mask = 2;  // EQ
+    } else if (spec.find("ne") != std::string::npos) {
+      mask = 5;  // LT | GT
+    }
+    std::cerr << "EvalBool: parsed mask = " << mask << "\n";
   }
 
   // HotSpot condition codes (bit encoding):
@@ -463,6 +675,7 @@ Value Interpreter::EvalBool(const Node* n) {
   else if (cmp_val > 0 && (mask & 4))
     result = true;  // GT
 
+  std::cerr << "EvalBool: result = " << result << "\n";
   return Value::MakeBool(result);
 }
 
@@ -553,90 +766,133 @@ Value Interpreter::EvalHalt(const Node* /*n*/) {
 }
 
 void Interpreter::ComputeControlFlow(const Node* start_node) {
-  // Mark Start as active
-  control_active_[start_node] = true;
+  // Use a worklist algorithm to compute control flow in proper order
+  // Build a map of control dependencies first
+  std::map<const Node*, std::vector<Node*>>
+      ctrl_users;  // control node -> nodes that use it as control
 
-  // Recursively compute control flow for the graph
-  // We need to process control nodes in a specific order
-  // For simplicity, we'll do a forward traversal
-
-  // Process all nodes to find control flow
   for (Node* n : graph_.nodes()) {
     Opcode op = n->opcode();
+    // Control-producing nodes
+    if (op == Opcode::kStart || op == Opcode::kIf || op == Opcode::kIfTrue ||
+        op == Opcode::kIfFalse || op == Opcode::kRegion ||
+        op == Opcode::kGoto || op == Opcode::kParm) {
+      // Find nodes that use this as their control input
+      for (Node* user : graph_.nodes()) {
+        // Skip self-loops (e.g., Region -> Region)
+        if (user == n) continue;
 
-    if (op == Opcode::kStart) {
-      control_active_[n] = true;
+        // Most nodes use input[0] for control
+        if (user->num_inputs() > 0 && user->input(0) == n) {
+          ctrl_users[n].push_back(user);
+        }
+
+        // Region nodes have multiple control inputs (all inputs are control)
+        if (user->opcode() == Opcode::kRegion) {
+          for (size_t i = 0; i < user->num_inputs(); ++i) {
+            if (user->input(i) == n &&
+                i > 0) {  // Skip input[0] if it's self-loop
+              ctrl_users[n].push_back(user);
+              break;  // Don't add multiple times
+            }
+          }
+        }
+      }
+    }
+  }
+
+  std::queue<const Node*> worklist;
+  std::set<const Node*> visited;
+
+  // Start node is always active
+  control_active_[start_node] = true;
+  worklist.push(start_node);
+
+  Logger::Debug("ComputeControlFlow starting from node " +
+                std::to_string(start_node->id()));
+
+  while (!worklist.empty()) {
+    const Node* ctrl = worklist.front();
+    worklist.pop();
+
+    if (visited.count(ctrl)) continue;
+    visited.insert(ctrl);
+
+    Opcode op = ctrl->opcode();
+    Logger::Debug("Processing control node " + std::to_string(ctrl->id()) +
+                  " (" + OpcodeToString(op) + ")");
+
+    // Process successors based on opcode
+    if (op == Opcode::kStart || op == Opcode::kParm) {
+      // For Start and control Parms, activate all their control users
+      auto it = ctrl_users.find(ctrl);
+      if (it != ctrl_users.end()) {
+        for (Node* user : it->second) {
+          control_active_[user] = true;
+          worklist.push(user);
+        }
+      }
     } else if (op == Opcode::kIf) {
-      // If node: evaluate condition and mark branches
-      if (n->num_inputs() >= 2) {
-        Node* pred_ctrl = n->input(0);
-        if (IsControlActive(pred_ctrl)) {
-          // Evaluate condition
-          Value cond = EvalNode(n->input(1));
-          bool branch_taken = false;
-          if (cond.is_bool()) {
-            branch_taken = cond.as_bool();
-          } else {
-            throw std::runtime_error("If condition must be boolean");
-          }
-          // Store decision
-          if_decisions_[n] = branch_taken;
-          control_active_[n] = true;
+      // If node: evaluate condition and mark the taken branch
+      if (ctrl->num_inputs() >= 2) {
+        Logger::Debug("  If node, evaluating condition...");
+        // Evaluate condition
+        Value cond = EvalNode(ctrl->input(1));
+        Logger::Debug("  Condition evaluated");
+        bool branch_taken = false;
+        if (cond.is_bool()) {
+          branch_taken = cond.as_bool();
+        } else {
+          throw std::runtime_error("If condition must be boolean");
         }
-      }
-    } else if (op == Opcode::kIfTrue) {
-      // IfTrue: active if parent If is active and condition is true
-      if (n->num_inputs() >= 1) {
-        Node* if_node = n->input(0);
-        if (if_node && if_node->opcode() == Opcode::kIf) {
-          auto it = if_decisions_.find(if_node);
-          if (it != if_decisions_.end() && it->second == true) {
-            control_active_[n] = true;
-          }
-        }
-      }
-    } else if (op == Opcode::kIfFalse) {
-      // IfFalse: active if parent If is active and condition is false
-      if (n->num_inputs() >= 1) {
-        Node* if_node = n->input(0);
-        if (if_node && if_node->opcode() == Opcode::kIf) {
-          auto it = if_decisions_.find(if_node);
-          if (it != if_decisions_.end() && it->second == false) {
-            control_active_[n] = true;
+
+        Logger::Debug("  If condition evaluated to: " +
+                      std::string(branch_taken ? "true" : "false"));
+
+        // Store decision
+        if_decisions_[ctrl] = branch_taken;
+
+        // Find IfTrue/IfFalse successors
+        auto it = ctrl_users.find(ctrl);
+        if (it != ctrl_users.end()) {
+          for (Node* user : it->second) {
+            if (user->opcode() == Opcode::kIfTrue && branch_taken) {
+              Logger::Debug("  Activating IfTrue node " +
+                            std::to_string(user->id()));
+              control_active_[user] = true;
+              worklist.push(user);
+            } else if (user->opcode() == Opcode::kIfFalse && !branch_taken) {
+              Logger::Debug("  Activating IfFalse node " +
+                            std::to_string(user->id()));
+              control_active_[user] = true;
+              worklist.push(user);
+            }
           }
         }
       }
-    } else if (op == Opcode::kRegion) {
-      // Region: active if any predecessor is active
-      for (size_t i = 0; i < n->num_inputs(); ++i) {
-        Node* pred = n->input(i);
-        if (IsControlActive(pred)) {
-          control_active_[n] = true;
-          break;
+    } else if (op == Opcode::kIfTrue || op == Opcode::kIfFalse) {
+      // IfTrue/IfFalse: propagate to successors
+      // For Region nodes, we need to record which predecessor was taken
+      auto it = ctrl_users.find(ctrl);
+      if (it != ctrl_users.end()) {
+        for (Node* user : it->second) {
+          if (user->opcode() == Opcode::kRegion) {
+            Logger::Debug(
+                "  Recording Region " + std::to_string(user->id()) +
+                " active_predecessor = " + std::to_string(ctrl->id()));
+            active_predecessor_[user] = ctrl;
+          }
+          control_active_[user] = true;
+          worklist.push(user);
         }
       }
-    } else if (op == Opcode::kGoto) {
-      // Goto: active if predecessor is active
-      if (n->num_inputs() >= 1) {
-        Node* pred = n->input(0);
-        if (IsControlActive(pred)) {
-          control_active_[n] = true;
-        }
-      }
-    } else if (op == Opcode::kReturn) {
-      // Return: active if predecessor is active
-      if (n->num_inputs() >= 1) {
-        Node* pred = n->input(0);
-        if (IsControlActive(pred)) {
-          control_active_[n] = true;
-        }
-      }
-    } else if (op == Opcode::kHalt) {
-      // Halt: active if predecessor is active
-      if (n->num_inputs() >= 1) {
-        Node* pred = n->input(0);
-        if (IsControlActive(pred)) {
-          control_active_[n] = true;
+    } else if (op == Opcode::kRegion || op == Opcode::kGoto) {
+      // Region/Goto: propagate to successors
+      auto it = ctrl_users.find(ctrl);
+      if (it != ctrl_users.end()) {
+        for (Node* user : it->second) {
+          control_active_[user] = true;
+          worklist.push(user);
         }
       }
     }

@@ -39,6 +39,9 @@ class Interpreter {
   // If node -> which branch was taken (true/false)
   std::map<const Node*, bool> if_decisions_;
 
+  // Region -> which control predecessor was actually taken
+  std::map<const Node*, const Node*> active_predecessor_;
+
   // Heap state
   ConcreteHeap heap_;
 
