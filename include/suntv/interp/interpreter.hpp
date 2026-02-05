@@ -66,6 +66,21 @@ class Interpreter {
   // Evaluate Phi node (value merge)
   Value EvalPhi(const Node* n);
 
+  // Evaluate Conv2B (convert any value to boolean)
+  Value EvalConv2B(const Node* n);
+
+  // Evaluate no-op nodes (SafePoint, Opaque1, ParsePredicate)
+  Value EvalNoOp(const Node* n);
+
+  // Evaluate ThreadLocal (thread-local variable access)
+  Value EvalThreadLocal(const Node* n);
+
+  // Evaluate CallStaticJava (skip uncommon_trap)
+  Value EvalCallStaticJava(const Node* n);
+
+  // Evaluate Halt (abnormal termination)
+  Value EvalHalt(const Node* n);
+
   // Memory operations
   Value EvalAllocate(const Node* n);
   Value EvalAllocateArray(const Node* n);

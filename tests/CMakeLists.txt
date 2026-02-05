@@ -39,6 +39,7 @@ add_executable(sun_integration_tests
     integration/test_conditionals.cpp
     integration/test_memory.cpp
     integration/test_real_igv.cpp
+    integration/test_algorithms.cpp
 )
 target_link_libraries(sun_integration_tests
     PRIVATE

@@ -1,5 +1,7 @@
 #include "suntv/interp/interpreter.hpp"
 
+#include <algorithm>
+
 #include "suntv/ir/graph.hpp"
 #include "suntv/ir/node.hpp"
 #include "suntv/ir/opcode.hpp"
@@ -38,7 +40,60 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   heap_ = ConcreteHeap();  // Reset heap
 
   // Cache parameter values first
-  std::vector<Node*> params = graph_.GetParameterNodes();
+  // Get all parameter nodes and filter to data parameters only
+  std::vector<Node*> all_params = graph_.GetParameterNodes();
+  std::vector<Node*> params;
+
+  for (Node* p : all_params) {
+    // Only include data parameters (skip control, memory, I/O, etc.)
+    // Data parameters have types like "int:", "long:", etc.
+    if (p->has_prop("type")) {
+      std::string type = std::get<std::string>(p->prop("type"));
+      // Skip non-data types
+      if (type == "control" || type == "memory" || type == "return_address" ||
+          type == "rawptr:" || type == "abIO") {
+        continue;
+      }
+      // Only include types that end with ':' (int:, long:, etc.)
+      if (type.empty() || type.back() != ':') {
+        continue;
+      }
+    }
+    params.push_back(p);
+  }
+
+  // Sort parameters by their index
+  std::sort(params.begin(), params.end(), [](Node* a, Node* b) {
+    // Try to get index from property first
+    if (a->has_prop("index") && b->has_prop("index")) {
+      return std::get<int32_t>(a->prop("index")) <
+             std::get<int32_t>(b->prop("index"));
+    }
+
+    // Try to extract from dump_spec (e.g., "Parm0: int")
+    auto get_index = [](Node* n) -> int32_t {
+      if (n->has_prop("dump_spec")) {
+        std::string spec = std::get<std::string>(n->prop("dump_spec"));
+        size_t parm_pos = spec.find("Parm");
+        if (parm_pos != std::string::npos) {
+          size_t colon_pos = spec.find(':', parm_pos);
+          if (colon_pos != std::string::npos) {
+            std::string num_str =
+                spec.substr(parm_pos + 4, colon_pos - parm_pos - 4);
+            try {
+              return std::stoi(num_str);
+            } catch (...) {
+              return 999999;  // Invalid index
+            }
+          }
+        }
+      }
+      return 999999;  // No index found
+    };
+
+    return get_index(a) < get_index(b);
+  });
+
   for (Node* parm_node : params) {
     Value parm_val = EvalParm(parm_node, inputs);
     value_cache_[parm_node] = parm_val;
@@ -100,14 +155,29 @@ Value Interpreter::EvalNode(const Node* n) {
   if (op == Opcode::kConI || op == Opcode::kConL || op == Opcode::kConP) {
     result = EvalConst(n);
   } else if (op == Opcode::kParm) {
-    throw std::runtime_error("Parm node should be handled separately");
+    // Parm nodes should have been cached during Execute()
+    // If we reach here, it means we're evaluating a Parm that wasn't cached
+    // (e.g., a non-data Parm like control or memory)
+    // Return a dummy value
+    return Value::MakeI32(0);
   } else if (op == Opcode::kBool) {
     result = EvalBool(n);
+  } else if (op == Opcode::kConv2B) {
+    result = EvalConv2B(n);
   } else if (op == Opcode::kCMoveI || op == Opcode::kCMoveL ||
              op == Opcode::kCMoveP) {
     result = EvalCMove(n);
   } else if (op == Opcode::kPhi) {
     result = EvalPhi(n);
+  } else if (op == Opcode::kSafePoint || op == Opcode::kOpaque1 ||
+             op == Opcode::kParsePredicate) {
+    result = EvalNoOp(n);
+  } else if (op == Opcode::kThreadLocal) {
+    result = EvalThreadLocal(n);
+  } else if (op == Opcode::kCallStaticJava) {
+    result = EvalCallStaticJava(n);
+  } else if (op == Opcode::kHalt) {
+    result = EvalHalt(n);
   } else if (op == Opcode::kAllocate) {
     result = EvalAllocate(n);
   } else if (op == Opcode::kAllocateArray) {
@@ -155,14 +225,51 @@ Value Interpreter::EvalConst(const Node* n) {
 }
 
 Value Interpreter::EvalParm(const Node* n, const std::vector<Value>& inputs) {
-  if (!n->has_prop("index")) {
-    throw std::runtime_error("Parm node missing 'index' property");
+  // Try to get index from property (for manually constructed graphs)
+  if (n->has_prop("index")) {
+    int32_t index = std::get<int32_t>(n->prop("index"));
+    if (index < 0 || index >= static_cast<int32_t>(inputs.size())) {
+      throw std::runtime_error("Parm index out of range");
+    }
+    return inputs[index];
   }
-  int32_t index = std::get<int32_t>(n->prop("index"));
-  if (index < 0 || index >= static_cast<int32_t>(inputs.size())) {
-    throw std::runtime_error("Parm index out of range");
+
+  // For C2 graphs: Extract index from dump_spec (e.g., "Parm0: int")
+  if (n->has_prop("dump_spec")) {
+    std::string spec = std::get<std::string>(n->prop("dump_spec"));
+    // Look for "Parm<N>:" pattern
+    size_t parm_pos = spec.find("Parm");
+    if (parm_pos != std::string::npos) {
+      size_t colon_pos = spec.find(':', parm_pos);
+      if (colon_pos != std::string::npos) {
+        std::string num_str =
+            spec.substr(parm_pos + 4, colon_pos - parm_pos - 4);
+        try {
+          int32_t index = std::stoi(num_str);
+          if (index < 0 || index >= static_cast<int32_t>(inputs.size())) {
+            throw std::runtime_error("Parm index out of range: " +
+                                     std::to_string(index));
+          }
+          return inputs[index];
+        } catch (const std::exception& e) {
+          throw std::runtime_error(
+              "Failed to parse Parm index from dump_spec: " + spec);
+        }
+      }
+    }
   }
-  return inputs[index];
+
+  // Fallback: non-data Parm nodes (control, memory, etc.) return dummy value
+  // Check if this is a data parameter by looking at the 'type' property
+  if (n->has_prop("type")) {
+    std::string type = std::get<std::string>(n->prop("type"));
+    if (type == "control" || type == "memory" || type == "return_address") {
+      // Not a data parameter, return dummy
+      return Value::MakeI32(0);
+    }
+  }
+
+  throw std::runtime_error("Parm node missing 'index' or 'dump_spec' property");
 }
 
 Value Interpreter::EvalArithOp(const Node* n) {
@@ -382,6 +489,71 @@ Value Interpreter::EvalCMove(const Node* n) {
   }
 }
 
+Value Interpreter::EvalConv2B(const Node* n) {
+  // Conv2B: Convert any value to boolean (0 -> 0, non-zero -> 1)
+  // Input(0) = value to convert
+  if (n->num_inputs() < 1) {
+    throw std::runtime_error("Conv2B needs input value");
+  }
+
+  Value input = EvalNode(n->input(0));
+
+  // Convert to boolean: 0 -> 0, non-zero -> 1
+  if (input.is_i32()) {
+    return Value::MakeI32(input.as_i32() != 0 ? 1 : 0);
+  } else if (input.is_i64()) {
+    return Value::MakeI32(input.as_i64() != 0 ? 1 : 0);
+  } else if (input.is_ref()) {
+    return Value::MakeI32(input.as_ref() != 0 ? 1 : 0);
+  } else if (input.is_null()) {
+    return Value::MakeI32(0);
+  } else if (input.is_bool()) {
+    return Value::MakeI32(input.as_bool() ? 1 : 0);
+  } else {
+    throw std::runtime_error("Conv2B: unsupported input type");
+  }
+}
+
+Value Interpreter::EvalNoOp(const Node* n) {
+  // SafePoint, Opaque1, ParsePredicate: optimization markers, pass through
+  // These nodes typically have a value input that we should pass through
+  if (n->num_inputs() > 0) {
+    // Pass through the first input (typically the value)
+    return EvalNode(n->input(0));
+  }
+  // If no inputs, return a dummy value (shouldn't happen in practice)
+  return Value::MakeI32(0);
+}
+
+Value Interpreter::EvalThreadLocal(const Node* /*n*/) {
+  // ThreadLocal: thread-local variable access
+  // For prototype: return a dummy reference (null)
+  // In real implementation, would need to track thread-local storage
+  return Value::MakeNull();
+}
+
+Value Interpreter::EvalCallStaticJava(const Node* n) {
+  // CallStaticJava: static method call
+  // Most of these in C2 graphs are uncommon_trap (deopt guards)
+  // Check if it's an uncommon_trap and skip it
+  if (n->has_prop("dump_spec")) {
+    std::string spec = std::get<std::string>(n->prop("dump_spec"));
+    if (spec.find("uncommon_trap") != std::string::npos) {
+      // Uncommon trap - assume it doesn't fire, return dummy value
+      return Value::MakeI32(0);
+    }
+  }
+
+  // Real method call - not supported in prototype
+  throw std::runtime_error(
+      "CallStaticJava: real method calls not supported in prototype");
+}
+
+Value Interpreter::EvalHalt(const Node* /*n*/) {
+  // Halt: abnormal termination (e.g., unhandled exception)
+  throw std::runtime_error("Program reached Halt node (abnormal termination)");
+}
+
 void Interpreter::ComputeControlFlow(const Node* start_node) {
   // Mark Start as active
   control_active_[start_node] = true;
@@ -455,6 +627,14 @@ void Interpreter::ComputeControlFlow(const Node* start_node) {
       }
     } else if (op == Opcode::kReturn) {
       // Return: active if predecessor is active
+      if (n->num_inputs() >= 1) {
+        Node* pred = n->input(0);
+        if (IsControlActive(pred)) {
+          control_active_[n] = true;
+        }
+      }
+    } else if (op == Opcode::kHalt) {
+      // Halt: active if predecessor is active
       if (n->num_inputs() >= 1) {
         Node* pred = n->input(0);
         if (IsControlActive(pred)) {
