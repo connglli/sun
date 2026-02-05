@@ -17,10 +17,10 @@ class Graph {
   ~Graph();
 
   // Node access
-  Node* GetNode(NodeID id) const;
-  Node* GetStart() const { return start_; }
-  Node* GetRoot() const { return root_; }
-  const std::vector<Node*>& GetNodes() const { return node_list_; }
+  Node* node(NodeID id) const;
+  Node* start() const { return start_; }
+  Node* root() const { return root_; }
+  const std::vector<Node*>& nodes() const { return node_list_; }
 
   // Node creation
   Node* AddNode(NodeID id, Opcode op);

@@ -41,22 +41,22 @@ bool Canonicalizer::CheckSingleStartRoot(Graph* g, std::string& error) {
   Node* start_node = nullptr;
   Node* root_node = nullptr;
 
-  for (Node* n : g->GetNodes()) {
-    if (n->GetOpcode() == Opcode::Start) {
+  for (Node* n : g->nodes()) {
+    if (n->opcode() == Opcode::kStart) {
       if (start_node) {
         error = "Multiple Start nodes found (IDs: " +
-                std::to_string(start_node->Id()) + ", " +
-                std::to_string(n->Id()) + ")";
+                std::to_string(start_node->id()) + ", " +
+                std::to_string(n->id()) + ")";
         return false;
       }
       start_node = n;
     }
 
-    if (n->GetOpcode() == Opcode::Root) {
+    if (n->opcode() == Opcode::kRoot) {
       if (root_node) {
         error = "Multiple Root nodes found (IDs: " +
-                std::to_string(root_node->Id()) + ", " +
-                std::to_string(n->Id()) + ")";
+                std::to_string(root_node->id()) + ", " +
+                std::to_string(n->id()) + ")";
         return false;
       }
       root_node = n;
@@ -78,8 +78,8 @@ bool Canonicalizer::CheckSingleStartRoot(Graph* g, std::string& error) {
   // nodes are added. If needed, we could add setter methods to Graph and
   // call them here.
 
-  Logger::Debug("Found Start node (ID " + std::to_string(start_node->Id()) +
-                ") and Root node (ID " + std::to_string(root_node->Id()) + ")");
+  Logger::Debug("Found Start node (ID " + std::to_string(start_node->id()) +
+                ") and Root node (ID " + std::to_string(root_node->id()) + ")");
 
   return true;
 }

@@ -25,23 +25,23 @@ class Node {
  public:
   Node(NodeID id, Opcode opcode);
 
-  NodeID Id() const { return id_; }
-  Opcode GetOpcode() const { return opcode_; }
+  NodeID id() const { return id_; }
+  Opcode opcode() const { return opcode_; }
 
   // Inputs (edges)
-  size_t NumInputs() const { return inputs_.size(); }
-  Node* GetInput(size_t i) const;
+  size_t num_inputs() const { return inputs_.size(); }
+  Node* input(size_t i) const;
   void AddInput(Node* n);
-  void SetInput(size_t i, Node* n);
+  void set_input(size_t i, Node* n);
 
   // Properties
-  bool HasProp(const std::string& key) const;
-  Property GetProp(const std::string& key) const;
-  void SetProp(const std::string& key, Property value);
+  bool has_prop(const std::string& key) const;
+  Property prop(const std::string& key) const;
+  void set_prop(const std::string& key, Property value);
 
   // Type
-  TypeStamp GetType() const { return type_; }
-  void SetType(TypeStamp type) { type_ = type; }
+  TypeStamp type() const { return type_; }
+  void set_type(TypeStamp t) { type_ = t; }
 
   // Debugging
   std::string ToString() const;

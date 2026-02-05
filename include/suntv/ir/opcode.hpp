@@ -13,113 +13,113 @@ namespace sun {
  */
 enum class Opcode {
   // Control
-  Start,
-  If,
-  IfTrue,
-  IfFalse,
-  Region,
-  Goto,
-  Return,
-  Root,
+  kStart,
+  kIf,
+  kIfTrue,
+  kIfFalse,
+  kRegion,
+  kGoto,
+  kReturn,
+  kRoot,
 
   // Constants
-  ConI,  // int32 constant
-  ConL,  // int64 constant
-  ConP,  // pointer/reference constant (null)
+  kConI,  // int32 constant
+  kConL,  // int64 constant
+  kConP,  // pointer/reference constant (null)
 
   // Arithmetic - Int32
-  AddI,
-  SubI,
-  MulI,
-  DivI,
-  ModI,
-  AbsI,
+  kAddI,
+  kSubI,
+  kMulI,
+  kDivI,
+  kModI,
+  kAbsI,
 
   // Arithmetic - Int64
-  AddL,
-  SubL,
-  MulL,
-  DivL,
-  ModL,
-  AbsL,
+  kAddL,
+  kSubL,
+  kMulL,
+  kDivL,
+  kModL,
+  kAbsL,
 
   // Bitwise - Int32
-  AndI,
-  OrI,
-  XorI,
-  LShiftI,
-  RShiftI,   // Arithmetic right shift
-  URShiftI,  // Logical (unsigned) right shift
+  kAndI,
+  kOrI,
+  kXorI,
+  kLShiftI,
+  kRShiftI,   // Arithmetic right shift
+  kURShiftI,  // Logical (unsigned) right shift
 
   // Bitwise - Int64
-  AndL,
-  OrL,
-  XorL,
-  LShiftL,
-  RShiftL,
-  URShiftL,
+  kAndL,
+  kOrL,
+  kXorL,
+  kLShiftL,
+  kRShiftL,
+  kURShiftL,
 
   // Comparison
-  CmpI,
-  CmpL,
-  CmpP,
-  CmpU,   // Unsigned int32 compare
-  CmpUL,  // Unsigned int64 compare
-  Bool,   // Convert compare result to boolean
+  kCmpI,
+  kCmpL,
+  kCmpP,
+  kCmpU,   // Unsigned int32 compare
+  kCmpUL,  // Unsigned int64 compare
+  kBool,   // Convert compare result to boolean
 
   // Casts/Conversions
-  ConvI2L,  // Sign-extend int32 to int64
-  ConvL2I,  // Truncate int64 to int32
-  CastII,   // Type/range cast int32
-  CastLL,   // Type/range cast int64
-  CastPP,   // Type/nullness cast pointer
-  CastX2P,  // Machine word to pointer
-  CastP2X,  // Pointer to machine word
+  kConvI2L,  // Sign-extend int32 to int64
+  kConvL2I,  // Truncate int64 to int32
+  kCastII,   // Type/range cast int32
+  kCastLL,   // Type/range cast int64
+  kCastPP,   // Type/nullness cast pointer
+  kCastX2P,  // Machine word to pointer
+  kCastP2X,  // Pointer to machine word
 
   // Conditional move
-  CMoveI,
-  CMoveL,
-  CMoveP,
+  kCMoveI,
+  kCMoveL,
+  kCMoveP,
 
   // Memory - Loads
-  LoadB,   // Load signed byte
-  LoadUB,  // Load unsigned byte
-  LoadS,   // Load signed short
-  LoadUS,  // Load unsigned short
-  LoadI,   // Load int32
-  LoadL,   // Load int64
-  LoadP,   // Load pointer/reference
-  LoadN,   // Load narrow (compressed) reference
+  kLoadB,   // Load signed byte
+  kLoadUB,  // Load unsigned byte
+  kLoadS,   // Load signed short
+  kLoadUS,  // Load unsigned short
+  kLoadI,   // Load int32
+  kLoadL,   // Load int64
+  kLoadP,   // Load pointer/reference
+  kLoadN,   // Load narrow (compressed) reference
 
   // Memory - Stores
-  StoreB,  // Store byte
-  StoreC,  // Store char (16-bit)
-  StoreI,  // Store int32
-  StoreL,  // Store int64
-  StoreP,  // Store pointer/reference
-  StoreN,  // Store narrow reference
+  kStoreB,  // Store byte
+  kStoreC,  // Store char (16-bit)
+  kStoreI,  // Store int32
+  kStoreL,  // Store int64
+  kStoreP,  // Store pointer/reference
+  kStoreN,  // Store narrow reference
 
   // Memory - Merge
-  MergeMem,  // Memory phi
+  kMergeMem,  // Memory phi
 
   // Allocation
-  Allocate,
-  AllocateArray,
+  kAllocate,
+  kAllocateArray,
 
   // Parameters
-  Parm,  // Method parameter
+  kParm,  // Method parameter
 
   // Merge/Phi
-  Phi,  // Value phi
+  kPhi,  // Value phi
 
   // Projection
-  Proj,  // Project a specific output from multi-output node
+  kProj,  // Project a specific output from multi-output node
 
   // Address calculation
-  AddP,  // Pointer/address arithmetic
+  kAddP,  // Pointer/address arithmetic
 
   // Unknown/unsupported
-  Unknown
+  kUnknown
 };
 
 /**
@@ -129,7 +129,7 @@ std::string OpcodeToString(Opcode op);
 
 /**
  * Parse string to opcode.
- * Returns Opcode::Unknown if not recognized.
+ * Returns Opcode::kUnknown if not recognized.
  */
 Opcode StringToOpcode(const std::string& name);
 

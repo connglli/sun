@@ -5,77 +5,77 @@
 using namespace sun;
 
 TEST(NodeTest, BasicConstruction) {
-  Node n(1, Opcode::AddI);
-  EXPECT_EQ(n.Id(), 1);
-  EXPECT_EQ(n.GetOpcode(), Opcode::AddI);
-  EXPECT_EQ(n.NumInputs(), 0);
+  Node n(1, Opcode::kAddI);
+  EXPECT_EQ(n.id(), 1);
+  EXPECT_EQ(n.opcode(), Opcode::kAddI);
+  EXPECT_EQ(n.num_inputs(), 0);
 }
 
 TEST(NodeTest, Properties) {
-  Node n(1, Opcode::ConI);
+  Node n(1, Opcode::kConI);
 
   // Set and get properties
-  n.SetProp("value", static_cast<int32_t>(42));
-  EXPECT_TRUE(n.HasProp("value"));
+  n.set_prop("value", static_cast<int32_t>(42));
+  EXPECT_TRUE(n.has_prop("value"));
 
-  Property p = n.GetProp("value");
+  Property p = n.prop("value");
   EXPECT_EQ(std::get<int32_t>(p), 42);
 
   // Non-existent property
-  EXPECT_FALSE(n.HasProp("nonexistent"));
-  EXPECT_THROW(n.GetProp("nonexistent"), std::runtime_error);
+  EXPECT_FALSE(n.has_prop("nonexistent"));
+  EXPECT_THROW(n.prop("nonexistent"), std::runtime_error);
 }
 
 TEST(NodeTest, Inputs) {
-  Node n1(1, Opcode::ConI);
-  Node n2(2, Opcode::ConI);
-  Node n3(3, Opcode::AddI);
+  Node n1(1, Opcode::kConI);
+  Node n2(2, Opcode::kConI);
+  Node n3(3, Opcode::kAddI);
 
   // Add inputs
   n3.AddInput(&n1);
   n3.AddInput(&n2);
 
-  EXPECT_EQ(n3.NumInputs(), 2);
-  EXPECT_EQ(n3.GetInput(0), &n1);
-  EXPECT_EQ(n3.GetInput(1), &n2);
+  EXPECT_EQ(n3.num_inputs(), 2);
+  EXPECT_EQ(n3.input(0), &n1);
+  EXPECT_EQ(n3.input(1), &n2);
 
   // Out of range
-  EXPECT_THROW(n3.GetInput(2), std::out_of_range);
+  EXPECT_THROW(n3.input(2), std::out_of_range);
 }
 
 TEST(NodeTest, SetInput) {
-  Node n1(1, Opcode::ConI);
-  Node n2(2, Opcode::ConI);
-  Node n3(3, Opcode::AddI);
+  Node n1(1, Opcode::kConI);
+  Node n2(2, Opcode::kConI);
+  Node n3(3, Opcode::kAddI);
 
   // Set input at specific index (auto-resize)
-  n3.SetInput(0, &n1);
-  n3.SetInput(1, &n2);
+  n3.set_input(0, &n1);
+  n3.set_input(1, &n2);
 
-  EXPECT_EQ(n3.NumInputs(), 2);
-  EXPECT_EQ(n3.GetInput(0), &n1);
-  EXPECT_EQ(n3.GetInput(1), &n2);
+  EXPECT_EQ(n3.num_inputs(), 2);
+  EXPECT_EQ(n3.input(0), &n1);
+  EXPECT_EQ(n3.input(1), &n2);
 
   // Replace input
-  Node n4(4, Opcode::ConI);
-  n3.SetInput(0, &n4);
-  EXPECT_EQ(n3.GetInput(0), &n4);
+  Node n4(4, Opcode::kConI);
+  n3.set_input(0, &n4);
+  EXPECT_EQ(n3.input(0), &n4);
 }
 
 TEST(NodeTest, TypeStamp) {
-  Node n(1, Opcode::AddI);
+  Node n(1, Opcode::kAddI);
 
   // Default type is TOP
-  EXPECT_EQ(n.GetType().GetKind(), TypeKind::TOP);
+  EXPECT_EQ(n.type().GetKind(), TypeKind::TOP);
 
   // Set type
-  n.SetType(TypeStamp(TypeKind::INT32));
-  EXPECT_EQ(n.GetType().GetKind(), TypeKind::INT32);
-  EXPECT_TRUE(n.GetType().IsInt32());
+  n.set_type(TypeStamp(TypeKind::INT32));
+  EXPECT_EQ(n.type().GetKind(), TypeKind::INT32);
+  EXPECT_TRUE(n.type().IsInt32());
 }
 
 TEST(NodeTest, ToString) {
-  Node n(42, Opcode::AddI);
+  Node n(42, Opcode::kAddI);
   std::string s = n.ToString();
 
   // Should contain opcode name and ID

@@ -7,185 +7,185 @@ namespace sun {
 std::string OpcodeToString(Opcode op) {
   switch (op) {
     // Control
-    case Opcode::Start:
+    case Opcode::kStart:
       return "Start";
-    case Opcode::If:
+    case Opcode::kIf:
       return "If";
-    case Opcode::IfTrue:
+    case Opcode::kIfTrue:
       return "IfTrue";
-    case Opcode::IfFalse:
+    case Opcode::kIfFalse:
       return "IfFalse";
-    case Opcode::Region:
+    case Opcode::kRegion:
       return "Region";
-    case Opcode::Goto:
+    case Opcode::kGoto:
       return "Goto";
-    case Opcode::Return:
+    case Opcode::kReturn:
       return "Return";
-    case Opcode::Root:
+    case Opcode::kRoot:
       return "Root";
 
     // Constants
-    case Opcode::ConI:
+    case Opcode::kConI:
       return "ConI";
-    case Opcode::ConL:
+    case Opcode::kConL:
       return "ConL";
-    case Opcode::ConP:
+    case Opcode::kConP:
       return "ConP";
 
     // Arithmetic - Int32
-    case Opcode::AddI:
+    case Opcode::kAddI:
       return "AddI";
-    case Opcode::SubI:
+    case Opcode::kSubI:
       return "SubI";
-    case Opcode::MulI:
+    case Opcode::kMulI:
       return "MulI";
-    case Opcode::DivI:
+    case Opcode::kDivI:
       return "DivI";
-    case Opcode::ModI:
+    case Opcode::kModI:
       return "ModI";
-    case Opcode::AbsI:
+    case Opcode::kAbsI:
       return "AbsI";
 
     // Arithmetic - Int64
-    case Opcode::AddL:
+    case Opcode::kAddL:
       return "AddL";
-    case Opcode::SubL:
+    case Opcode::kSubL:
       return "SubL";
-    case Opcode::MulL:
+    case Opcode::kMulL:
       return "MulL";
-    case Opcode::DivL:
+    case Opcode::kDivL:
       return "DivL";
-    case Opcode::ModL:
+    case Opcode::kModL:
       return "ModL";
-    case Opcode::AbsL:
+    case Opcode::kAbsL:
       return "AbsL";
 
     // Bitwise - Int32
-    case Opcode::AndI:
+    case Opcode::kAndI:
       return "AndI";
-    case Opcode::OrI:
+    case Opcode::kOrI:
       return "OrI";
-    case Opcode::XorI:
+    case Opcode::kXorI:
       return "XorI";
-    case Opcode::LShiftI:
+    case Opcode::kLShiftI:
       return "LShiftI";
-    case Opcode::RShiftI:
+    case Opcode::kRShiftI:
       return "RShiftI";
-    case Opcode::URShiftI:
+    case Opcode::kURShiftI:
       return "URShiftI";
 
     // Bitwise - Int64
-    case Opcode::AndL:
+    case Opcode::kAndL:
       return "AndL";
-    case Opcode::OrL:
+    case Opcode::kOrL:
       return "OrL";
-    case Opcode::XorL:
+    case Opcode::kXorL:
       return "XorL";
-    case Opcode::LShiftL:
+    case Opcode::kLShiftL:
       return "LShiftL";
-    case Opcode::RShiftL:
+    case Opcode::kRShiftL:
       return "RShiftL";
-    case Opcode::URShiftL:
+    case Opcode::kURShiftL:
       return "URShiftL";
 
     // Comparison
-    case Opcode::CmpI:
+    case Opcode::kCmpI:
       return "CmpI";
-    case Opcode::CmpL:
+    case Opcode::kCmpL:
       return "CmpL";
-    case Opcode::CmpP:
+    case Opcode::kCmpP:
       return "CmpP";
-    case Opcode::CmpU:
+    case Opcode::kCmpU:
       return "CmpU";
-    case Opcode::CmpUL:
+    case Opcode::kCmpUL:
       return "CmpUL";
-    case Opcode::Bool:
+    case Opcode::kBool:
       return "Bool";
 
     // Casts/Conversions
-    case Opcode::ConvI2L:
+    case Opcode::kConvI2L:
       return "ConvI2L";
-    case Opcode::ConvL2I:
+    case Opcode::kConvL2I:
       return "ConvL2I";
-    case Opcode::CastII:
+    case Opcode::kCastII:
       return "CastII";
-    case Opcode::CastLL:
+    case Opcode::kCastLL:
       return "CastLL";
-    case Opcode::CastPP:
+    case Opcode::kCastPP:
       return "CastPP";
-    case Opcode::CastX2P:
+    case Opcode::kCastX2P:
       return "CastX2P";
-    case Opcode::CastP2X:
+    case Opcode::kCastP2X:
       return "CastP2X";
 
     // Conditional move
-    case Opcode::CMoveI:
+    case Opcode::kCMoveI:
       return "CMoveI";
-    case Opcode::CMoveL:
+    case Opcode::kCMoveL:
       return "CMoveL";
-    case Opcode::CMoveP:
+    case Opcode::kCMoveP:
       return "CMoveP";
 
     // Memory - Loads
-    case Opcode::LoadB:
+    case Opcode::kLoadB:
       return "LoadB";
-    case Opcode::LoadUB:
+    case Opcode::kLoadUB:
       return "LoadUB";
-    case Opcode::LoadS:
+    case Opcode::kLoadS:
       return "LoadS";
-    case Opcode::LoadUS:
+    case Opcode::kLoadUS:
       return "LoadUS";
-    case Opcode::LoadI:
+    case Opcode::kLoadI:
       return "LoadI";
-    case Opcode::LoadL:
+    case Opcode::kLoadL:
       return "LoadL";
-    case Opcode::LoadP:
+    case Opcode::kLoadP:
       return "LoadP";
-    case Opcode::LoadN:
+    case Opcode::kLoadN:
       return "LoadN";
 
     // Memory - Stores
-    case Opcode::StoreB:
+    case Opcode::kStoreB:
       return "StoreB";
-    case Opcode::StoreC:
+    case Opcode::kStoreC:
       return "StoreC";
-    case Opcode::StoreI:
+    case Opcode::kStoreI:
       return "StoreI";
-    case Opcode::StoreL:
+    case Opcode::kStoreL:
       return "StoreL";
-    case Opcode::StoreP:
+    case Opcode::kStoreP:
       return "StoreP";
-    case Opcode::StoreN:
+    case Opcode::kStoreN:
       return "StoreN";
 
     // Memory - Merge
-    case Opcode::MergeMem:
+    case Opcode::kMergeMem:
       return "MergeMem";
 
     // Allocation
-    case Opcode::Allocate:
+    case Opcode::kAllocate:
       return "Allocate";
-    case Opcode::AllocateArray:
+    case Opcode::kAllocateArray:
       return "AllocateArray";
 
     // Parameters
-    case Opcode::Parm:
+    case Opcode::kParm:
       return "Parm";
 
     // Merge/Phi
-    case Opcode::Phi:
+    case Opcode::kPhi:
       return "Phi";
 
     // Projection
-    case Opcode::Proj:
+    case Opcode::kProj:
       return "Proj";
 
     // Address calculation
-    case Opcode::AddP:
+    case Opcode::kAddP:
       return "AddP";
 
     // Unknown
-    case Opcode::Unknown:
+    case Opcode::kUnknown:
       return "Unknown";
 
     default:
@@ -198,110 +198,110 @@ Opcode StringToOpcode(const std::string& name) {
   static std::unordered_map<std::string, Opcode> map = []() {
     std::unordered_map<std::string, Opcode> m;
     // Control
-    m["Start"] = Opcode::Start;
-    m["If"] = Opcode::If;
-    m["IfTrue"] = Opcode::IfTrue;
-    m["IfFalse"] = Opcode::IfFalse;
-    m["Region"] = Opcode::Region;
-    m["Goto"] = Opcode::Goto;
-    m["Return"] = Opcode::Return;
-    m["Root"] = Opcode::Root;
+    m["Start"] = Opcode::kStart;
+    m["If"] = Opcode::kIf;
+    m["IfTrue"] = Opcode::kIfTrue;
+    m["IfFalse"] = Opcode::kIfFalse;
+    m["Region"] = Opcode::kRegion;
+    m["Goto"] = Opcode::kGoto;
+    m["Return"] = Opcode::kReturn;
+    m["Root"] = Opcode::kRoot;
 
     // Constants
-    m["ConI"] = Opcode::ConI;
-    m["ConL"] = Opcode::ConL;
-    m["ConP"] = Opcode::ConP;
+    m["ConI"] = Opcode::kConI;
+    m["ConL"] = Opcode::kConL;
+    m["ConP"] = Opcode::kConP;
 
     // Arithmetic - Int32
-    m["AddI"] = Opcode::AddI;
-    m["SubI"] = Opcode::SubI;
-    m["MulI"] = Opcode::MulI;
-    m["DivI"] = Opcode::DivI;
-    m["ModI"] = Opcode::ModI;
-    m["AbsI"] = Opcode::AbsI;
+    m["AddI"] = Opcode::kAddI;
+    m["SubI"] = Opcode::kSubI;
+    m["MulI"] = Opcode::kMulI;
+    m["DivI"] = Opcode::kDivI;
+    m["ModI"] = Opcode::kModI;
+    m["AbsI"] = Opcode::kAbsI;
 
     // Arithmetic - Int64
-    m["AddL"] = Opcode::AddL;
-    m["SubL"] = Opcode::SubL;
-    m["MulL"] = Opcode::MulL;
-    m["DivL"] = Opcode::DivL;
-    m["ModL"] = Opcode::ModL;
-    m["AbsL"] = Opcode::AbsL;
+    m["AddL"] = Opcode::kAddL;
+    m["SubL"] = Opcode::kSubL;
+    m["MulL"] = Opcode::kMulL;
+    m["DivL"] = Opcode::kDivL;
+    m["ModL"] = Opcode::kModL;
+    m["AbsL"] = Opcode::kAbsL;
 
     // Bitwise - Int32
-    m["AndI"] = Opcode::AndI;
-    m["OrI"] = Opcode::OrI;
-    m["XorI"] = Opcode::XorI;
-    m["LShiftI"] = Opcode::LShiftI;
-    m["RShiftI"] = Opcode::RShiftI;
-    m["URShiftI"] = Opcode::URShiftI;
+    m["AndI"] = Opcode::kAndI;
+    m["OrI"] = Opcode::kOrI;
+    m["XorI"] = Opcode::kXorI;
+    m["LShiftI"] = Opcode::kLShiftI;
+    m["RShiftI"] = Opcode::kRShiftI;
+    m["URShiftI"] = Opcode::kURShiftI;
 
     // Bitwise - Int64
-    m["AndL"] = Opcode::AndL;
-    m["OrL"] = Opcode::OrL;
-    m["XorL"] = Opcode::XorL;
-    m["LShiftL"] = Opcode::LShiftL;
-    m["RShiftL"] = Opcode::RShiftL;
-    m["URShiftL"] = Opcode::URShiftL;
+    m["AndL"] = Opcode::kAndL;
+    m["OrL"] = Opcode::kOrL;
+    m["XorL"] = Opcode::kXorL;
+    m["LShiftL"] = Opcode::kLShiftL;
+    m["RShiftL"] = Opcode::kRShiftL;
+    m["URShiftL"] = Opcode::kURShiftL;
 
     // Comparison
-    m["CmpI"] = Opcode::CmpI;
-    m["CmpL"] = Opcode::CmpL;
-    m["CmpP"] = Opcode::CmpP;
-    m["CmpU"] = Opcode::CmpU;
-    m["CmpUL"] = Opcode::CmpUL;
-    m["Bool"] = Opcode::Bool;
+    m["CmpI"] = Opcode::kCmpI;
+    m["CmpL"] = Opcode::kCmpL;
+    m["CmpP"] = Opcode::kCmpP;
+    m["CmpU"] = Opcode::kCmpU;
+    m["CmpUL"] = Opcode::kCmpUL;
+    m["Bool"] = Opcode::kBool;
 
     // Casts/Conversions
-    m["ConvI2L"] = Opcode::ConvI2L;
-    m["ConvL2I"] = Opcode::ConvL2I;
-    m["CastII"] = Opcode::CastII;
-    m["CastLL"] = Opcode::CastLL;
-    m["CastPP"] = Opcode::CastPP;
-    m["CastX2P"] = Opcode::CastX2P;
-    m["CastP2X"] = Opcode::CastP2X;
+    m["ConvI2L"] = Opcode::kConvI2L;
+    m["ConvL2I"] = Opcode::kConvL2I;
+    m["CastII"] = Opcode::kCastII;
+    m["CastLL"] = Opcode::kCastLL;
+    m["CastPP"] = Opcode::kCastPP;
+    m["CastX2P"] = Opcode::kCastX2P;
+    m["CastP2X"] = Opcode::kCastP2X;
 
     // Conditional move
-    m["CMoveI"] = Opcode::CMoveI;
-    m["CMoveL"] = Opcode::CMoveL;
-    m["CMoveP"] = Opcode::CMoveP;
+    m["CMoveI"] = Opcode::kCMoveI;
+    m["CMoveL"] = Opcode::kCMoveL;
+    m["CMoveP"] = Opcode::kCMoveP;
 
     // Memory - Loads
-    m["LoadB"] = Opcode::LoadB;
-    m["LoadUB"] = Opcode::LoadUB;
-    m["LoadS"] = Opcode::LoadS;
-    m["LoadUS"] = Opcode::LoadUS;
-    m["LoadI"] = Opcode::LoadI;
-    m["LoadL"] = Opcode::LoadL;
-    m["LoadP"] = Opcode::LoadP;
-    m["LoadN"] = Opcode::LoadN;
+    m["LoadB"] = Opcode::kLoadB;
+    m["LoadUB"] = Opcode::kLoadUB;
+    m["LoadS"] = Opcode::kLoadS;
+    m["LoadUS"] = Opcode::kLoadUS;
+    m["LoadI"] = Opcode::kLoadI;
+    m["LoadL"] = Opcode::kLoadL;
+    m["LoadP"] = Opcode::kLoadP;
+    m["LoadN"] = Opcode::kLoadN;
 
     // Memory - Stores
-    m["StoreB"] = Opcode::StoreB;
-    m["StoreC"] = Opcode::StoreC;
-    m["StoreI"] = Opcode::StoreI;
-    m["StoreL"] = Opcode::StoreL;
-    m["StoreP"] = Opcode::StoreP;
-    m["StoreN"] = Opcode::StoreN;
+    m["StoreB"] = Opcode::kStoreB;
+    m["StoreC"] = Opcode::kStoreC;
+    m["StoreI"] = Opcode::kStoreI;
+    m["StoreL"] = Opcode::kStoreL;
+    m["StoreP"] = Opcode::kStoreP;
+    m["StoreN"] = Opcode::kStoreN;
 
     // Memory - Merge
-    m["MergeMem"] = Opcode::MergeMem;
+    m["MergeMem"] = Opcode::kMergeMem;
 
     // Allocation
-    m["Allocate"] = Opcode::Allocate;
-    m["AllocateArray"] = Opcode::AllocateArray;
+    m["Allocate"] = Opcode::kAllocate;
+    m["AllocateArray"] = Opcode::kAllocateArray;
 
     // Parameters
-    m["Parm"] = Opcode::Parm;
+    m["Parm"] = Opcode::kParm;
 
     // Merge/Phi
-    m["Phi"] = Opcode::Phi;
+    m["Phi"] = Opcode::kPhi;
 
     // Projection
-    m["Proj"] = Opcode::Proj;
+    m["Proj"] = Opcode::kProj;
 
     // Address calculation
-    m["AddP"] = Opcode::AddP;
+    m["AddP"] = Opcode::kAddP;
 
     return m;
   }();
@@ -310,19 +310,19 @@ Opcode StringToOpcode(const std::string& name) {
   if (it != map.end()) {
     return it->second;
   }
-  return Opcode::Unknown;
+  return Opcode::kUnknown;
 }
 
 bool IsControl(Opcode op) {
   switch (op) {
-    case Opcode::Start:
-    case Opcode::If:
-    case Opcode::IfTrue:
-    case Opcode::IfFalse:
-    case Opcode::Region:
-    case Opcode::Goto:
-    case Opcode::Return:
-    case Opcode::Root:
+    case Opcode::kStart:
+    case Opcode::kIf:
+    case Opcode::kIfTrue:
+    case Opcode::kIfFalse:
+    case Opcode::kRegion:
+    case Opcode::kGoto:
+    case Opcode::kReturn:
+    case Opcode::kRoot:
       return true;
     default:
       return false;
@@ -333,56 +333,56 @@ bool IsPure(Opcode op) {
   // Pure operations have no side effects
   switch (op) {
     // Constants
-    case Opcode::ConI:
-    case Opcode::ConL:
-    case Opcode::ConP:
+    case Opcode::kConI:
+    case Opcode::kConL:
+    case Opcode::kConP:
     // Arithmetic
-    case Opcode::AddI:
-    case Opcode::SubI:
-    case Opcode::MulI:
-    case Opcode::DivI:
-    case Opcode::ModI:
-    case Opcode::AbsI:
-    case Opcode::AddL:
-    case Opcode::SubL:
-    case Opcode::MulL:
-    case Opcode::DivL:
-    case Opcode::ModL:
-    case Opcode::AbsL:
+    case Opcode::kAddI:
+    case Opcode::kSubI:
+    case Opcode::kMulI:
+    case Opcode::kDivI:
+    case Opcode::kModI:
+    case Opcode::kAbsI:
+    case Opcode::kAddL:
+    case Opcode::kSubL:
+    case Opcode::kMulL:
+    case Opcode::kDivL:
+    case Opcode::kModL:
+    case Opcode::kAbsL:
     // Bitwise
-    case Opcode::AndI:
-    case Opcode::OrI:
-    case Opcode::XorI:
-    case Opcode::LShiftI:
-    case Opcode::RShiftI:
-    case Opcode::URShiftI:
-    case Opcode::AndL:
-    case Opcode::OrL:
-    case Opcode::XorL:
-    case Opcode::LShiftL:
-    case Opcode::RShiftL:
-    case Opcode::URShiftL:
+    case Opcode::kAndI:
+    case Opcode::kOrI:
+    case Opcode::kXorI:
+    case Opcode::kLShiftI:
+    case Opcode::kRShiftI:
+    case Opcode::kURShiftI:
+    case Opcode::kAndL:
+    case Opcode::kOrL:
+    case Opcode::kXorL:
+    case Opcode::kLShiftL:
+    case Opcode::kRShiftL:
+    case Opcode::kURShiftL:
     // Comparison
-    case Opcode::CmpI:
-    case Opcode::CmpL:
-    case Opcode::CmpP:
-    case Opcode::CmpU:
-    case Opcode::CmpUL:
-    case Opcode::Bool:
+    case Opcode::kCmpI:
+    case Opcode::kCmpL:
+    case Opcode::kCmpP:
+    case Opcode::kCmpU:
+    case Opcode::kCmpUL:
+    case Opcode::kBool:
     // Casts
-    case Opcode::ConvI2L:
-    case Opcode::ConvL2I:
-    case Opcode::CastII:
-    case Opcode::CastLL:
-    case Opcode::CastPP:
-    case Opcode::CastX2P:
-    case Opcode::CastP2X:
+    case Opcode::kConvI2L:
+    case Opcode::kConvL2I:
+    case Opcode::kCastII:
+    case Opcode::kCastLL:
+    case Opcode::kCastPP:
+    case Opcode::kCastX2P:
+    case Opcode::kCastP2X:
     // Conditional move
-    case Opcode::CMoveI:
-    case Opcode::CMoveL:
-    case Opcode::CMoveP:
+    case Opcode::kCMoveI:
+    case Opcode::kCMoveL:
+    case Opcode::kCMoveP:
     // Address calculation (pure computation)
-    case Opcode::AddP:
+    case Opcode::kAddP:
       return true;
     default:
       return false;
@@ -392,26 +392,26 @@ bool IsPure(Opcode op) {
 bool IsMemory(Opcode op) {
   switch (op) {
     // Loads
-    case Opcode::LoadB:
-    case Opcode::LoadUB:
-    case Opcode::LoadS:
-    case Opcode::LoadUS:
-    case Opcode::LoadI:
-    case Opcode::LoadL:
-    case Opcode::LoadP:
-    case Opcode::LoadN:
+    case Opcode::kLoadB:
+    case Opcode::kLoadUB:
+    case Opcode::kLoadS:
+    case Opcode::kLoadUS:
+    case Opcode::kLoadI:
+    case Opcode::kLoadL:
+    case Opcode::kLoadP:
+    case Opcode::kLoadN:
     // Stores
-    case Opcode::StoreB:
-    case Opcode::StoreC:
-    case Opcode::StoreI:
-    case Opcode::StoreL:
-    case Opcode::StoreP:
-    case Opcode::StoreN:
+    case Opcode::kStoreB:
+    case Opcode::kStoreC:
+    case Opcode::kStoreI:
+    case Opcode::kStoreL:
+    case Opcode::kStoreP:
+    case Opcode::kStoreN:
     // Merge
-    case Opcode::MergeMem:
+    case Opcode::kMergeMem:
     // Allocation
-    case Opcode::Allocate:
-    case Opcode::AllocateArray:
+    case Opcode::kAllocate:
+    case Opcode::kAllocateArray:
       return true;
     default:
       return false;
@@ -419,7 +419,7 @@ bool IsMemory(Opcode op) {
 }
 
 bool IsMerge(Opcode op) {
-  return op == Opcode::Phi || op == Opcode::Region || op == Opcode::MergeMem;
+  return op == Opcode::kPhi || op == Opcode::kRegion || op == Opcode::kMergeMem;
 }
 
 }  // namespace sun

@@ -90,7 +90,7 @@ class IGVParser::Impl {
     std::string opcode_str = name_prop.child_value();
     Opcode opcode = StringToOpcode(opcode_str);
 
-    if (opcode == Opcode::Unknown) {
+    if (opcode == Opcode::kUnknown) {
       Logger::Warn("Unknown opcode: " + opcode_str + ", skipping");
       return;
     }
@@ -109,10 +109,10 @@ class IGVParser::Impl {
       char* end;
       long val = std::strtol(prop_value.c_str(), &end, 10);
       if (end != prop_value.c_str() && *end == '\0') {
-        n->SetProp(prop_name, static_cast<int32_t>(val));
+        n->set_prop(prop_name, static_cast<int32_t>(val));
       } else {
         // Store as string
-        n->SetProp(prop_name, prop_value);
+        n->set_prop(prop_name, prop_value);
       }
     }
 
@@ -133,8 +133,8 @@ class IGVParser::Impl {
     NodeID from_id = std::atoi(from_str);
     NodeID to_id = std::atoi(to_str);
 
-    Node* from_node = graph->GetNode(from_id);
-    Node* to_node = graph->GetNode(to_id);
+    Node* from_node = graph->node(from_id);
+    Node* to_node = graph->node(to_id);
 
     if (!from_node || !to_node) {
       Logger::Warn("Edge refers to non-existent node, skipping");
@@ -152,8 +152,8 @@ class IGVParser::Impl {
       to_index = std::atoi(to_index_str);
     }
 
-    // Add edge: to_node->SetInput(to_index, from_node)
-    to_node->SetInput(to_index, from_node);
+    // Add edge: to_node->set_input(to_index, from_node)
+    to_node->set_input(to_index, from_node);
 
     Logger::Debug("Parsed edge: " + std::to_string(from_id) + " -> " +
                   std::to_string(to_id) + "[" + std::to_string(to_index) + "]");

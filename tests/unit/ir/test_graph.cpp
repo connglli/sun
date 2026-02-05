@@ -6,59 +6,59 @@ using namespace sun;
 
 TEST(GraphTest, BasicConstruction) {
   Graph g;
-  EXPECT_EQ(g.GetStart(), nullptr);
-  EXPECT_EQ(g.GetRoot(), nullptr);
-  EXPECT_EQ(g.GetNodes().size(), 0);
+  EXPECT_EQ(g.start(), nullptr);
+  EXPECT_EQ(g.root(), nullptr);
+  EXPECT_EQ(g.nodes().size(), 0);
 }
 
 TEST(GraphTest, AddNodes) {
   Graph g;
 
-  Node* n1 = g.AddNode(1, Opcode::Start);
-  Node* n2 = g.AddNode(2, Opcode::ConI);
-  Node* n3 = g.AddNode(3, Opcode::Return);
+  Node* n1 = g.AddNode(1, Opcode::kStart);
+  Node* n2 = g.AddNode(2, Opcode::kConI);
+  Node* n3 = g.AddNode(3, Opcode::kReturn);
 
   EXPECT_NE(n1, nullptr);
   EXPECT_NE(n2, nullptr);
   EXPECT_NE(n3, nullptr);
 
-  EXPECT_EQ(n1->Id(), 1);
-  EXPECT_EQ(n2->Id(), 2);
-  EXPECT_EQ(n3->Id(), 3);
+  EXPECT_EQ(n1->id(), 1);
+  EXPECT_EQ(n2->id(), 2);
+  EXPECT_EQ(n3->id(), 3);
 
-  EXPECT_EQ(g.GetNodes().size(), 3);
+  EXPECT_EQ(g.nodes().size(), 3);
 }
 
 TEST(GraphTest, NodeLookup) {
   Graph g;
 
-  Node* n1 = g.AddNode(1, Opcode::Start);
-  Node* n2 = g.AddNode(10, Opcode::ConI);
+  Node* n1 = g.AddNode(1, Opcode::kStart);
+  Node* n2 = g.AddNode(10, Opcode::kConI);
 
-  EXPECT_EQ(g.GetNode(1), n1);
-  EXPECT_EQ(g.GetNode(10), n2);
-  EXPECT_EQ(g.GetNode(99), nullptr);  // Non-existent
+  EXPECT_EQ(g.node(1), n1);
+  EXPECT_EQ(g.node(10), n2);
+  EXPECT_EQ(g.node(99), nullptr);  // Non-existent
 }
 
 TEST(GraphTest, SpecialNodes) {
   Graph g;
 
   // Add Start node
-  Node* start = g.AddNode(1, Opcode::Start);
-  EXPECT_EQ(g.GetStart(), start);
+  Node* start = g.AddNode(1, Opcode::kStart);
+  EXPECT_EQ(g.start(), start);
 
   // Add Root node
-  Node* root = g.AddNode(0, Opcode::Root);
-  EXPECT_EQ(g.GetRoot(), root);
+  Node* root = g.AddNode(0, Opcode::kRoot);
+  EXPECT_EQ(g.root(), root);
 }
 
 TEST(GraphTest, ParameterNodes) {
   Graph g;
 
-  g.AddNode(1, Opcode::Start);
-  Node* p1 = g.AddNode(10, Opcode::Parm);
-  Node* p2 = g.AddNode(11, Opcode::Parm);
-  g.AddNode(20, Opcode::AddI);
+  g.AddNode(1, Opcode::kStart);
+  Node* p1 = g.AddNode(10, Opcode::kParm);
+  Node* p2 = g.AddNode(11, Opcode::kParm);
+  g.AddNode(20, Opcode::kAddI);
 
   auto params = g.GetParameterNodes();
   EXPECT_EQ(params.size(), 2);
@@ -71,10 +71,10 @@ TEST(GraphTest, ParameterNodes) {
 TEST(GraphTest, ControlNodes) {
   Graph g;
 
-  Node* start = g.AddNode(1, Opcode::Start);
-  g.AddNode(10, Opcode::ConI);  // Not control
-  Node* if_node = g.AddNode(20, Opcode::If);
-  Node* ret = g.AddNode(30, Opcode::Return);
+  Node* start = g.AddNode(1, Opcode::kStart);
+  g.AddNode(10, Opcode::kConI);  // Not control
+  Node* if_node = g.AddNode(20, Opcode::kIf);
+  Node* ret = g.AddNode(30, Opcode::kReturn);
 
   auto controls = g.GetControlNodes();
   EXPECT_EQ(controls.size(), 3);
@@ -92,11 +92,11 @@ TEST(GraphTest, BuildSimpleGraph) {
   Graph g;
 
   // Build: Start -> Parm(0) -> Parm(1) -> AddI -> Return
-  Node* start = g.AddNode(0, Opcode::Start);
-  Node* p0 = g.AddNode(1, Opcode::Parm);
-  Node* p1 = g.AddNode(2, Opcode::Parm);
-  Node* add = g.AddNode(3, Opcode::AddI);
-  Node* ret = g.AddNode(4, Opcode::Return);
+  Node* start = g.AddNode(0, Opcode::kStart);
+  Node* p0 = g.AddNode(1, Opcode::kParm);
+  Node* p1 = g.AddNode(2, Opcode::kParm);
+  Node* add = g.AddNode(3, Opcode::kAddI);
+  Node* ret = g.AddNode(4, Opcode::kReturn);
 
   // Connect edges
   p0->AddInput(start);
@@ -107,11 +107,11 @@ TEST(GraphTest, BuildSimpleGraph) {
   ret->AddInput(add);    // Value
 
   // Verify structure
-  EXPECT_EQ(add->NumInputs(), 2);
-  EXPECT_EQ(add->GetInput(0), p0);
-  EXPECT_EQ(add->GetInput(1), p1);
+  EXPECT_EQ(add->num_inputs(), 2);
+  EXPECT_EQ(add->input(0), p0);
+  EXPECT_EQ(add->input(1), p1);
 
-  EXPECT_EQ(ret->NumInputs(), 2);
-  EXPECT_EQ(ret->GetInput(0), start);
-  EXPECT_EQ(ret->GetInput(1), add);
+  EXPECT_EQ(ret->num_inputs(), 2);
+  EXPECT_EQ(ret->input(0), start);
+  EXPECT_EQ(ret->input(1), add);
 }
