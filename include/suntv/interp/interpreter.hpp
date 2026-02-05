@@ -14,8 +14,15 @@ class Node;
 /**
  * Concrete interpreter for Sea-of-Nodes graphs.
  *
- * Executes graphs concretely by evaluating nodes in topological order,
- * tracking control flow and managing heap state.
+ * Executes graphs by traversing control edges dynamically, starting from Start
+ * node. Value nodes are evaluated on-demand with memoization.
+ *
+ * Execution model:
+ * 1. Start at Start node, follow control edges
+ * 2. When control node needs a value (e.g., If condition), evaluate data
+ * subgraph
+ * 3. Value evaluation is recursive with memoization (DAG-aware)
+ * 4. Loops are handled by traversing back-edges iteratively
  */
 class Interpreter {
  public:
@@ -33,19 +40,29 @@ class Interpreter {
   // Memoization: node -> computed value
   std::map<const Node*, Value> value_cache_;
 
-  // Control flow tracking: control node -> is active
-  std::map<const Node*, bool> control_active_;
+  // Execution context: track which control predecessor was taken at each Region
+  // This is needed for Phi node evaluation
+  std::map<const Node*, const Node*> region_predecessor_;
 
-  // If node -> which branch was taken (true/false)
-  std::map<const Node*, bool> if_decisions_;
+  // Loop iteration tracking: Region -> iteration count (for loop termination)
+  std::map<const Node*, int> loop_iterations_;
 
-  // Region -> which control predecessor was actually taken
-  std::map<const Node*, const Node*> active_predecessor_;
+  // Maximum loop iterations before aborting (prevent infinite loops)
+  static constexpr int kMaxLoopIterations = 10000;
 
   // Heap state
   ConcreteHeap heap_;
 
-  // Evaluate a value-producing node
+  // Main control flow traversal
+  const Node* StepControl(const Node* ctrl);
+
+  // Find control successor for a given control node
+  const Node* FindControlSuccessor(const Node* ctrl) const;
+
+  // Check if a Region is a loop header (has back-edge)
+  bool IsLoopHeader(const Node* region) const;
+
+  // Evaluate a value-producing node (with memoization)
   Value EvalNode(const Node* n);
 
   // Evaluate constant node
@@ -90,10 +107,6 @@ class Interpreter {
   Value EvalLoad(const Node* n);
   void EvalStore(const Node* n);
   void ProcessMemoryChain(const Node* mem);
-
-  // Control flow helpers
-  void ComputeControlFlow(const Node* start_node);
-  bool IsControlActive(const Node* ctrl);
 };
 
 }  // namespace sun

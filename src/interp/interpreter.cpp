@@ -37,9 +37,8 @@ Interpreter::Interpreter(const Graph& g) : graph_(g) {}
 
 Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   value_cache_.clear();
-  control_active_.clear();
-  if_decisions_.clear();
-  active_predecessor_.clear();
+  region_predecessor_.clear();
+  loop_iterations_.clear();
   heap_ = ConcreteHeap();  // Reset heap
 
   // Cache parameter values first
@@ -102,23 +101,20 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
     value_cache_[parm_node] = parm_val;
   }
 
-  // Compute control flow starting from Start node
+  // Start control flow traversal from Start node
   Node* start = graph_.start();
-  if (start) {
-    ComputeControlFlow(start);
+  if (!start) {
+    throw std::runtime_error("No Start node found in graph");
   }
 
-  // Find Return node
-  Node* ret_node = nullptr;
-  for (Node* n : graph_.nodes()) {
-    if (n->opcode() == Opcode::kReturn) {
-      ret_node = n;
-      break;
-    }
+  // Traverse control flow until we reach Return
+  const Node* current_control = start;
+  while (current_control && current_control->opcode() != Opcode::kReturn) {
+    current_control = StepControl(current_control);
   }
 
-  if (!ret_node) {
-    throw std::runtime_error("No Return node found in graph");
+  if (!current_control) {
+    throw std::runtime_error("Control flow terminated without reaching Return");
   }
 
   // Evaluate the return value (if any)
@@ -131,8 +127,8 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   // Last input = return value (if method returns non-void)
   // Find the return value: it's typically the last input that's not a Parm
   Node* value_node = nullptr;
-  for (int i = ret_node->num_inputs() - 1; i >= 1; --i) {
-    Node* inp = ret_node->input(i);
+  for (int i = current_control->num_inputs() - 1; i >= 1; --i) {
+    Node* inp = current_control->input(i);
     if (inp && inp->opcode() != Opcode::kParm) {
       value_node = inp;
       break;
@@ -152,6 +148,163 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
 
   outcome.heap = heap_;
   return outcome;
+}
+
+const Node* Interpreter::StepControl(const Node* ctrl) {
+  if (!ctrl) {
+    throw std::runtime_error("StepControl called with null control node");
+  }
+
+  Opcode op = ctrl->opcode();
+  Logger::Debug("StepControl: node " + std::to_string(ctrl->id()) + " (" +
+                OpcodeToString(op) + ")");
+
+  switch (op) {
+    case Opcode::kStart:
+    case Opcode::kGoto:
+    case Opcode::kIfTrue:
+    case Opcode::kIfFalse:
+    case Opcode::kParm:  // Parm nodes act as control projections in C2
+      // Simple pass-through: find successor
+      return FindControlSuccessor(ctrl);
+
+    case Opcode::kIf: {
+      // Evaluate condition and choose branch
+      if (ctrl->num_inputs() < 2) {
+        throw std::runtime_error("If node needs condition input");
+      }
+
+      // Evaluate condition (this may recursively evaluate data subgraph)
+      Value cond = EvalNode(ctrl->input(1));
+
+      bool branch_taken = false;
+      if (cond.is_bool()) {
+        branch_taken = cond.as_bool();
+      } else if (cond.is_i32()) {
+        // C2 sometimes uses int as bool (non-zero = true)
+        branch_taken = (cond.as_i32() != 0);
+      } else {
+        throw std::runtime_error("If condition must be boolean or int");
+      }
+
+      Logger::Debug("  If condition evaluated to: " +
+                    std::string(branch_taken ? "true" : "false"));
+
+      // Find the corresponding IfTrue or IfFalse successor
+      for (Node* n : graph_.nodes()) {
+        if (n->num_inputs() > 0 && n->input(0) == ctrl) {
+          if (branch_taken && n->opcode() == Opcode::kIfTrue) {
+            return n;
+          } else if (!branch_taken && n->opcode() == Opcode::kIfFalse) {
+            return n;
+          }
+        }
+      }
+
+      throw std::runtime_error("If node has no IfTrue/IfFalse successors");
+    }
+
+    case Opcode::kRegion: {
+      // Control merge point
+      // Check if this is a loop header
+      if (IsLoopHeader(ctrl)) {
+        // Determine which input we came from
+        const Node* predecessor = region_predecessor_.count(ctrl) > 0
+                                      ? region_predecessor_[ctrl]
+                                      : nullptr;
+
+        // Only count iterations when we arrive via the back-edge
+        // For a self-loop (input[0] == ctrl), the back-edge is when
+        // predecessor == ctrl (coming from the Region itself)
+        bool is_back_edge = (predecessor == ctrl);
+
+        if (is_back_edge) {
+          // Loop iteration: check iteration count
+          int iter_count = loop_iterations_[ctrl];
+          if (iter_count >= kMaxLoopIterations) {
+            throw std::runtime_error("Loop exceeded maximum iterations (" +
+                                     std::to_string(kMaxLoopIterations) + ")");
+          }
+          loop_iterations_[ctrl] = iter_count + 1;
+
+          Logger::Debug("  Loop iteration " + std::to_string(iter_count + 1));
+        }
+      }
+
+      // Continue to successor
+      return FindControlSuccessor(ctrl);
+    }
+
+    default:
+      throw std::runtime_error("Unexpected control opcode in StepControl: " +
+                               OpcodeToString(op));
+  }
+}
+
+const Node* Interpreter::FindControlSuccessor(const Node* ctrl) const {
+  // Find the node that uses ctrl as its control input
+  // Most nodes use input[0] for control
+
+  for (Node* n : graph_.nodes()) {
+    if (n->num_inputs() > 0 && n->input(0) == ctrl) {
+      // Check if this is a control node
+      Opcode op = n->opcode();
+      if (op == Opcode::kIf || op == Opcode::kIfTrue ||
+          op == Opcode::kIfFalse || op == Opcode::kRegion ||
+          op == Opcode::kGoto || op == Opcode::kReturn) {
+        // Before returning, if this is a Region, record where we came from
+        if (op == Opcode::kRegion) {
+          // We need to record which input of the Region corresponds to ctrl
+          // This is used by Phi nodes
+          const_cast<Interpreter*>(this)->region_predecessor_[n] = ctrl;
+        }
+        return n;
+      }
+
+      // Parm can be control projection in C2, but only if type="control"
+      if (op == Opcode::kParm) {
+        if (n->has_prop("type")) {
+          std::string type = std::get<std::string>(n->prop("type"));
+          if (type == "control") {
+            return n;
+          }
+        }
+      }
+    }
+
+    // For Region nodes, check all inputs (not just input[0])
+    if (n->opcode() == Opcode::kRegion) {
+      for (size_t i = 0; i < n->num_inputs(); ++i) {
+        if (n->input(i) == ctrl) {
+          // Record predecessor
+          const_cast<Interpreter*>(this)->region_predecessor_[n] = ctrl;
+          return n;
+        }
+      }
+    }
+  }
+
+  return nullptr;  // No successor (end of control flow)
+}
+
+bool Interpreter::IsLoopHeader(const Node* region) const {
+  if (!region || region->opcode() != Opcode::kRegion) {
+    return false;
+  }
+
+  // A Region is a loop header if it has a back-edge: one of its inputs
+  // is a control node that is reachable from the Region itself
+
+  // Simple heuristic: check if Region input[0] points to itself (self-loop)
+  if (region->num_inputs() > 0 && region->input(0) == region) {
+    return true;
+  }
+
+  // More complex: check if any input is "downstream" from the Region
+  // For now, we'll use the simple heuristic
+  // TODO: Implement full back-edge detection if needed
+
+  return false;
 }
 
 Value Interpreter::EvalNode(const Node* n) {
@@ -495,7 +648,7 @@ Value Interpreter::EvalCmpOp(const Node* n) {
 }
 
 Value Interpreter::EvalPhi(const Node* n) {
-  // Phi selects value based on which control predecessor is active
+  // Phi selects value based on which control predecessor was taken
   // Phi structure: input(0) = Region control, input(1..k) = values
   if (n->num_inputs() < 2) {
     throw std::runtime_error("Phi node needs at least control + 1 value");
@@ -507,88 +660,54 @@ Value Interpreter::EvalPhi(const Node* n) {
     return EvalNode(n->input(1));
   }
 
-  // Debug logging
-  std::cerr << "==== EvalPhi node " << n->id() << " ====\n";
-  std::cerr << "  Phi has " << n->num_inputs() << " inputs\n";
-  for (size_t i = 0; i < n->num_inputs(); ++i) {
-    Node* inp = n->input(i);
-    if (inp) {
-      std::cerr << "    [" << i << "] -> Node " << inp->id() << " ("
-                << OpcodeToString(inp->opcode()) << ")\n";
-      if (inp->opcode() == Opcode::kParm && inp->has_prop("dump_spec")) {
-        std::cerr << "        " << std::get<std::string>(inp->prop("dump_spec"))
-                  << "\n";
-      }
-      // Try to evaluate value inputs
-      if (i > 0) {
-        try {
-          Value v = EvalNode(inp);
-          if (v.is_i32()) {
-            std::cerr << "        Value: " << v.as_i32() << "\n";
-          }
-        } catch (...) {
-        }
-      }
-    }
+  // Determine which control predecessor was taken
+  auto it = region_predecessor_.find(region);
+  if (it == region_predecessor_.end()) {
+    // No predecessor recorded - this shouldn't happen in proper execution
+    // Fall back to first value
+    Logger::Warn("Phi node " + std::to_string(n->id()) +
+                 ": no predecessor recorded for Region " +
+                 std::to_string(region->id()) + ", using first value");
+    return EvalNode(n->input(1));
   }
 
-  std::cerr << "  Region " << region->id() << " has " << region->num_inputs()
-            << " inputs:\n";
+  const Node* active_pred = it->second;
+  Logger::Debug("EvalPhi: Region " + std::to_string(region->id()) +
+                " active predecessor = " + std::to_string(active_pred->id()));
+
+  // Find which Region input corresponds to active_pred
+  // Note: Region may have self-loops (input[0] -> Region itself for loops)
+  // We need to map Region input index to Phi input index
+  // Skipping self-loops
+
+  int phi_input_index = 1;  // Phi inputs start at index 1
   for (size_t i = 0; i < region->num_inputs(); ++i) {
-    Node* pred = region->input(i);
-    if (pred) {
-      std::cerr << "    [" << i << "] -> Node " << pred->id() << " ("
-                << OpcodeToString(pred->opcode()) << ")";
-      if (IsControlActive(pred)) {
-        std::cerr << " [ACTIVE]";
-      }
-      std::cerr << "\n";
+    Node* reg_input = region->input(i);
+
+    // Skip self-loops
+    if (reg_input == region) {
+      continue;
     }
-  }
 
-  // Look up which control predecessor was actually taken
-  auto it = active_predecessor_.find(region);
-  if (it != active_predecessor_.end()) {
-    const Node* active_pred = it->second;
-    std::cerr << "  Active predecessor from map: Node " << active_pred->id()
-              << " (" << OpcodeToString(active_pred->opcode()) << ")\n";
-
-    // Find the index of this predecessor in the Region's inputs
-    // Note: Phi inputs map to Region inputs, but Region may have a self-loop at
-    // input[0] We need to find the "real" index (excluding self-loop)
-    int phi_input_index = 1;  // Phi inputs start at 1 (0 is control)
-
-    for (size_t i = 0; i < region->num_inputs(); ++i) {
-      Node* pred = region->input(i);
-      // Skip self-loops
-      if (pred == region) continue;
-
-      if (pred == active_pred) {
-        std::cerr << "  Found at Region index " << i << ", selecting Phi input "
-                  << phi_input_index << "\n";
-        // Select corresponding Phi value
-        if (phi_input_index < static_cast<int>(n->num_inputs())) {
-          Value result = EvalNode(n->input(phi_input_index));
-          if (result.is_i32()) {
-            std::cerr << "  Returning value: " << result.as_i32() << "\n";
-          }
-          return result;
-        }
-        break;
+    // Check if this is the active predecessor
+    if (reg_input == active_pred) {
+      // Found it! Select corresponding Phi input
+      if (phi_input_index < static_cast<int>(n->num_inputs())) {
+        Value result = EvalNode(n->input(phi_input_index));
+        Logger::Debug("  Phi selected input[" +
+                      std::to_string(phi_input_index) + "]");
+        return result;
+      } else {
+        throw std::runtime_error("Phi node: input index out of range");
       }
-      phi_input_index++;
     }
-  } else {
-    std::cerr << "  No active predecessor found in map!\n";
+
+    phi_input_index++;
   }
 
-  // Fallback: return first value
-  std::cerr << "  Fallback: returning first value (input 1)\n";
-  Value result = EvalNode(n->input(1));
-  if (result.is_i32()) {
-    std::cerr << "  Fallback value: " << result.as_i32() << "\n";
-  }
-  return result;
+  // Predecessor not found - shouldn't happen
+  throw std::runtime_error(
+      "Phi node: active predecessor not found in Region inputs");
 }
 
 Value Interpreter::EvalBool(const Node* n) {
@@ -763,146 +882,6 @@ Value Interpreter::EvalCallStaticJava(const Node* n) {
 Value Interpreter::EvalHalt(const Node* /*n*/) {
   // Halt: abnormal termination (e.g., unhandled exception)
   throw std::runtime_error("Program reached Halt node (abnormal termination)");
-}
-
-void Interpreter::ComputeControlFlow(const Node* start_node) {
-  // Use a worklist algorithm to compute control flow in proper order
-  // Build a map of control dependencies first
-  std::map<const Node*, std::vector<Node*>>
-      ctrl_users;  // control node -> nodes that use it as control
-
-  for (Node* n : graph_.nodes()) {
-    Opcode op = n->opcode();
-    // Control-producing nodes
-    if (op == Opcode::kStart || op == Opcode::kIf || op == Opcode::kIfTrue ||
-        op == Opcode::kIfFalse || op == Opcode::kRegion ||
-        op == Opcode::kGoto || op == Opcode::kParm) {
-      // Find nodes that use this as their control input
-      for (Node* user : graph_.nodes()) {
-        // Skip self-loops (e.g., Region -> Region)
-        if (user == n) continue;
-
-        // Most nodes use input[0] for control
-        if (user->num_inputs() > 0 && user->input(0) == n) {
-          ctrl_users[n].push_back(user);
-        }
-
-        // Region nodes have multiple control inputs (all inputs are control)
-        if (user->opcode() == Opcode::kRegion) {
-          for (size_t i = 0; i < user->num_inputs(); ++i) {
-            if (user->input(i) == n &&
-                i > 0) {  // Skip input[0] if it's self-loop
-              ctrl_users[n].push_back(user);
-              break;  // Don't add multiple times
-            }
-          }
-        }
-      }
-    }
-  }
-
-  std::queue<const Node*> worklist;
-  std::set<const Node*> visited;
-
-  // Start node is always active
-  control_active_[start_node] = true;
-  worklist.push(start_node);
-
-  Logger::Debug("ComputeControlFlow starting from node " +
-                std::to_string(start_node->id()));
-
-  while (!worklist.empty()) {
-    const Node* ctrl = worklist.front();
-    worklist.pop();
-
-    if (visited.count(ctrl)) continue;
-    visited.insert(ctrl);
-
-    Opcode op = ctrl->opcode();
-    Logger::Debug("Processing control node " + std::to_string(ctrl->id()) +
-                  " (" + OpcodeToString(op) + ")");
-
-    // Process successors based on opcode
-    if (op == Opcode::kStart || op == Opcode::kParm) {
-      // For Start and control Parms, activate all their control users
-      auto it = ctrl_users.find(ctrl);
-      if (it != ctrl_users.end()) {
-        for (Node* user : it->second) {
-          control_active_[user] = true;
-          worklist.push(user);
-        }
-      }
-    } else if (op == Opcode::kIf) {
-      // If node: evaluate condition and mark the taken branch
-      if (ctrl->num_inputs() >= 2) {
-        Logger::Debug("  If node, evaluating condition...");
-        // Evaluate condition
-        Value cond = EvalNode(ctrl->input(1));
-        Logger::Debug("  Condition evaluated");
-        bool branch_taken = false;
-        if (cond.is_bool()) {
-          branch_taken = cond.as_bool();
-        } else {
-          throw std::runtime_error("If condition must be boolean");
-        }
-
-        Logger::Debug("  If condition evaluated to: " +
-                      std::string(branch_taken ? "true" : "false"));
-
-        // Store decision
-        if_decisions_[ctrl] = branch_taken;
-
-        // Find IfTrue/IfFalse successors
-        auto it = ctrl_users.find(ctrl);
-        if (it != ctrl_users.end()) {
-          for (Node* user : it->second) {
-            if (user->opcode() == Opcode::kIfTrue && branch_taken) {
-              Logger::Debug("  Activating IfTrue node " +
-                            std::to_string(user->id()));
-              control_active_[user] = true;
-              worklist.push(user);
-            } else if (user->opcode() == Opcode::kIfFalse && !branch_taken) {
-              Logger::Debug("  Activating IfFalse node " +
-                            std::to_string(user->id()));
-              control_active_[user] = true;
-              worklist.push(user);
-            }
-          }
-        }
-      }
-    } else if (op == Opcode::kIfTrue || op == Opcode::kIfFalse) {
-      // IfTrue/IfFalse: propagate to successors
-      // For Region nodes, we need to record which predecessor was taken
-      auto it = ctrl_users.find(ctrl);
-      if (it != ctrl_users.end()) {
-        for (Node* user : it->second) {
-          if (user->opcode() == Opcode::kRegion) {
-            Logger::Debug(
-                "  Recording Region " + std::to_string(user->id()) +
-                " active_predecessor = " + std::to_string(ctrl->id()));
-            active_predecessor_[user] = ctrl;
-          }
-          control_active_[user] = true;
-          worklist.push(user);
-        }
-      }
-    } else if (op == Opcode::kRegion || op == Opcode::kGoto) {
-      // Region/Goto: propagate to successors
-      auto it = ctrl_users.find(ctrl);
-      if (it != ctrl_users.end()) {
-        for (Node* user : it->second) {
-          control_active_[user] = true;
-          worklist.push(user);
-        }
-      }
-    }
-  }
-}
-
-bool Interpreter::IsControlActive(const Node* ctrl) {
-  if (!ctrl) return false;
-  auto it = control_active_.find(ctrl);
-  return it != control_active_.end() && it->second;
 }
 
 Value Interpreter::EvalAllocate(const Node* /*n*/) {
