@@ -66,6 +66,13 @@ class Interpreter {
   // Evaluate Phi node (value merge)
   Value EvalPhi(const Node* n);
 
+  // Memory operations
+  Value EvalAllocate(const Node* n);
+  Value EvalAllocateArray(const Node* n);
+  Value EvalLoad(const Node* n);
+  void EvalStore(const Node* n);
+  void ProcessMemoryChain(const Node* mem);
+
   // Control flow helpers
   void ComputeControlFlow(const Node* start_node);
   bool IsControlActive(const Node* ctrl);

@@ -108,6 +108,15 @@ Value Interpreter::EvalNode(const Node* n) {
     result = EvalCMove(n);
   } else if (op == Opcode::kPhi) {
     result = EvalPhi(n);
+  } else if (op == Opcode::kAllocate) {
+    result = EvalAllocate(n);
+  } else if (op == Opcode::kAllocateArray) {
+    result = EvalAllocateArray(n);
+  } else if (op == Opcode::kLoadB || op == Opcode::kLoadUB ||
+             op == Opcode::kLoadS || op == Opcode::kLoadUS ||
+             op == Opcode::kLoadI || op == Opcode::kLoadL ||
+             op == Opcode::kLoadP || op == Opcode::kLoadN) {
+    result = EvalLoad(n);
   } else if (IsArithmetic(op) || IsBitwise(op)) {
     result = EvalArithOp(n);
   } else if (IsComparison(op)) {
@@ -335,13 +344,16 @@ Value Interpreter::EvalBool(const Node* n) {
     mask = std::get<int32_t>(n->prop("mask"));
   }
 
-  // HotSpot condition codes (simplified):
-  // 1 = EQ, 2 = LT, 4 = GT, 8 = LE (LT|EQ), 5 = NE (LT|GT), etc.
+  // HotSpot condition codes (bit encoding):
+  // Bit 0 (value 1): LT (less than)
+  // Bit 1 (value 2): EQ (equal)
+  // Bit 2 (value 4): GT (greater than)
+  // Examples: NE = LT|GT = 1|4 = 5, LE = LT|EQ = 1|2 = 3, GE = GT|EQ = 4|2 = 6
   // Comparison returns: -1 (less), 0 (equal), 1 (greater)
   bool result = false;
-  if (cmp_val < 0 && (mask & 2))
+  if (cmp_val < 0 && (mask & 1))
     result = true;  // LT
-  else if (cmp_val == 0 && (mask & 1))
+  else if (cmp_val == 0 && (mask & 2))
     result = true;  // EQ
   else if (cmp_val > 0 && (mask & 4))
     result = true;  // GT
@@ -457,6 +469,144 @@ bool Interpreter::IsControlActive(const Node* ctrl) {
   if (!ctrl) return false;
   auto it = control_active_.find(ctrl);
   return it != control_active_.end() && it->second;
+}
+
+Value Interpreter::EvalAllocate(const Node* /*n*/) {
+  // Allocate object: input(0) = control
+  // Returns a fresh reference
+  // Note: Control dependency is implicit; concrete execution doesn't check it
+  Ref new_ref = heap_.AllocateObject();
+  return Value::MakeRef(new_ref);
+}
+
+Value Interpreter::EvalAllocateArray(const Node* n) {
+  // AllocateArray: input(0) = control, input(1) = length
+  if (n->num_inputs() < 2) {
+    throw std::runtime_error("AllocateArray needs length input");
+  }
+
+  Value len_val = EvalNode(n->input(1));
+  if (!len_val.is_i32()) {
+    throw std::runtime_error("Array length must be i32");
+  }
+
+  int32_t length = len_val.as_i32();
+  if (length < 0) {
+    throw EvalException("Negative array length");
+  }
+
+  Ref arr_ref = heap_.AllocateArray(length);
+  return Value::MakeRef(arr_ref);
+}
+
+Value Interpreter::EvalLoad(const Node* n) {
+  // Load: input(0) = control, input(1) = memory, input(2) = base,
+  //       [optional input(3) = index for arrays]
+  if (n->num_inputs() < 3) {
+    throw std::runtime_error("Load needs at least control, memory, and base");
+  }
+
+  // Process memory chain (execute any Store nodes in the chain)
+  Node* mem = n->input(1);
+  ProcessMemoryChain(mem);
+
+  // Get base object/array
+  Value base_val = EvalNode(n->input(2));
+  if (!base_val.is_ref()) {
+    throw std::runtime_error("Load base must be a reference");
+  }
+  Ref base = base_val.as_ref();
+
+  // Check if this is array access
+  bool is_array = n->has_prop("array") && std::get<bool>(n->prop("array"));
+
+  if (is_array) {
+    // Array access: needs index
+    if (n->num_inputs() < 4) {
+      throw std::runtime_error("Array load needs index");
+    }
+    Value idx_val = EvalNode(n->input(3));
+    if (!idx_val.is_i32()) {
+      throw std::runtime_error("Array index must be i32");
+    }
+    int32_t index = idx_val.as_i32();
+
+    // Load from array
+    Value elem = heap_.ReadArray(base, index);
+    return elem;
+  } else {
+    // Field access
+    if (!n->has_prop("field")) {
+      throw std::runtime_error("Load needs field property");
+    }
+    std::string field = std::get<std::string>(n->prop("field"));
+
+    Value field_val = heap_.ReadField(base, field);
+    return field_val;
+  }
+}
+
+void Interpreter::ProcessMemoryChain(const Node* mem) {
+  // Process Store nodes in memory chain
+  if (!mem) return;
+
+  Opcode op = mem->opcode();
+
+  // If this is a Store, execute it
+  if (op == Opcode::kStoreB || op == Opcode::kStoreC || op == Opcode::kStoreI ||
+      op == Opcode::kStoreL || op == Opcode::kStoreP || op == Opcode::kStoreN) {
+    EvalStore(mem);
+  }
+  // If Store has a memory input, process that first (in reverse order)
+  if (mem->num_inputs() >= 2) {
+    ProcessMemoryChain(mem->input(1));
+  }
+}
+
+void Interpreter::EvalStore(const Node* n) {
+  // Store: input(0) = control, input(1) = memory, input(2) = base,
+  //        input(3) = value (field) or input(3) = index, input(4) = value
+  //        (array)
+
+  if (n->num_inputs() < 4) {
+    throw std::runtime_error(
+        "Store needs at least control, memory, base, value");
+  }
+
+  // Get base object/array
+  Value base_val = EvalNode(n->input(2));
+  if (!base_val.is_ref()) {
+    throw std::runtime_error("Store base must be a reference");
+  }
+  Ref base = base_val.as_ref();
+
+  // Check if this is array access
+  bool is_array = n->has_prop("array") && std::get<bool>(n->prop("array"));
+
+  if (is_array) {
+    // Array access: input(3) = index, input(4) = value
+    if (n->num_inputs() < 5) {
+      throw std::runtime_error("Array store needs index and value");
+    }
+
+    Value idx_val = EvalNode(n->input(3));
+    if (!idx_val.is_i32()) {
+      throw std::runtime_error("Array index must be i32");
+    }
+    int32_t index = idx_val.as_i32();
+
+    Value value = EvalNode(n->input(4));
+    heap_.WriteArray(base, index, value);
+  } else {
+    // Field access: input(3) = value
+    if (!n->has_prop("field")) {
+      throw std::runtime_error("Store needs field property");
+    }
+    std::string field = std::get<std::string>(n->prop("field"));
+
+    Value value = EvalNode(n->input(3));
+    heap_.WriteField(base, field, value);
+  }
 }
 
 }  // namespace sun
