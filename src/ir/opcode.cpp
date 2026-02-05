@@ -199,6 +199,7 @@ Opcode StringToOpcode(const std::string& name) {
     std::unordered_map<std::string, Opcode> m;
     // Control
     m["Start"] = Opcode::kStart;
+    m["StartOSR"] = Opcode::kStart;  // OSR (On-Stack Replacement) start
     m["If"] = Opcode::kIf;
     m["IfTrue"] = Opcode::kIfTrue;
     m["IfFalse"] = Opcode::kIfFalse;
@@ -211,6 +212,7 @@ Opcode StringToOpcode(const std::string& name) {
     m["ConI"] = Opcode::kConI;
     m["ConL"] = Opcode::kConL;
     m["ConP"] = Opcode::kConP;
+    m["Con"] = Opcode::kConI;  // Generic constant (assume int for now)
 
     // Arithmetic - Int32
     m["AddI"] = Opcode::kAddI;

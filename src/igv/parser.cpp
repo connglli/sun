@@ -88,6 +88,9 @@ class IGVParser::Impl {
     }
 
     std::string opcode_str = name_prop.child_value();
+    // Trim whitespace (IGV XML often has newlines around node names)
+    opcode_str.erase(0, opcode_str.find_first_not_of(" \t\n\r"));
+    opcode_str.erase(opcode_str.find_last_not_of(" \t\n\r") + 1);
     Opcode opcode = StringToOpcode(opcode_str);
 
     if (opcode == Opcode::kUnknown) {
@@ -104,6 +107,9 @@ class IGVParser::Impl {
       if (prop_name == "name") continue;  // Already handled
 
       std::string prop_value = p.child_value();
+      // Trim whitespace
+      prop_value.erase(0, prop_value.find_first_not_of(" \t\n\r"));
+      prop_value.erase(prop_value.find_last_not_of(" \t\n\r") + 1);
 
       // Try to parse as int32
       char* end;
