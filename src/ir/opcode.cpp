@@ -23,6 +23,8 @@ std::string OpcodeToString(Opcode op) {
       return "Return";
     case Opcode::kRoot:
       return "Root";
+    case Opcode::kHalt:
+      return "Halt";
 
     // Constants
     case Opcode::kConI:
@@ -107,6 +109,8 @@ std::string OpcodeToString(Opcode op) {
       return "ConvI2L";
     case Opcode::kConvL2I:
       return "ConvL2I";
+    case Opcode::kConv2B:
+      return "Conv2B";
     case Opcode::kCastII:
       return "CastII";
     case Opcode::kCastLL:
@@ -184,6 +188,18 @@ std::string OpcodeToString(Opcode op) {
     case Opcode::kAddP:
       return "AddP";
 
+    // Runtime/Optimization markers
+    case Opcode::kSafePoint:
+      return "SafePoint";
+    case Opcode::kOpaque1:
+      return "Opaque1";
+    case Opcode::kParsePredicate:
+      return "ParsePredicate";
+    case Opcode::kThreadLocal:
+      return "ThreadLocal";
+    case Opcode::kCallStaticJava:
+      return "CallStaticJava";
+
     // Unknown
     case Opcode::kUnknown:
       return "Unknown";
@@ -207,6 +223,7 @@ Opcode StringToOpcode(const std::string& name) {
     m["Goto"] = Opcode::kGoto;
     m["Return"] = Opcode::kReturn;
     m["Root"] = Opcode::kRoot;
+    m["Halt"] = Opcode::kHalt;
 
     // Constants
     m["ConI"] = Opcode::kConI;
@@ -257,6 +274,7 @@ Opcode StringToOpcode(const std::string& name) {
     // Casts/Conversions
     m["ConvI2L"] = Opcode::kConvI2L;
     m["ConvL2I"] = Opcode::kConvL2I;
+    m["Conv2B"] = Opcode::kConv2B;
     m["CastII"] = Opcode::kCastII;
     m["CastLL"] = Opcode::kCastLL;
     m["CastPP"] = Opcode::kCastPP;
@@ -305,6 +323,13 @@ Opcode StringToOpcode(const std::string& name) {
     // Address calculation
     m["AddP"] = Opcode::kAddP;
 
+    // Runtime/Optimization markers
+    m["SafePoint"] = Opcode::kSafePoint;
+    m["Opaque1"] = Opcode::kOpaque1;
+    m["ParsePredicate"] = Opcode::kParsePredicate;
+    m["ThreadLocal"] = Opcode::kThreadLocal;
+    m["CallStaticJava"] = Opcode::kCallStaticJava;
+
     return m;
   }();
 
@@ -325,6 +350,8 @@ bool IsControl(Opcode op) {
     case Opcode::kGoto:
     case Opcode::kReturn:
     case Opcode::kRoot:
+    case Opcode::kHalt:
+    case Opcode::kSafePoint:
       return true;
     default:
       return false;

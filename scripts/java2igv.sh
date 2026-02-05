@@ -116,13 +116,15 @@ echo "[3/4] Generating IGV XML dump..."
 IGV_FILE="${CLASS_NAME}_igv.xml"
 
 $JAVA_BIN \
+    -Xcomp \
     -XX:+UnlockDiagnosticVMOptions \
     -XX:+PrintIdeal \
     -XX:PrintIdealGraphLevel=2 \
     -XX:PrintIdealGraphFile="$IGV_FILE" \
-    -XX:CompileCommand=compileonly,${CLASS_NAME}.${METHOD_NAME} \
+    -XX:CompileCommand=compileonly,${CLASS_NAME}::${METHOD_NAME} \
     -XX:-TieredCompilation \
-    -XX:CompileThreshold=100 \
+    -XX:-UseOnStackReplacement \
+    -XX:-BackgroundCompilation \
     -XX:+PrintCompilation \
     $CLASS_NAME
 

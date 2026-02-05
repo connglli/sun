@@ -21,16 +21,7 @@ public class Fibonacci {
     }
 
     public static void main(String[] args) {
-        // Warm up
-        for (int i = 0; i < 10000; i++) {
-            compute(10);
-        }
-
-        // Test cases
-        System.out.println("fib(0) = " + compute(0));   // 0
-        System.out.println("fib(1) = " + compute(1));   // 1
-        System.out.println("fib(5) = " + compute(5));   // 5
-        System.out.println("fib(10) = " + compute(10)); // 55
-        System.out.println("fib(15) = " + compute(15)); // 610
+        // Force C2 compilation with -Xcomp flag
+        compute(10);
     }
 }

@@ -21,6 +21,7 @@ enum class Opcode {
   kGoto,
   kReturn,
   kRoot,
+  kHalt,  // Abnormal termination (e.g., unhandled exception)
 
   // Constants
   kConI,  // int32 constant
@@ -70,6 +71,7 @@ enum class Opcode {
   // Casts/Conversions
   kConvI2L,  // Sign-extend int32 to int64
   kConvL2I,  // Truncate int64 to int32
+  kConv2B,   // Convert to boolean (any non-zero -> 1, zero -> 0)
   kCastII,   // Type/range cast int32
   kCastLL,   // Type/range cast int64
   kCastPP,   // Type/nullness cast pointer
@@ -117,6 +119,13 @@ enum class Opcode {
 
   // Address calculation
   kAddP,  // Pointer/address arithmetic
+
+  // Runtime/Optimization markers
+  kSafePoint,       // GC safepoint (can be skipped in interpreter)
+  kOpaque1,         // Optimization barrier (pass-through in interpreter)
+  kParsePredicate,  // Profile-based prediction hint (can skip)
+  kThreadLocal,     // Access thread-local variable
+  kCallStaticJava,  // Static method call (often uncommon_trap - skip for now)
 
   // Unknown/unsupported
   kUnknown
