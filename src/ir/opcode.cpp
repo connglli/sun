@@ -451,4 +451,122 @@ bool IsMerge(Opcode op) {
   return op == Opcode::kPhi || op == Opcode::kRegion || op == Opcode::kMergeMem;
 }
 
+NodeSchema GetSchema(Opcode op) {
+  switch (op) {
+    // S7: Start node
+    case Opcode::kStart:
+    case Opcode::kRoot:
+      return NodeSchema::kS7_Start;
+
+    // S1: Control nodes (control input + optional condition)
+    case Opcode::kIf:
+    case Opcode::kIfTrue:
+    case Opcode::kIfFalse:
+    case Opcode::kGoto:
+    case Opcode::kHalt:
+    case Opcode::kSafePoint:
+      return NodeSchema::kS1_Control;
+
+    // S2: Merge/Phi nodes (control predecessors + values/states)
+    case Opcode::kRegion:
+    case Opcode::kPhi:
+    case Opcode::kMergeMem:
+      return NodeSchema::kS2_Merge;
+
+    // S3: Load operations (control + memory + address)
+    case Opcode::kLoadB:
+    case Opcode::kLoadUB:
+    case Opcode::kLoadS:
+    case Opcode::kLoadUS:
+    case Opcode::kLoadI:
+    case Opcode::kLoadL:
+    case Opcode::kLoadP:
+    case Opcode::kLoadN:
+      return NodeSchema::kS3_Load;
+
+    // S4: Store operations (control + memory + address + value)
+    case Opcode::kStoreB:
+    case Opcode::kStoreC:
+    case Opcode::kStoreI:
+    case Opcode::kStoreL:
+    case Opcode::kStoreP:
+    case Opcode::kStoreN:
+      return NodeSchema::kS4_Store;
+
+    // S5: Allocation (control + memory + properties)
+    case Opcode::kAllocate:
+    case Opcode::kAllocateArray:
+      return NodeSchema::kS5_Allocate;
+
+    // S6: Return (control + memory + optional value)
+    case Opcode::kReturn:
+      return NodeSchema::kS6_Return;
+
+    // S8: Projection (multi-output source)
+    case Opcode::kProj:
+      return NodeSchema::kS8_Projection;
+
+    // S9: Parameter (Start node)
+    case Opcode::kParm:
+      return NodeSchema::kS9_Parameter;
+
+    // S0: Pure computations (value inputs only)
+    case Opcode::kConI:
+    case Opcode::kConL:
+    case Opcode::kConP:
+    case Opcode::kAddI:
+    case Opcode::kSubI:
+    case Opcode::kMulI:
+    case Opcode::kDivI:
+    case Opcode::kModI:
+    case Opcode::kAbsI:
+    case Opcode::kAddL:
+    case Opcode::kSubL:
+    case Opcode::kMulL:
+    case Opcode::kDivL:
+    case Opcode::kModL:
+    case Opcode::kAbsL:
+    case Opcode::kAndI:
+    case Opcode::kOrI:
+    case Opcode::kXorI:
+    case Opcode::kLShiftI:
+    case Opcode::kRShiftI:
+    case Opcode::kURShiftI:
+    case Opcode::kAndL:
+    case Opcode::kOrL:
+    case Opcode::kXorL:
+    case Opcode::kLShiftL:
+    case Opcode::kRShiftL:
+    case Opcode::kURShiftL:
+    case Opcode::kCmpI:
+    case Opcode::kCmpL:
+    case Opcode::kCmpP:
+    case Opcode::kCmpU:
+    case Opcode::kCmpUL:
+    case Opcode::kBool:
+    case Opcode::kConvI2L:
+    case Opcode::kConvL2I:
+    case Opcode::kConv2B:
+    case Opcode::kCastII:
+    case Opcode::kCastLL:
+    case Opcode::kCastPP:
+    case Opcode::kCastX2P:
+    case Opcode::kCastP2X:
+    case Opcode::kCMoveI:
+    case Opcode::kCMoveL:
+    case Opcode::kCMoveP:
+    case Opcode::kAddP:
+    case Opcode::kOpaque1:
+    case Opcode::kParsePredicate:
+    case Opcode::kThreadLocal:
+      return NodeSchema::kS0_Pure;
+
+    // Unknown or special cases
+    case Opcode::kCallStaticJava:
+    case Opcode::kUnknown:
+    default:
+      return NodeSchema::kUnknown;
+  }
+}
+
 }  // namespace sun

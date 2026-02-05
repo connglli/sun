@@ -162,4 +162,32 @@ bool IsMemory(Opcode op);
  */
 bool IsMerge(Opcode op);
 
+/**
+ * Node schema classification.
+ * Defines the semantic input pattern for different node categories.
+ * Based on NODES.md schemas (S0-S11).
+ */
+enum class NodeSchema {
+  kS0_Pure,     // Pure computations (AddI, MulI, etc.) - value inputs only
+  kS1_Control,  // Control nodes (If, IfTrue, IfFalse, Goto) - control input +
+                // optional condition
+  kS2_Merge,  // Merge/Phi nodes (Phi, Region, MergeMem) - control predecessors
+              // + values/states
+  kS3_Load,   // Load operations - control + memory + address + properties
+  kS4_Store,  // Store operations - control + memory + address + value +
+              // properties
+  kS5_Allocate,    // Allocation nodes - control + memory + properties
+  kS6_Return,      // Return node - control + memory + optional value
+  kS7_Start,       // Start node - no inputs
+  kS8_Projection,  // Projection node - multi-output source
+  kS9_Parameter,   // Parameter node - Start node
+  kUnknown         // Unknown or unclassified schema
+};
+
+/**
+ * Get the semantic schema for an opcode.
+ * Determines the expected input pattern based on node type.
+ */
+NodeSchema GetSchema(Opcode op);
+
 }  // namespace sun
