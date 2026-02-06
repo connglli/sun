@@ -1,6 +1,7 @@
 #include "suntv/interp/interpreter.hpp"
 
 #include <algorithm>
+#include <functional>
 #include <optional>
 #include <queue>
 #include <set>
@@ -111,11 +112,16 @@ void Interpreter::UpdateRegionPhis(const Node* region, bool is_back_edge) {
   // Recompute Phi values without letting intermediate cached computations leak
   // out of the update.
   std::map<const Node*, Value> new_phi_values;
+  Logger::Info("  UpdateRegionPhis: evaluating " + std::to_string(phis.size()) +
+               " Phis");
   for (const Node* phi : phis) {
     updating_phi_ = phi;
+    Logger::Info("    Evaluating Phi node " + std::to_string(phi->id()));
     new_phi_values[phi] = EvalPhi(phi);
+    Logger::Info("    Phi node " + std::to_string(phi->id()) + " evaluated");
   }
   updating_phi_ = nullptr;
+  Logger::Info("  UpdateRegionPhis: all Phis evaluated");
 
   // Install new Phi seeds.
   for (const auto& [phi, v] : new_phi_values) {
@@ -171,7 +177,8 @@ void Interpreter::BuildControlSuccessors() {
          op == Opcode::kGoto || op == Opcode::kReturn || op == Opcode::kHalt ||
          op == Opcode::kSafePoint || op == Opcode::kParsePredicate ||
          op == Opcode::kCallStaticJava || op == Opcode::kRegion ||
-         op == Opcode::kProj || op == Opcode::kParm);
+         op == Opcode::kProj || op == Opcode::kParm ||
+         op == Opcode::kRangeCheck);
     if (!is_control_like) continue;
 
     // Region control predecessors can be at any index.
@@ -208,6 +215,7 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
 
 Outcome Interpreter::ExecuteWithHeap(const std::vector<Value>& inputs,
                                      const ConcreteHeap& initial_heap) {
+  Logger::Info("ExecuteWithHeap: starting");
   value_cache_.clear();
   region_predecessor_.clear();
   loop_iterations_.clear();
@@ -216,15 +224,21 @@ Outcome Interpreter::ExecuteWithHeap(const std::vector<Value>& inputs,
   phi_eval_stack_.clear();
   phi_update_active_.clear();
   phi_old_values_.clear();
+  memory_chain_visited_.clear();
   in_phi_update_ = false;
   updating_region_ = nullptr;
   updating_phi_ = nullptr;
 
+  Logger::Info("ExecuteWithHeap: calling BuildControlSuccessors");
   BuildControlSuccessors();
+  Logger::Info("ExecuteWithHeap: BuildControlSuccessors done");
 
   // Cache parameter values first
   // Get all parameter nodes and filter to data parameters only
+  Logger::Info("ExecuteWithHeap: getting parameter nodes");
   std::vector<Node*> all_params = graph_.GetParameterNodes();
+  Logger::Info("ExecuteWithHeap: got " + std::to_string(all_params.size()) +
+               " parameter nodes");
   std::vector<Node*> params;
 
   for (Node* p : all_params) {
@@ -281,16 +295,28 @@ Outcome Interpreter::ExecuteWithHeap(const std::vector<Value>& inputs,
     Value parm_val = EvalParm(parm_node, inputs);
     value_cache_[parm_node] = parm_val;
   }
+  Logger::Info("ExecuteWithHeap: parameter caching done");
 
   // Start control flow traversal from Start node
   Node* start = graph_.start();
   if (!start) {
     throw std::runtime_error("No Start node found in graph");
   }
+  Logger::Info("ExecuteWithHeap: starting control flow traversal");
 
   // Traverse control flow until we reach Return
   const Node* current_control = start;
+  int step_count = 0;
+  constexpr int kMaxControlSteps = 100000;
   while (current_control && current_control->opcode() != Opcode::kReturn) {
+    if (step_count++ > kMaxControlSteps) {
+      throw std::runtime_error("Control flow exceeded maximum steps (" +
+                               std::to_string(kMaxControlSteps) + ")");
+    }
+    if (step_count % 100 == 0) {
+      Logger::Debug("Control flow step " + std::to_string(step_count) +
+                    ": node " + std::to_string(current_control->id()));
+    }
     current_control = StepControl(current_control);
     if (!current_control) {
       break;
@@ -340,8 +366,8 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
   }
 
   Opcode op = ctrl->opcode();
-  Logger::Trace("StepControl: node " + std::to_string(ctrl->id()) + " (" +
-                OpcodeToString(op) + ")");
+  Logger::Info("StepControl: node " + std::to_string(ctrl->id()) + " (" +
+               OpcodeToString(op) + ")");
 
   switch (op) {
     case Opcode::kStart:
@@ -399,6 +425,70 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
       throw std::runtime_error("If node has no IfTrue/IfFalse successors");
     }
 
+    case Opcode::kRangeCheck: {
+      // RangeCheck: Array bounds check that branches on success/failure
+      // Inputs: [0] control, [1] Bool node (comparison result)
+      // Outputs: IfTrue (bounds OK), IfFalse (out of bounds)
+      // Similar to If node, but specifically for array bounds checking
+
+      Logger::Info("StepControl: handling RangeCheck node " +
+                   std::to_string(ctrl->id()));
+
+      auto value_inputs = ctrl->value_inputs();
+      Logger::Info("  Got " + std::to_string(value_inputs.size()) +
+                   " value inputs");
+      if (value_inputs.empty()) {
+        throw std::runtime_error("RangeCheck node needs Bool condition input");
+      }
+
+      // Evaluate the condition (Bool node that computes the bounds check)
+      Logger::Info("  About to evaluate Bool condition node " +
+                   std::to_string(value_inputs[0]->id()));
+      Value cond = EvalNode(value_inputs[0]);
+      Logger::Info("  Condition evaluated");
+
+      bool bounds_ok = false;
+      if (cond.is_bool()) {
+        bounds_ok = cond.as_bool();
+      } else if (cond.is_i32()) {
+        // C2 sometimes uses int as bool (non-zero = true)
+        bounds_ok = (cond.as_i32() != 0);
+      } else {
+        throw std::runtime_error("RangeCheck condition must be boolean or int");
+      }
+
+      Logger::Info("  Bounds check result: " +
+                   std::string(bounds_ok ? "OK" : "FAIL"));
+      Logger::Trace(
+          "  RangeCheck condition evaluated to: " +
+          std::string(bounds_ok ? "true (OK)" : "false (OUT_OF_BOUNDS)"));
+
+      // Find IfTrue or IfFalse successor based on bounds check result
+      Logger::Info("  Looking for successors");
+      auto it_succs = control_successors_.find(ctrl);
+      if (it_succs != control_successors_.end()) {
+        Logger::Info("  Found " + std::to_string(it_succs->second.size()) +
+                     " successors");
+        for (const Node* s : it_succs->second) {
+          if (!s) continue;
+          Logger::Info("    Checking successor node " +
+                       std::to_string(s->id()) + " (" +
+                       OpcodeToString(s->opcode()) + ")");
+          if (bounds_ok && s->opcode() == Opcode::kIfTrue) {
+            Logger::Info("    Taking IfTrue branch");
+            return s;
+          }
+          if (!bounds_ok && s->opcode() == Opcode::kIfFalse) {
+            Logger::Info("    Taking IfFalse branch");
+            return s;
+          }
+        }
+      }
+
+      throw std::runtime_error(
+          "RangeCheck node has no IfTrue/IfFalse successors");
+    }
+
     case Opcode::kRegion: {
       // Control merge point
       // We cannot reliably identify loop headers structurally from a raw C2 IGV
@@ -419,16 +509,22 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
         if (it == loop_iterations_.end()) {
           // First time we enter this Region: seed Phi caches for the entry
           // predecessor.
+          Logger::Info("  Region first visit, seeding Phis");
           loop_iterations_[ctrl] = 0;
           UpdateRegionPhis(ctrl, /*is_back_edge=*/false);
+          Logger::Info("  Region Phi seeding complete");
         } else {
           const int iter_count = it->second;
+          Logger::Info("  Region revisit, iteration " +
+                       std::to_string(iter_count));
           if (iter_count >= kMaxLoopIterations) {
             throw std::runtime_error("Loop exceeded maximum iterations (" +
                                      std::to_string(kMaxLoopIterations) + ")");
           }
           it->second = iter_count + 1;
+          Logger::Info("  Updating Region Phis for back-edge");
           UpdateRegionPhis(ctrl, /*is_back_edge=*/true);
+          Logger::Info("  Region Phi update complete");
         }
       }
 
@@ -483,6 +579,8 @@ const Node* Interpreter::FindControlSuccessor(const Node* ctrl) {
 
   auto it = control_successors_.find(ctrl);
   if (it == control_successors_.end()) {
+    Logger::Warn("FindControlSuccessor: node " + std::to_string(ctrl->id()) +
+                 " (" + OpcodeToString(ctrl->opcode()) + ") has no successors");
     return nullptr;
   }
 
@@ -495,7 +593,8 @@ const Node* Interpreter::FindControlSuccessor(const Node* ctrl) {
         op == Opcode::kIfFalse || op == Opcode::kGoto ||
         op == Opcode::kReturn || op == Opcode::kHalt ||
         op == Opcode::kSafePoint || op == Opcode::kParsePredicate ||
-        op == Opcode::kCallStaticJava || op == Opcode::kProj) {
+        op == Opcode::kCallStaticJava || op == Opcode::kProj ||
+        op == Opcode::kRangeCheck) {
       return true;
     }
     if (op == Opcode::kParm && s->has_prop("type")) {
@@ -513,6 +612,13 @@ const Node* Interpreter::FindControlSuccessor(const Node* ctrl) {
     if (is_candidate(s)) candidates.push_back(s);
   }
   if (candidates.empty()) {
+    Logger::Warn("FindControlSuccessor: node " + std::to_string(ctrl->id()) +
+                 " has " + std::to_string(succs.size()) +
+                 " successors but none are control candidates");
+    for (const Node* s : succs) {
+      Logger::Warn("  - successor node " + std::to_string(s->id()) + " (" +
+                   OpcodeToString(s->opcode()) + ")");
+    }
     return nullptr;
   }
   if (candidates.size() == 1) {
@@ -534,6 +640,7 @@ const Node* Interpreter::FindControlSuccessor(const Node* ctrl) {
         return 1000;
       case Opcode::kIf:
       case Opcode::kParsePredicate:
+      case Opcode::kRangeCheck:
         return 2;
       case Opcode::kIfTrue:
       case Opcode::kIfFalse:
@@ -687,6 +794,13 @@ const Node* Interpreter::SelectPhiInputNode(const Node* phi,
 Value Interpreter::EvalNode(const Node* n) {
   if (!n) {
     throw std::runtime_error("EvalNode called with null node");
+  }
+
+  static int eval_count = 0;
+  if (++eval_count % 1000 == 0) {
+    Logger::Debug("EvalNode call #" + std::to_string(eval_count) + ": node " +
+                  std::to_string(n->id()) + " (" + OpcodeToString(n->opcode()) +
+                  ")");
   }
 
   // During loop back-edge Phi updates, force all loop Phi reads to use the
@@ -1236,11 +1350,14 @@ Value Interpreter::EvalCmpOp(const Node* n) {
 }
 
 Value Interpreter::EvalPhi(const Node* n) {
+  Logger::Info("      EvalPhi: Phi node " + std::to_string(n->id()));
   // Outside of explicit back-edge update mode, Phi cycles are a bug in our
   // predecessor tracking / input selection and should be reported, not crash.
   const bool in_update_for_this_region = in_phi_update_ &&
                                          updating_region_ != nullptr &&
                                          n->region_input() == updating_region_;
+  Logger::Info("        in_update_for_this_region=" +
+               std::string(in_update_for_this_region ? "true" : "false"));
   if (!in_update_for_this_region) {
     if (phi_eval_stack_.count(n) > 0) {
       throw std::runtime_error("Cyclic Phi evaluation detected (phi=" +
@@ -1316,8 +1433,12 @@ Value Interpreter::EvalPhi(const Node* n) {
   // recursion).
   const bool allow_self = in_phi_update_ && updating_region_ != nullptr &&
                           n->region_input() == updating_region_;
+  Logger::Info("        Selecting Phi input, allow_self=" +
+               std::string(allow_self ? "true" : "false"));
   const Node* selected =
       SelectPhiInputNode(n, active_pred, /*allow_self=*/allow_self);
+  Logger::Info("        Selected node " +
+               (selected ? std::to_string(selected->id()) : "NULL"));
   if (selected == nullptr) {
     throw std::runtime_error(
         "Phi node: could not select input (phi=" + std::to_string(n->id()) +
@@ -1346,7 +1467,11 @@ Value Interpreter::EvalPhi(const Node* n) {
     phi_update_active_.insert(n);
   }
 
+  Logger::Info("        About to EvalNode on selected=" +
+               std::to_string(selected->id()) + " (" +
+               OpcodeToString(selected->opcode()) + ")");
   Value result = EvalNode(selected);
+  Logger::Info("        EvalNode complete");
   return result;
 }
 
@@ -1534,6 +1659,9 @@ Value Interpreter::EvalLoad(const Node* n) {
     throw std::runtime_error("Load needs at least control, memory, and base");
   }
 
+  // Clear memory chain visited set before processing this load's memory chain
+  memory_chain_visited_.clear();
+
   // Process memory chain (execute any Store nodes in the chain)
   Node* mem = n->input(1);
   ProcessMemoryChain(mem);
@@ -1546,22 +1674,110 @@ Value Interpreter::EvalLoad(const Node* n) {
   Ref base = base_val.as_ref();
 
   // Check if this is array access
-  bool is_array = n->has_prop("array") && std::get<bool>(n->prop("array"));
+  // C2 can indicate arrays in multiple ways:
+  // 1. Explicit 'array' property
+  // 2. dump_spec contains "@type[...]" (array type signature)
+  // 3. Address is computed via AddP (pointer arithmetic for array indexing)
+  bool is_array = false;
+  if (n->has_prop("array")) {
+    is_array = std::get<bool>(n->prop("array"));
+  } else if (n->has_prop("dump_spec")) {
+    std::string spec = std::get<std::string>(n->prop("dump_spec"));
+    is_array = (spec.find('[') != std::string::npos);  // Array type signature
+  } else if (n->num_inputs() >= 3) {
+    // Check if address input is AddP (array address arithmetic)
+    const Node* addr = n->input(2);
+    is_array = (addr && addr->opcode() == Opcode::kAddP);
+  }
 
   if (is_array) {
-    // Array access: needs index
-    if (n->num_inputs() < 4) {
-      throw std::runtime_error("Array load needs index");
-    }
-    Value idx_val = EvalNode(n->input(3));
-    if (!idx_val.is_i32()) {
-      throw std::runtime_error("Array index must be i32");
-    }
-    int32_t index = idx_val.as_i32();
+    // Array access via AddP: the address node encodes both base and index
+    // We need to extract the actual array base and index from AddP inputs
+    if (n->num_inputs() >= 4) {
+      // Traditional array load: input[2]=base, input[3]=index
+      Value idx_val = EvalNode(n->input(3));
+      if (!idx_val.is_i32()) {
+        throw std::runtime_error("Array index must be i32");
+      }
+      int32_t index = idx_val.as_i32();
+      Value elem = heap_.ReadArray(base, index);
+      return elem;
+    } else if (n->num_inputs() == 3 && n->input(2)->opcode() == Opcode::kAddP) {
+      // Optimized array load via AddP
+      // AddP structure: input[1]=base_array, input[2]=offset/index,
+      // input[3]=scale
+      const Node* addp = n->input(2);
+      if (addp->num_inputs() < 3) {
+        throw std::runtime_error(
+            "AddP for array access needs at least 3 inputs");
+      }
 
-    // Load from array
-    Value elem = heap_.ReadArray(base, index);
-    return elem;
+      // Extract base array from AddP input[1]
+      Value actual_base = EvalNode(addp->input(1));
+      if (!actual_base.is_ref()) {
+        throw std::runtime_error("AddP base must be array reference");
+      }
+
+      // Extract index from AddP computation by recursively searching for the
+      // index Pattern: LShiftL(ConvI2L(index), scale) or similar
+      std::function<bool(const Node*, int32_t&)> extract_index;
+      extract_index = [&](const Node* node, int32_t& out_index) -> bool {
+        if (!node) return false;
+
+        Opcode op = node->opcode();
+
+        // If this is a shift operation, check its first input
+        if (op == Opcode::kLShiftL || op == Opcode::kLShiftI) {
+          if (node->num_inputs() >= 2) {
+            const Node* val = node->input(1);
+            if (val && val->opcode() == Opcode::kConvI2L &&
+                val->num_inputs() >= 2) {
+              Value idx = EvalNode(val->input(1));
+              if (idx.is_i32()) {
+                out_index = idx.as_i32();
+                return true;
+              }
+            }
+            // Try evaluating directly
+            Value idx = EvalNode(val);
+            if (idx.is_i32()) {
+              out_index = idx.as_i32();
+              return true;
+            }
+          }
+        }
+
+        // If this is AddP, recursively check its inputs
+        if (op == Opcode::kAddP) {
+          for (size_t i = 1; i < node->num_inputs(); ++i) {
+            if (extract_index(node->input(i), out_index)) {
+              return true;
+            }
+          }
+        }
+
+        // Try evaluating this node directly
+        Value val = EvalNode(node);
+        if (val.is_i32()) {
+          out_index = val.as_i32();
+          return true;
+        }
+
+        return false;
+      };
+
+      int32_t index = -1;
+      if (!extract_index(addp, index)) {
+        throw std::runtime_error(
+            "Could not extract i32 array index from AddP address computation");
+      }
+
+      // Successfully extracted index, now read from array
+      Value elem = heap_.ReadArray(actual_base.as_ref(), index);
+      return elem;
+    } else {
+      throw std::runtime_error("Array load structure not recognized");
+    }
   } else {
     // Field access
     if (!n->has_prop("field")) {
@@ -1577,6 +1793,12 @@ Value Interpreter::EvalLoad(const Node* n) {
 void Interpreter::ProcessMemoryChain(const Node* mem) {
   // Process Store nodes in memory chain
   if (!mem) return;
+
+  // Cycle detection: memory chains can have cycles through memory Phis
+  if (memory_chain_visited_.count(mem) > 0) {
+    return;  // Already processed this node in this chain walk
+  }
+  memory_chain_visited_.insert(mem);
 
   Opcode op = mem->opcode();
 

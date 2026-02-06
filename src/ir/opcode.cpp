@@ -477,6 +477,7 @@ NodeSchema GetSchema(Opcode op) {
     // S1: Control nodes (control input + optional condition)
     case Opcode::kIf:
     case Opcode::kParsePredicate:  // ParsePredicate branches like If
+    case Opcode::kRangeCheck:      // RangeCheck branches like If on bounds
     case Opcode::kIfTrue:
     case Opcode::kIfFalse:
     case Opcode::kGoto:

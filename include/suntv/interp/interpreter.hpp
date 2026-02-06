@@ -72,7 +72,7 @@ class Interpreter {
   std::map<const Node*, int> loop_iterations_;
 
   // Maximum loop iterations before aborting (prevent infinite loops)
-  static constexpr int kMaxLoopIterations = 10000;
+  static constexpr int kMaxLoopIterations = 100;
 
   // Heap state
   ConcreteHeap heap_;
@@ -86,6 +86,9 @@ class Interpreter {
 
   // Detect accidental cyclic Phi evaluation outside of update mode.
   std::set<const Node*> phi_eval_stack_;
+
+  // Track visited memory nodes to prevent infinite recursion in memory chain
+  std::set<const Node*> memory_chain_visited_;
 
   // Main control flow traversal
   const Node* StepControl(const Node* ctrl);
