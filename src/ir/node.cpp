@@ -92,8 +92,15 @@ std::vector<Node*> Node::value_inputs() const {
   size_t start_idx = 0;
   switch (s) {
     case NodeSchema::kS0_Pure:
-      // All inputs are values
+      // Most pure nodes have only value inputs.
+      // However, in HotSpot C2 some "pure" ops can be *pinned* and carry an
+      // explicit control dependency in input[0] (e.g., ModI in some graphs).
+      // Treat a leading control input as non-value.
       start_idx = 0;
+      if (num_inputs() > 0 && inputs_[0] != nullptr &&
+          IsControl(inputs_[0]->opcode())) {
+        start_idx = 1;
+      }
       break;
 
     case NodeSchema::kS1_Control:
@@ -136,6 +143,13 @@ std::vector<Node*> Node::value_inputs() const {
 
     case NodeSchema::kS9_Parameter:
       // Parm: input[0] = Start node
+      start_idx = 1;
+      break;
+
+    case NodeSchema::kS8_Projection:
+      // Proj: input[0] = source (often a tuple/control producer).
+      // Some unit tests model Proj as having an explicit projected value in
+      // input[1]. Treat inputs[1..] as value inputs.
       start_idx = 1;
       break;
 

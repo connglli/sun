@@ -10,16 +10,28 @@ Implementation: **C++** with **Bitwuzla** as the SMT backend.
 
 ## Scope and Assumptions
 
-The initial prototype supports SoN graphs restricted to:
+### Translation Validator (`suntv`)
+
+The `suntv` symbolic validator restricts graphs to:
 
 - **fp-free**
-- **loop-free**
+- **loop-free** (requires bounded unrolling for SMT encoding)
 - **call-free**
 - **deopt-free**
 - **volatile-free**
 - **synchronization-free**
 - **exception allowed**
 - **allocation allowed**
+
+### Interpreter (`suni`)
+
+The `suni` concrete interpreter supports:
+
+- **loops allowed** (concrete execution iterates naturally)
+- **exception handling**
+- **allocation**
+
+Loop-free restriction applies only to `suntv`, not `suni`.
 
 The modeled observable behaviors are:
 - `Return(value, heap)` and `Throw(kind, heap)`.

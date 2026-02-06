@@ -4,6 +4,11 @@
 
 namespace sun {
 
+static Value WidenI32ToI64(Value v) {
+  if (v.is_i32()) return Value::MakeI64(v.as_i32());
+  return v;
+}
+
 // Arithmetic - Int32
 Value Evaluator::EvalAddI(Value a, Value b) {
   return Value::MakeI32(a.as_i32() + b.as_i32());
@@ -39,18 +44,26 @@ Value Evaluator::EvalAbsI(Value a) {
 
 // Arithmetic - Int64
 Value Evaluator::EvalAddL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() + b.as_i64());
 }
 
 Value Evaluator::EvalSubL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() - b.as_i64());
 }
 
 Value Evaluator::EvalMulL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() * b.as_i64());
 }
 
 Value Evaluator::EvalDivL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   int64_t bv = b.as_i64();
   if (bv == 0) {
     throw EvalException("Division by zero");
@@ -59,6 +72,8 @@ Value Evaluator::EvalDivL(Value a, Value b) {
 }
 
 Value Evaluator::EvalModL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   int64_t bv = b.as_i64();
   if (bv == 0) {
     throw EvalException("Modulo by zero");
@@ -67,6 +82,7 @@ Value Evaluator::EvalModL(Value a, Value b) {
 }
 
 Value Evaluator::EvalAbsL(Value a) {
+  a = WidenI32ToI64(a);
   return Value::MakeI64(std::llabs(a.as_i64()));
 }
 
@@ -98,26 +114,38 @@ Value Evaluator::EvalURShiftI(Value a, Value b) {
 
 // Bitwise - Int64
 Value Evaluator::EvalAndL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() & b.as_i64());
 }
 
 Value Evaluator::EvalOrL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() | b.as_i64());
 }
 
 Value Evaluator::EvalXorL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() ^ b.as_i64());
 }
 
 Value Evaluator::EvalLShiftL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() << (b.as_i64() & 0x3F));
 }
 
 Value Evaluator::EvalRShiftL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeI64(a.as_i64() >> (b.as_i64() & 0x3F));
 }
 
 Value Evaluator::EvalURShiftL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   uint64_t ua = static_cast<uint64_t>(a.as_i64());
   return Value::MakeI64(static_cast<int64_t>(ua >> (b.as_i64() & 0x3F)));
 }
@@ -149,18 +177,26 @@ Value Evaluator::EvalCmpGeI(Value a, Value b) {
 
 // Comparison - Int64
 Value Evaluator::EvalCmpLtL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeBool(a.as_i64() < b.as_i64());
 }
 
 Value Evaluator::EvalCmpLeL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeBool(a.as_i64() <= b.as_i64());
 }
 
 Value Evaluator::EvalCmpGtL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeBool(a.as_i64() > b.as_i64());
 }
 
 Value Evaluator::EvalCmpGeL(Value a, Value b) {
+  a = WidenI32ToI64(a);
+  b = WidenI32ToI64(b);
   return Value::MakeBool(a.as_i64() >= b.as_i64());
 }
 
@@ -179,6 +215,7 @@ Value Evaluator::EvalConvI2L(Value a) {
 }
 
 Value Evaluator::EvalConvL2I(Value a) {
+  a = WidenI32ToI64(a);
   return Value::MakeI32(static_cast<int32_t>(a.as_i64()));
 }
 

@@ -235,7 +235,7 @@ def step_control(ctrl, cache, heap):
 
     elif ctrl.opcode == Region:
         # Control merge point - continue to successor
-        # (Phi nodes hanging off this Region will select values)
+        # (Phi nodes attached to this Region are evaluated lazily when needed)
         return find_control_successor(ctrl)
 
     else:

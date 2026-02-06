@@ -87,6 +87,22 @@ TEST_F(AlgorithmTest, Factorial) {
     EXPECT_EQ(outcome.return_value->as_i32(), 1);
   }
 
+  // fact(3) = 6
+  {
+    auto outcome = ExecuteGraph("Factorial.xml", {Value::MakeI32(3)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 6);
+  }
+
+  // fact(4) = 24
+  {
+    auto outcome = ExecuteGraph("Factorial.xml", {Value::MakeI32(4)});
+    ASSERT_EQ(outcome.kind, Outcome::Kind::kReturn);
+    ASSERT_TRUE(outcome.return_value.has_value());
+    EXPECT_EQ(outcome.return_value->as_i32(), 24);
+  }
+
   // fact(5) = 120
   {
     auto outcome = ExecuteGraph("Factorial.xml", {Value::MakeI32(5)});

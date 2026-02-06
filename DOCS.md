@@ -26,19 +26,31 @@ A simple SoN implementation can be found in the [Simple](https://github.com/SeaO
 
 ## 3. Translation Validation on SoN: Assumptions
 
-Initial prototype restricts graphs to:
+### 3.1 Scope for `suntv` (Symbolic Translation Validator)
+
+The `suntv` tool (symbolic validator) restricts graphs to:
 
 ✅ fp-free<br/>
-✅ loop-free<br/>
+✅ **loop-free** (symbolic encoding requires bounded unrolling)<br/>
 ✅ call-free<br/>
 ✅ deopt-free<br/>
 ✅ volatile-free<br/>
 ✅ synchronization-free<br/>
 
-✅ exception allowed
+✅ exception allowed<br/>
 ✅ allocation allowed
 
-This removes concurrency/JMM and runtime calls while keeping meaningful memory + allocation behavior.
+This removes concurrency/JMM, loops, and runtime calls while keeping meaningful memory + allocation behavior for SMT-based validation.
+
+### 3.2 Scope for `suni` (Concrete Interpreter)
+
+The `suni` tool (concrete interpreter) supports:
+
+✅ **loops allowed** (concrete execution can iterate naturally)<br/>
+✅ exception handling<br/>
+✅ allocation<br/>
+
+Restrictions apply only to symbolic validation (`suntv`), not concrete execution (`suni`).
 
 
 ## 4. Translation Validation on SoN: Correctness Statement

@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <set>
 #include <vector>
 
 #include "suntv/interp/evaluator.hpp"
@@ -37,8 +38,21 @@ class Interpreter {
  private:
   const Graph& graph_;
 
+  // Precomputed control-flow successors (control producer -> control
+  // consumers). This avoids repeated global scans and makes traversal
+  // deterministic.
+  std::map<const Node*, std::vector<const Node*>> control_successors_;
+
   // Memoization: node -> computed value
   std::map<const Node*, Value> value_cache_;
+
+  // Recursion guard for value evaluation.
+  int eval_depth_ = 0;
+  // Keep this comfortably below typical stack overflow depth.
+  static constexpr int kMaxEvalDepth = 2000;
+
+  // Detect accidental cyclic value evaluation (not just Phi self-cycles).
+  std::set<const Node*> eval_active_;
 
   // Execution context: track which control predecessor was taken at each Region
   // This is needed for Phi node evaluation
@@ -53,14 +67,38 @@ class Interpreter {
   // Heap state
   ConcreteHeap heap_;
 
+  // Phi update mode (used to break recursive Phi definitions on back-edges)
+  bool in_phi_update_ = false;
+  const Node* updating_region_ = nullptr;
+  std::map<const Node*, Value> phi_old_values_;
+  const Node* updating_phi_ = nullptr;
+  std::set<const Node*> phi_update_active_;
+
+  // Detect accidental cyclic Phi evaluation outside of update mode.
+  std::set<const Node*> phi_eval_stack_;
+
   // Main control flow traversal
   const Node* StepControl(const Node* ctrl);
 
+  // Build control successor map once per graph.
+  void BuildControlSuccessors();
+
   // Find control successor for a given control node
-  const Node* FindControlSuccessor(const Node* ctrl) const;
+  const Node* FindControlSuccessor(const Node* ctrl);
 
   // Check if a Region is a loop header (has back-edge)
   bool IsLoopHeader(const Node* region) const;
+
+  // Select the Phi input corresponding to the active Region predecessor.
+  // Returns nullptr if a suitable input cannot be found.
+  // If allow_self is false, will not return the Phi node itself.
+  const Node* SelectPhiInputNode(const Node* phi, const Node* active_pred,
+                                 bool allow_self) const;
+
+  // Update cached Phi values for a Region on entry.
+  // For loop back-edges, this computes next-iteration Phi values using the
+  // previous iteration's Phi values (to avoid recursive self-dependence).
+  void UpdateRegionPhis(const Node* region, bool is_back_edge);
 
   // Evaluate a value-producing node (with memoization)
   Value EvalNode(const Node* n);

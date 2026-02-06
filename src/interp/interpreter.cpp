@@ -1,6 +1,7 @@
 #include "suntv/interp/interpreter.hpp"
 
 #include <algorithm>
+#include <optional>
 #include <queue>
 #include <set>
 
@@ -10,6 +11,127 @@
 #include "suntv/util/logging.hpp"
 
 namespace sun {
+
+static bool IsNonDataTypeString(const std::string& type) {
+  // C2 uses many non-data kinds that appear as "type" in IGV dumps.
+  // For our concrete interpreter, treat these as non-evaluable as Values.
+  return type == "control" || type == "memory" || type == "abIO" ||
+         type == "return_address" || type == "bottom";
+}
+
+static bool IsDataTypeString(const std::string& type) {
+  // Heuristic for scalar data values used in tests/fixtures:
+  // int:, long:, ptr:, etc. have trailing ':'; exclude known non-data kinds.
+  if (type.empty()) return false;
+  if (IsNonDataTypeString(type)) return false;
+  return type.back() == ':';
+}
+
+static bool IsDataPhiNode(const Node* n) {
+  if (!n || n->opcode() != Opcode::kPhi) return false;
+  // Some IGV phases/dumps can reference nodes that are absent from the parsed
+  // node list, leaving dangling input pointers. Be defensive here to avoid
+  // crashing while classifying Phis.
+  if (!n->has_prop("type")) {
+    // Manually-constructed unit tests often omit type; treat as data.
+    return true;
+  }
+  const std::string type = std::get<std::string>(n->prop("type"));
+  if (type == "memory" || type == "control" || type == "abIO" ||
+      type == "return_address") {
+    return false;
+  }
+  return IsDataTypeString(type);
+}
+
+void Interpreter::UpdateRegionPhis(const Node* region, bool is_back_edge) {
+  if (!region || region->opcode() != Opcode::kRegion) {
+    return;
+  }
+
+  auto prune_cache_keep_seeds = [&]() {
+    // After (re)seeding Phis, cached derived computations can become stale once
+    // Phi values change. Keep only constants/parameters and Phis.
+    auto it = value_cache_.begin();
+    while (it != value_cache_.end()) {
+      const Opcode vop = it->first->opcode();
+      const bool keep =
+          (vop == Opcode::kConI || vop == Opcode::kConL ||
+           vop == Opcode::kConP || vop == Opcode::kParm || vop == Opcode::kPhi);
+      if (keep) {
+        ++it;
+      } else {
+        it = value_cache_.erase(it);
+      }
+    }
+  };
+
+  // Snapshot old Phi values (from previous iteration) so that back-edge updates
+  // don't recursively depend on the new values being computed.
+  if (is_back_edge) {
+    phi_old_values_.clear();
+    in_phi_update_ = true;
+    updating_region_ = region;
+    updating_phi_ = nullptr;
+    for (Node* n : graph_.nodes()) {
+      if (n->opcode() != Opcode::kPhi) continue;
+      if (n->region_input() != region) continue;
+      if (!IsDataPhiNode(n)) continue;
+      auto it = value_cache_.find(n);
+      if (it != value_cache_.end()) {
+        phi_old_values_[n] = it->second;
+      }
+    }
+  }
+
+  // For back-edges, clear cached computed values so future evaluation uses the
+  // updated Phi seeds. We keep constants/parameters.
+  if (is_back_edge) {
+    auto it = value_cache_.begin();
+    while (it != value_cache_.end()) {
+      Opcode vop = it->first->opcode();
+      if (vop == Opcode::kConI || vop == Opcode::kConL ||
+          vop == Opcode::kConP || vop == Opcode::kParm) {
+        ++it;
+      } else {
+        it = value_cache_.erase(it);
+      }
+    }
+  }
+
+  // Collect data Phi nodes for this Region.
+  std::vector<const Node*> phis;
+  for (Node* n : graph_.nodes()) {
+    if (n->opcode() != Opcode::kPhi) continue;
+    if (n->region_input() != region) continue;
+    if (!IsDataPhiNode(n)) continue;
+    phis.push_back(n);
+  }
+
+  // Recompute Phi values without letting intermediate cached computations leak
+  // out of the update.
+  std::map<const Node*, Value> new_phi_values;
+  for (const Node* phi : phis) {
+    updating_phi_ = phi;
+    new_phi_values[phi] = EvalPhi(phi);
+  }
+  updating_phi_ = nullptr;
+
+  // Install new Phi seeds.
+  for (const auto& [phi, v] : new_phi_values) {
+    value_cache_[phi] = v;
+  }
+
+  // Ensure no stale derived values remain cached.
+  prune_cache_keep_seeds();
+
+  if (is_back_edge) {
+    in_phi_update_ = false;
+    updating_region_ = nullptr;
+    phi_old_values_.clear();
+    phi_update_active_.clear();
+  }
+}
 
 // Helper functions to categorize opcodes
 static bool IsArithmetic(Opcode op) {
@@ -35,11 +157,65 @@ static bool IsComparison(Opcode op) {
 
 Interpreter::Interpreter(const Graph& g) : graph_(g) {}
 
+void Interpreter::BuildControlSuccessors() {
+  control_successors_.clear();
+
+  // Build adjacency from inputs: for each node n, if it is a control node,
+  // record that it is a successor of its control input.
+  for (Node* n : graph_.nodes()) {
+    if (!n) continue;
+    const Opcode op = n->opcode();
+
+    const bool is_control_like =
+        (op == Opcode::kIf || op == Opcode::kIfTrue || op == Opcode::kIfFalse ||
+         op == Opcode::kGoto || op == Opcode::kReturn || op == Opcode::kHalt ||
+         op == Opcode::kSafePoint || op == Opcode::kParsePredicate ||
+         op == Opcode::kCallStaticJava || op == Opcode::kRegion ||
+         op == Opcode::kProj || op == Opcode::kParm);
+    if (!is_control_like) continue;
+
+    // Region control predecessors can be at any index.
+    if (op == Opcode::kRegion) {
+      for (size_t i = 0; i < n->num_inputs(); ++i) {
+        const Node* pred = n->input(i);
+        if (!pred) continue;
+        // C2 Regions often have a self-edge placeholder at input[0] for loops.
+        // It is not a real control predecessor for our concrete traversal.
+        if (pred == n) continue;
+        control_successors_[pred].push_back(n);
+      }
+      continue;
+    }
+
+    // All other control-ish nodes use input[0] as control.
+    if (n->num_inputs() == 0) continue;
+    const Node* pred = n->input(0);
+    if (!pred) continue;
+    control_successors_[pred].push_back(n);
+  }
+
+  // Determinize iteration order.
+  for (auto& [pred, succs] : control_successors_) {
+    std::sort(succs.begin(), succs.end(),
+              [](const Node* a, const Node* b) { return a->id() < b->id(); });
+    succs.erase(std::unique(succs.begin(), succs.end()), succs.end());
+  }
+}
+
 Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   value_cache_.clear();
   region_predecessor_.clear();
   loop_iterations_.clear();
   heap_ = ConcreteHeap();  // Reset heap
+  eval_active_.clear();
+  phi_eval_stack_.clear();
+  phi_update_active_.clear();
+  phi_old_values_.clear();
+  in_phi_update_ = false;
+  updating_region_ = nullptr;
+  updating_phi_ = nullptr;
+
+  BuildControlSuccessors();
 
   // Cache parameter values first
   // Get all parameter nodes and filter to data parameters only
@@ -111,6 +287,9 @@ Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
   const Node* current_control = start;
   while (current_control && current_control->opcode() != Opcode::kReturn) {
     current_control = StepControl(current_control);
+    if (!current_control) {
+      break;
+    }
   }
 
   if (!current_control) {
@@ -156,7 +335,7 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
   }
 
   Opcode op = ctrl->opcode();
-  Logger::Debug("StepControl: node " + std::to_string(ctrl->id()) + " (" +
+  Logger::Trace("StepControl: node " + std::to_string(ctrl->id()) + " (" +
                 OpcodeToString(op) + ")");
 
   switch (op) {
@@ -164,18 +343,25 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
     case Opcode::kGoto:
     case Opcode::kIfTrue:
     case Opcode::kIfFalse:
-    case Opcode::kParm:  // Parm nodes act as control projections in C2
+    case Opcode::kParm:       // Parm nodes act as control projections in C2
+    case Opcode::kSafePoint:  // SafePoint is a control pass-through
+    case Opcode::kProj:       // Proj can also be a control projection in C2
+    case Opcode::kCallStaticJava:  // Often uncommon_trap; assume no deopt
       // Simple pass-through: find successor
       return FindControlSuccessor(ctrl);
 
-    case Opcode::kIf: {
-      // Evaluate condition and choose branch
-      if (ctrl->num_inputs() < 2) {
-        throw std::runtime_error("If node needs condition input");
+    case Opcode::kIf:
+    case Opcode::kParsePredicate: {
+      // If and ParsePredicate: evaluate condition and choose branch
+      // Use schema-aware accessor to get value inputs
+      auto value_inputs = ctrl->value_inputs();
+      if (value_inputs.empty()) {
+        throw std::runtime_error(std::string(OpcodeToString(ctrl->opcode())) +
+                                 " node needs condition value input");
       }
 
       // Evaluate condition (this may recursively evaluate data subgraph)
-      Value cond = EvalNode(ctrl->input(1));
+      Value cond = EvalNode(value_inputs[0]);
 
       bool branch_taken = false;
       if (cond.is_bool()) {
@@ -187,16 +373,20 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
         throw std::runtime_error("If condition must be boolean or int");
       }
 
-      Logger::Debug("  If condition evaluated to: " +
+      Logger::Trace("  If condition evaluated to: " +
                     std::string(branch_taken ? "true" : "false"));
 
-      // Find the corresponding IfTrue or IfFalse successor
-      for (Node* n : graph_.nodes()) {
-        if (n->num_inputs() > 0 && n->input(0) == ctrl) {
-          if (branch_taken && n->opcode() == Opcode::kIfTrue) {
-            return n;
-          } else if (!branch_taken && n->opcode() == Opcode::kIfFalse) {
-            return n;
+      // Find the corresponding IfTrue or IfFalse successor (use precomputed
+      // adjacency to avoid scanning and to match our traversal).
+      auto it_succs = control_successors_.find(ctrl);
+      if (it_succs != control_successors_.end()) {
+        for (const Node* s : it_succs->second) {
+          if (!s) continue;
+          if (branch_taken && s->opcode() == Opcode::kIfTrue) {
+            return s;
+          }
+          if (!branch_taken && s->opcode() == Opcode::kIfFalse) {
+            return s;
           }
         }
       }
@@ -206,33 +396,48 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
 
     case Opcode::kRegion: {
       // Control merge point
-      // Check if this is a loop header
-      if (IsLoopHeader(ctrl)) {
-        // Determine which input we came from
-        const Node* predecessor = region_predecessor_.count(ctrl) > 0
-                                      ? region_predecessor_[ctrl]
-                                      : nullptr;
+      // We cannot reliably identify loop headers structurally from a raw C2 IGV
+      // dump without CFG analysis. Instead, treat any Region that is revisited
+      // during execution as part of a loop and update its data Phis on
+      // subsequent visits.
+      bool has_data_phi = false;
+      for (Node* n : graph_.nodes()) {
+        if (!IsDataPhiNode(n)) continue;
+        if (n->region_input() == ctrl) {
+          has_data_phi = true;
+          break;
+        }
+      }
 
-        // Only count iterations when we arrive via the back-edge
-        // For a self-loop (input[0] == ctrl), the back-edge is when
-        // predecessor == ctrl (coming from the Region itself)
-        bool is_back_edge = (predecessor == ctrl);
-
-        if (is_back_edge) {
-          // Loop iteration: check iteration count
-          int iter_count = loop_iterations_[ctrl];
+      if (has_data_phi) {
+        auto it = loop_iterations_.find(ctrl);
+        if (it == loop_iterations_.end()) {
+          // First time we enter this Region: seed Phi caches for the entry
+          // predecessor.
+          loop_iterations_[ctrl] = 0;
+          UpdateRegionPhis(ctrl, /*is_back_edge=*/false);
+        } else {
+          const int iter_count = it->second;
           if (iter_count >= kMaxLoopIterations) {
             throw std::runtime_error("Loop exceeded maximum iterations (" +
                                      std::to_string(kMaxLoopIterations) + ")");
           }
-          loop_iterations_[ctrl] = iter_count + 1;
-
-          Logger::Debug("  Loop iteration " + std::to_string(iter_count + 1));
+          it->second = iter_count + 1;
+          UpdateRegionPhis(ctrl, /*is_back_edge=*/true);
         }
       }
 
       // Continue to successor
       return FindControlSuccessor(ctrl);
+    }
+
+    case Opcode::kHalt: {
+      // Halt nodes appear in IGV dumps for uncommon traps and deopt paths.
+      // In this concrete interpreter prototype, reaching Halt means we've
+      // stepped onto an invalid/unsupported control path.
+      throw std::runtime_error(
+          "Reached Halt control node (likely uncommon trap): node " +
+          std::to_string(ctrl->id()));
     }
 
     default:
@@ -241,50 +446,149 @@ const Node* Interpreter::StepControl(const Node* ctrl) {
   }
 }
 
-const Node* Interpreter::FindControlSuccessor(const Node* ctrl) const {
-  // Find the node that uses ctrl as its control input
-  // Most nodes use input[0] for control
+static bool PropIsTrue(const Node* n, const std::string& key) {
+  if (!n || !n->has_prop(key)) return false;
+  const Property p = n->prop(key);
+  if (std::holds_alternative<bool>(p)) return std::get<bool>(p);
+  if (std::holds_alternative<int32_t>(p)) return std::get<int32_t>(p) != 0;
+  if (std::holds_alternative<int64_t>(p)) return std::get<int64_t>(p) != 0;
+  if (std::holds_alternative<std::string>(p)) {
+    const std::string& s = std::get<std::string>(p);
+    return s == "true" || s == "True" || s == "1";
+  }
+  return false;
+}
 
-  for (Node* n : graph_.nodes()) {
-    if (n->num_inputs() > 0 && n->input(0) == ctrl) {
-      // Check if this is a control node
-      Opcode op = n->opcode();
-      if (op == Opcode::kIf || op == Opcode::kIfTrue ||
-          op == Opcode::kIfFalse || op == Opcode::kRegion ||
-          op == Opcode::kGoto || op == Opcode::kReturn) {
-        // Before returning, if this is a Region, record where we came from
-        if (op == Opcode::kRegion) {
-          // We need to record which input of the Region corresponds to ctrl
-          // This is used by Phi nodes
-          const_cast<Interpreter*>(this)->region_predecessor_[n] = ctrl;
-        }
-        return n;
-      }
+static std::optional<int64_t> PropAsI64(const Node* n, const std::string& key) {
+  if (!n || !n->has_prop(key)) return std::nullopt;
+  const Property p = n->prop(key);
+  if (std::holds_alternative<int32_t>(p)) return std::get<int32_t>(p);
+  if (std::holds_alternative<int64_t>(p)) return std::get<int64_t>(p);
+  if (std::holds_alternative<std::string>(p)) {
+    const std::string& s = std::get<std::string>(p);
+    char* end = nullptr;
+    long long v = std::strtoll(s.c_str(), &end, 10);
+    if (end != s.c_str() && *end == '\0') return static_cast<int64_t>(v);
+  }
+  return std::nullopt;
+}
 
-      // Parm can be control projection in C2, but only if type="control"
-      if (op == Opcode::kParm) {
-        if (n->has_prop("type")) {
-          std::string type = std::get<std::string>(n->prop("type"));
-          if (type == "control") {
-            return n;
-          }
-        }
-      }
-    }
+const Node* Interpreter::FindControlSuccessor(const Node* ctrl) {
+  if (!ctrl) return nullptr;
 
-    // For Region nodes, check all inputs (not just input[0])
-    if (n->opcode() == Opcode::kRegion) {
-      for (size_t i = 0; i < n->num_inputs(); ++i) {
-        if (n->input(i) == ctrl) {
-          // Record predecessor
-          const_cast<Interpreter*>(this)->region_predecessor_[n] = ctrl;
-          return n;
-        }
-      }
-    }
+  auto it = control_successors_.find(ctrl);
+  if (it == control_successors_.end()) {
+    return nullptr;
   }
 
-  return nullptr;  // No successor (end of control flow)
+  const auto& succs = it->second;
+
+  auto is_candidate = [](const Node* s) -> bool {
+    if (!s) return false;
+    const Opcode op = s->opcode();
+    if (op == Opcode::kRegion || op == Opcode::kIf || op == Opcode::kIfTrue ||
+        op == Opcode::kIfFalse || op == Opcode::kGoto ||
+        op == Opcode::kReturn || op == Opcode::kHalt ||
+        op == Opcode::kSafePoint || op == Opcode::kParsePredicate ||
+        op == Opcode::kCallStaticJava || op == Opcode::kProj) {
+      return true;
+    }
+    if (op == Opcode::kParm && s->has_prop("type")) {
+      const Property p = s->prop("type");
+      if (std::holds_alternative<std::string>(p)) {
+        return std::get<std::string>(p) == "control";
+      }
+    }
+    return false;
+  };
+
+  std::vector<const Node*> candidates;
+  candidates.reserve(succs.size());
+  for (const Node* s : succs) {
+    if (is_candidate(s)) candidates.push_back(s);
+  }
+  if (candidates.empty()) {
+    return nullptr;
+  }
+  if (candidates.size() == 1) {
+    const Node* chosen = candidates.front();
+    if (chosen->opcode() == Opcode::kRegion) {
+      region_predecessor_[chosen] = ctrl;
+    }
+    return chosen;
+  }
+
+  const auto ctrl_idx = PropAsI64(ctrl, "idx");
+  const auto ctrl_bci = PropAsI64(ctrl, "bci");
+
+  auto priority = [](Opcode op) -> int {
+    switch (op) {
+      case Opcode::kReturn:
+        return 0;
+      case Opcode::kHalt:
+        return 1000;
+      case Opcode::kIf:
+      case Opcode::kParsePredicate:
+        return 2;
+      case Opcode::kIfTrue:
+      case Opcode::kIfFalse:
+        return 3;
+      case Opcode::kGoto:
+        return 4;
+      case Opcode::kRegion:
+        return 5;
+      case Opcode::kSafePoint:
+      case Opcode::kCallStaticJava:
+      case Opcode::kProj:
+        return 6;
+      case Opcode::kParm:
+        return 7;
+      default:
+        return 100;
+    }
+  };
+
+  auto score = [&](const Node* s) {
+    const int prio = priority(s->opcode());
+    const bool is_block_start = PropIsTrue(s, "is_block_start");
+    const bool is_block_proj = PropIsTrue(s, "is_block_proj");
+    const auto s_idx = PropAsI64(s, "idx");
+    const auto s_bci = PropAsI64(s, "bci");
+
+    int64_t idx_delta = 0;
+    if (ctrl_idx && s_idx) {
+      // Prefer forward progress in schedule order.
+      idx_delta = (*s_idx >= *ctrl_idx)
+                      ? (*s_idx - *ctrl_idx)
+                      : (INT64_C(1) << 60) + (*ctrl_idx - *s_idx);
+    } else {
+      idx_delta = (INT64_C(1) << 60);
+    }
+
+    int64_t bci_delta = 0;
+    if (ctrl_bci && s_bci) {
+      bci_delta = (*s_bci >= *ctrl_bci)
+                      ? (*s_bci - *ctrl_bci)
+                      : (INT64_C(1) << 50) + (*ctrl_bci - *s_bci);
+    } else {
+      bci_delta = (INT64_C(1) << 50);
+    }
+
+    // Tuple ordering: smaller is better.
+    return std::tuple<int, int, int, int64_t, int64_t, int32_t>(
+        prio, is_block_start ? 0 : 1, is_block_proj ? 0 : 1, bci_delta,
+        idx_delta, s->id());
+  };
+
+  const Node* chosen = *std::min_element(
+      candidates.begin(), candidates.end(),
+      [&](const Node* a, const Node* b) { return score(a) < score(b); });
+
+  if (chosen && chosen->opcode() == Opcode::kRegion) {
+    // CRITICAL: record predecessor only for the chosen Region successor.
+    region_predecessor_[chosen] = ctrl;
+  }
+  return chosen;
 }
 
 bool Interpreter::IsLoopHeader(const Node* region) const {
@@ -292,19 +596,87 @@ bool Interpreter::IsLoopHeader(const Node* region) const {
     return false;
   }
 
-  // A Region is a loop header if it has a back-edge: one of its inputs
-  // is a control node that is reachable from the Region itself
+  // HotSpot C2 uses cyclic Phis for loop headers (induction variables).
+  // This is a robust discriminator for our prototype: non-loop merge Regions
+  // can still have a Region self-input placeholder, but they won't contain
+  // a Phi that references itself.
+  for (Node* n : graph_.nodes()) {
+    if (!IsDataPhiNode(n)) continue;
+    if (n->region_input() != region) continue;
+    for (Node* v : n->phi_values()) {
+      if (v == n) return true;
+    }
+  }
+  return false;
+}
 
-  // Simple heuristic: check if Region input[0] points to itself (self-loop)
-  if (region->num_inputs() > 0 && region->input(0) == region) {
+const Node* Interpreter::SelectPhiInputNode(const Node* phi,
+                                            const Node* active_pred,
+                                            bool allow_self) const {
+  if (!phi || phi->opcode() != Opcode::kPhi) return nullptr;
+  const Node* region = phi->region_input();
+  if (!region || region->opcode() != Opcode::kRegion) return nullptr;
+  if (!active_pred) return nullptr;
+
+  // Find the Region predecessor index i such that Region input[i] ==
+  // active_pred.
+  size_t pred_index = static_cast<size_t>(-1);
+  for (size_t i = 0; i < region->num_inputs(); ++i) {
+    const Node* rin = region->input(i);
+    if (rin == nullptr) continue;
+    if (rin == region) continue;
+    if (rin == active_pred) {
+      pred_index = i;
+      break;
+    }
+  }
+  if (pred_index == static_cast<size_t>(-1)) return nullptr;
+
+  // Candidate phi input indices. Real C2 IGV dumps are inconsistent:
+  // - often Phi input[0] is Region, and value for pred i is at input[i+1]
+  // - sometimes Phi has the same arity as Region and uses input[i] for i>=1
+  // - dumps can have holes (nullptr) at some indices
+  std::vector<size_t> candidates;
+  const size_t phi_n = phi->num_inputs();
+  const size_t region_n = region->num_inputs();
+  if (phi_n == region_n + 1) {
+    candidates.push_back(pred_index + 1);
+  }
+  if (phi_n == region_n) {
+    candidates.push_back((pred_index == 0) ? 1 : pred_index);
+  }
+  // Always try these two fallbacks as well (in case arities don't match).
+  candidates.push_back(pred_index + 1);
+  candidates.push_back(pred_index);
+
+  auto accept = [&](const Node* v) -> bool {
+    if (!v) return false;
+    if (!allow_self && v == phi) return false;
     return true;
+  };
+
+  for (size_t idx : candidates) {
+    if (idx >= phi->num_inputs()) continue;
+    const Node* v = phi->input(idx);
+    if (accept(v)) return v;
   }
 
-  // More complex: check if any input is "downstream" from the Region
-  // For now, we'll use the simple heuristic
-  // TODO: Implement full back-edge detection if needed
-
-  return false;
+  // As a last resort, use compacted predecessor counting to align the k-th
+  // non-self Region input with the k-th Phi value (input[1+k]).
+  size_t k = 0;
+  for (size_t i = 0; i < region->num_inputs(); ++i) {
+    const Node* rin = region->input(i);
+    if (rin == nullptr || rin == region) continue;
+    if (rin == active_pred) {
+      const size_t idx = 1 + k;
+      if (idx < phi->num_inputs() && accept(phi->input(idx))) {
+        return phi->input(idx);
+      }
+      break;
+    }
+    ++k;
+  }
+  return nullptr;
 }
 
 Value Interpreter::EvalNode(const Node* n) {
@@ -312,14 +684,63 @@ Value Interpreter::EvalNode(const Node* n) {
     throw std::runtime_error("EvalNode called with null node");
   }
 
+  // During loop back-edge Phi updates, force all loop Phi reads to use the
+  // previous-iteration value, regardless of what may already be in the cache.
+  // This gives simultaneous-update semantics for mutually dependent Phis.
+  if (in_phi_update_ && updating_region_ != nullptr &&
+      n->opcode() == Opcode::kPhi && n->region_input() == updating_region_) {
+    auto it_old = phi_old_values_.find(n);
+    if (it_old != phi_old_values_.end()) {
+      if (n != updating_phi_) {
+        return it_old->second;
+      }
+      if (phi_update_active_.count(n) > 0) {
+        return it_old->second;
+      }
+    }
+  }
+
+  // General cycle detection: loops in SoN value graphs should only be via Phi
+  // with well-defined predecessor selection. If we see a cycle here, our
+  // traversal/predecessor tracking is broken; fail fast instead of segfaulting.
+  if (eval_active_.count(n) > 0) {
+    throw std::runtime_error(
+        "Cyclic value evaluation detected (node=" + std::to_string(n->id()) +
+        ", op=" + OpcodeToString(n->opcode()) + ")");
+  }
+  struct EvalActiveGuard {
+    Interpreter* interp;
+    const Node* node;
+    ~EvalActiveGuard() { interp->eval_active_.erase(node); }
+  } active_guard{this, n};
+  eval_active_.insert(n);
+
+  struct EvalDepthGuard {
+    Interpreter* interp;
+    explicit EvalDepthGuard(Interpreter* i) : interp(i) {
+      ++interp->eval_depth_;
+      if (interp->eval_depth_ > Interpreter::kMaxEvalDepth) {
+        throw std::runtime_error("Value evaluation exceeded max depth (" +
+                                 std::to_string(Interpreter::kMaxEvalDepth) +
+                                 ")");
+      }
+    }
+    ~EvalDepthGuard() { --interp->eval_depth_; }
+  } depth_guard(this);
+
+  // CRITICAL: Control nodes should never be evaluated as data
+  NodeSchema s = n->schema();
+  if (s == NodeSchema::kS1_Control || s == NodeSchema::kS7_Start) {
+    throw std::runtime_error("Attempted to evaluate control node as data: " +
+                             OpcodeToString(n->opcode()) + " (node " +
+                             std::to_string(n->id()) + ")");
+  }
+
   // Check cache first
   auto it = value_cache_.find(n);
   if (it != value_cache_.end()) {
     return it->second;
   }
-
-  std::cerr << "EvalNode: " << n->id() << " (" << OpcodeToString(n->opcode())
-            << ")\n";
 
   Value result;
   Opcode op = n->opcode();
@@ -341,9 +762,20 @@ Value Interpreter::EvalNode(const Node* n) {
              op == Opcode::kCMoveP) {
     result = EvalCMove(n);
   } else if (op == Opcode::kPhi) {
-    result = EvalPhi(n);
+    // Memory/control Phis exist in real C2 graphs and can be cyclic (self).
+    // We do not model memory as a first-class Value in this interpreter.
+    if (!IsDataPhiNode(n)) {
+      result = Value::MakeI32(0);
+    } else {
+      result = EvalPhi(n);
+    }
   } else if (op == Opcode::kSafePoint || op == Opcode::kOpaque1 ||
              op == Opcode::kParsePredicate) {
+    result = EvalNoOp(n);
+  } else if (op == Opcode::kProj) {
+    // Proj projects one output from a multi-output node. For this concrete
+    // interpreter prototype, treat it as a pass-through of its first value
+    // input (similar to Opaque1/SafePoint behavior).
     result = EvalNoOp(n);
   } else if (op == Opcode::kThreadLocal) {
     result = EvalThreadLocal(n);
@@ -474,26 +906,20 @@ Value Interpreter::EvalParm(const Node* n, const std::vector<Value>& inputs) {
 Value Interpreter::EvalArithOp(const Node* n) {
   Opcode op = n->opcode();
 
+  auto widen_i32_to_i64 = [](Value v) -> Value {
+    if (v.is_i32()) return Value::MakeI64(v.as_i32());
+    return v;
+  };
+
   // Handle unary operations (AbsI, AbsL, conversions)
   if (op == Opcode::kAbsI || op == Opcode::kAbsL || op == Opcode::kConvI2L ||
       op == Opcode::kConvL2I) {
-    std::cerr << "EvalArithOp unary: node has " << n->num_inputs()
-              << " inputs\n";
-    for (size_t i = 0; i < n->num_inputs(); i++) {
-      std::cerr << "  input[" << i << "] = "
-                << (n->input(i) ? OpcodeToString(n->input(i)->opcode())
-                                : "nullptr")
-                << "\n";
-    }
-
     // C2 format check: if input[0] is null, try input[1]
     const Node* operand = nullptr;
     if (n->num_inputs() >= 2 && n->input(0) == nullptr) {
       operand = n->input(1);
-      std::cerr << "  Using input[1] (C2 format)\n";
     } else if (n->num_inputs() >= 1) {
       operand = n->input(0);
-      std::cerr << "  Using input[0] (old format)\n";
     } else {
       throw std::runtime_error("Unary op needs at least 1 input");
     }
@@ -514,13 +940,26 @@ Value Interpreter::EvalArithOp(const Node* n) {
     }
   }
 
-  // Binary operations
-  if (n->num_inputs() < 2) {
-    throw std::runtime_error("Binary op needs at least 2 inputs");
+  // Binary operations - use schema-aware accessor
+  auto value_inputs = n->value_inputs();
+  if (value_inputs.size() < 2) {
+    throw std::runtime_error("Binary op needs at least 2 value inputs");
   }
 
-  Value a = EvalNode(n->input(0));
-  Value b = EvalNode(n->input(1));
+  Value a = EvalNode(value_inputs[0]);
+  Value b = EvalNode(value_inputs[1]);
+
+  // C2 sometimes keeps constants as int even when the operation is long-typed.
+  // Be permissive and widen i32 to i64 for long ops.
+  const bool is_long_op =
+      (op == Opcode::kAddL || op == Opcode::kSubL || op == Opcode::kMulL ||
+       op == Opcode::kDivL || op == Opcode::kModL || op == Opcode::kAndL ||
+       op == Opcode::kOrL || op == Opcode::kXorL || op == Opcode::kLShiftL ||
+       op == Opcode::kRShiftL || op == Opcode::kURShiftL);
+  if (is_long_op) {
+    a = widen_i32_to_i64(a);
+    b = widen_i32_to_i64(b);
+  }
 
   switch (op) {
     // Int32 arithmetic
@@ -581,24 +1020,16 @@ Value Interpreter::EvalArithOp(const Node* n) {
 }
 
 Value Interpreter::EvalCmpOp(const Node* n) {
-  // Support both old format and C2 format:
-  // Old format (manually constructed): input[0] = first operand, input[1] =
-  // second operand C2 format: input[0] = unused/region, input[1] = first
-  // operand, input[2] = second operand
+  // Comparison operations: CmpI, CmpL, CmpP
+  // Use schema-aware accessor to get value inputs
+  auto value_inputs = n->value_inputs();
 
-  Value a, b;
-
-  if (n->num_inputs() >= 3 && n->input(0) == nullptr) {
-    // C2 format: inputs at [1] and [2]
-    a = EvalNode(n->input(1));
-    b = EvalNode(n->input(2));
-  } else if (n->num_inputs() >= 2) {
-    // Old format: inputs at [0] and [1]
-    a = EvalNode(n->input(0));
-    b = EvalNode(n->input(1));
-  } else {
-    throw std::runtime_error("Comparison op needs at least 2 inputs");
+  if (value_inputs.size() < 2) {
+    throw std::runtime_error("Comparison op needs at least 2 value inputs");
   }
+
+  Value a = EvalNode(value_inputs[0]);
+  Value b = EvalNode(value_inputs[1]);
 
   Opcode op = n->opcode();
 
@@ -615,6 +1046,8 @@ Value Interpreter::EvalCmpOp(const Node* n) {
         return Value::MakeI32(0);
     }
     case Opcode::kCmpL: {
+      if (a.is_i32()) a = Value::MakeI64(a.as_i32());
+      if (b.is_i32()) b = Value::MakeI64(b.as_i32());
       int64_t av = a.as_i64();
       int64_t bv = b.as_i64();
       if (av < bv)
@@ -648,16 +1081,52 @@ Value Interpreter::EvalCmpOp(const Node* n) {
 }
 
 Value Interpreter::EvalPhi(const Node* n) {
-  // Phi selects value based on which control predecessor was taken
-  // Phi structure: input(0) = Region control, input(1..k) = values
-  if (n->num_inputs() < 2) {
-    throw std::runtime_error("Phi node needs at least control + 1 value");
+  // Outside of explicit back-edge update mode, Phi cycles are a bug in our
+  // predecessor tracking / input selection and should be reported, not crash.
+  const bool in_update_for_this_region = in_phi_update_ &&
+                                         updating_region_ != nullptr &&
+                                         n->region_input() == updating_region_;
+  if (!in_update_for_this_region) {
+    if (phi_eval_stack_.count(n) > 0) {
+      throw std::runtime_error("Cyclic Phi evaluation detected (phi=" +
+                               std::to_string(n->id()) + ")");
+    }
+    struct PhiStackGuard {
+      Interpreter* interp;
+      const Node* phi;
+      ~PhiStackGuard() { interp->phi_eval_stack_.erase(phi); }
+    } stack_guard{this, n};
+    phi_eval_stack_.insert(n);
+
+    // Continue with normal Phi logic.
   }
 
-  Node* region = n->input(0);
+  // During loop back-edge Phi updates, we conceptually compute "next" Phi
+  // values by substituting all loop Phis with their previous-iteration values
+  // on the RHS. That means:
+  // - any Phi in the loop (other than the one we're currently updating) should
+  //   read as the old value
+  // - recursive self-references while computing a Phi should also read as old
+  if (in_phi_update_ && updating_region_ != nullptr &&
+      n->region_input() == updating_region_) {
+    auto it_old = phi_old_values_.find(n);
+    if (it_old != phi_old_values_.end()) {
+      if (n != updating_phi_ || phi_update_active_.count(n) > 0) {
+        return it_old->second;
+      }
+    }
+  }
+
+  // Phi selects value based on which control predecessor was taken
+  // Use schema-aware accessors
+  Node* region = n->region_input();
   if (!region || region->opcode() != Opcode::kRegion) {
     // Simplified case: no region, just take first value
-    return EvalNode(n->input(1));
+    auto values = n->phi_values();
+    if (values.empty()) {
+      throw std::runtime_error("Phi node has no value inputs");
+    }
+    return EvalNode(values[0]);
   }
 
   // Determine which control predecessor was taken
@@ -668,79 +1137,74 @@ Value Interpreter::EvalPhi(const Node* n) {
     Logger::Warn("Phi node " + std::to_string(n->id()) +
                  ": no predecessor recorded for Region " +
                  std::to_string(region->id()) + ", using first value");
-    return EvalNode(n->input(1));
+    auto values = n->phi_values();
+    if (values.empty()) {
+      throw std::runtime_error("Phi node has no value inputs");
+    }
+    return EvalNode(values[0]);
   }
 
   const Node* active_pred = it->second;
-  Logger::Debug("EvalPhi: Region " + std::to_string(region->id()) +
-                " active predecessor = " + std::to_string(active_pred->id()));
+  Logger::Trace("EvalPhi: Phi " + std::to_string(n->id()) + " in Region " +
+                std::to_string(region->id()) +
+                " active predecessor = " + std::to_string(active_pred->id()) +
+                " (region_inputs=" + std::to_string(region->num_inputs()) +
+                ", phi_inputs=" + std::to_string(n->num_inputs()) + ")");
 
-  // Find which Region input corresponds to active_pred
-  // Note: Region may have self-loops (input[0] -> Region itself for loops)
-  // We need to map Region input index to Phi input index
-  // Skipping self-loops
-
-  int phi_input_index = 1;  // Phi inputs start at index 1
-  for (size_t i = 0; i < region->num_inputs(); ++i) {
-    Node* reg_input = region->input(i);
-
-    // Skip self-loops
-    if (reg_input == region) {
-      continue;
-    }
-
-    // Check if this is the active predecessor
-    if (reg_input == active_pred) {
-      // Found it! Select corresponding Phi input
-      if (phi_input_index < static_cast<int>(n->num_inputs())) {
-        Value result = EvalNode(n->input(phi_input_index));
-        Logger::Debug("  Phi selected input[" +
-                      std::to_string(phi_input_index) + "]");
-        return result;
-      } else {
-        throw std::runtime_error("Phi node: input index out of range");
-      }
-    }
-
-    phi_input_index++;
+  // IMPORTANT: Phi inputs are positionally aligned with Region inputs.
+  // Region:   input[i]   is the i-th control predecessor.
+  // Phi:      input[0]   is the Region; input[i+1] is the value for pred i.
+  // Both Region and Phi may contain a Region self-edge placeholder for loops;
+  // if we skip that predecessor, we must skip the corresponding Phi value at
+  // the same index too. Using compacted vectors breaks this alignment and can
+  // select the self-referential Phi input on the entry path (infinite
+  // recursion).
+  const bool allow_self = in_phi_update_ && updating_region_ != nullptr &&
+                          n->region_input() == updating_region_;
+  const Node* selected =
+      SelectPhiInputNode(n, active_pred, /*allow_self=*/allow_self);
+  if (selected == nullptr) {
+    throw std::runtime_error(
+        "Phi node: could not select input (phi=" + std::to_string(n->id()) +
+        ", region=" + std::to_string(region->id()) +
+        ", active_pred=" + std::to_string(active_pred->id()) + ")");
+  }
+  if (!allow_self && selected == n) {
+    throw std::runtime_error(
+        "Phi node: selected self reference outside update mode (phi=" +
+        std::to_string(n->id()) + ")");
   }
 
-  // Predecessor not found - shouldn't happen
-  throw std::runtime_error(
-      "Phi node: active predecessor not found in Region inputs");
+  struct ActivePhiGuard {
+    Interpreter* interp;
+    const Node* phi;
+    bool active;
+    ~ActivePhiGuard() {
+      if (active) {
+        interp->phi_update_active_.erase(phi);
+      }
+    }
+  } guard{this, n,
+          in_phi_update_ && updating_region_ != nullptr &&
+              n->region_input() == updating_region_ && n == updating_phi_};
+  if (guard.active) {
+    phi_update_active_.insert(n);
+  }
+
+  Value result = EvalNode(selected);
+  return result;
 }
 
 Value Interpreter::EvalBool(const Node* n) {
   // Bool node converts comparison result to boolean
+  // Use schema-aware accessor
+  auto value_inputs = n->value_inputs();
 
-  std::cerr << "EvalBool: node " << n->id() << " has " << n->num_inputs()
-            << " inputs\n";
-  for (size_t i = 0; i < n->num_inputs(); ++i) {
-    Node* inp = n->input(i);
-    if (inp) {
-      std::cerr << "  input[" << i << "] = Node " << inp->id() << " ("
-                << OpcodeToString(inp->opcode()) << ")\n";
-    } else {
-      std::cerr << "  input[" << i << "] = nullptr\n";
-    }
+  if (value_inputs.empty()) {
+    throw std::runtime_error("Bool node needs comparison value input");
   }
 
-  if (n->num_inputs() < 1) {
-    throw std::runtime_error("Bool node needs comparison input");
-  }
-
-  // Support both old format and C2 format:
-  // Old format (manually constructed): input[0] = comparison
-  // C2 format: input[0] = unused/nullptr, input[1] = comparison
-  Node* cmp_node = nullptr;
-  if (n->num_inputs() >= 2 && n->input(0) == nullptr) {
-    // C2 format: comparison at input[1]
-    cmp_node = n->input(1);
-  } else {
-    // Old format: comparison at input[0]
-    cmp_node = n->input(0);
-  }
-
+  Node* cmp_node = value_inputs[0];
   if (!cmp_node) {
     throw std::runtime_error("Bool node comparison input is null");
   }
@@ -751,17 +1215,14 @@ Value Interpreter::EvalBool(const Node* n) {
   }
 
   int32_t cmp_val = cmp_result.as_i32();
-  std::cerr << "EvalBool: cmp_val = " << cmp_val << "\n";
 
   // Get mask property (condition code)
   int32_t mask = 0;
   if (n->has_prop("mask")) {
     mask = std::get<int32_t>(n->prop("mask"));
-    std::cerr << "EvalBool: mask = " << mask << "\n";
   } else if (n->has_prop("dump_spec")) {
     // Parse dump_spec for condition (e.g., "[le]")
     std::string spec = std::get<std::string>(n->prop("dump_spec"));
-    std::cerr << "EvalBool: dump_spec = " << spec << "\n";
     // Map dump_spec to mask
     // le = LT|EQ = 1|2 = 3, gt = 4, ge = GT|EQ = 4|2 = 6, etc.
     if (spec.find("le") != std::string::npos) {
@@ -777,7 +1238,6 @@ Value Interpreter::EvalBool(const Node* n) {
     } else if (spec.find("ne") != std::string::npos) {
       mask = 5;  // LT | GT
     }
-    std::cerr << "EvalBool: parsed mask = " << mask << "\n";
   }
 
   // HotSpot condition codes (bit encoding):
@@ -794,39 +1254,38 @@ Value Interpreter::EvalBool(const Node* n) {
   else if (cmp_val > 0 && (mask & 4))
     result = true;  // GT
 
-  std::cerr << "EvalBool: result = " << result << "\n";
   return Value::MakeBool(result);
 }
 
 Value Interpreter::EvalCMove(const Node* n) {
   // CMoveI/L/P: conditional move
-  // Input(0) = condition (boolean)
-  // Input(1) = value if true
-  // Input(2) = value if false
-  if (n->num_inputs() < 3) {
-    throw std::runtime_error("CMove needs 3 inputs");
+  // Use schema-aware accessor
+  auto value_inputs = n->value_inputs();
+  if (value_inputs.size() < 3) {
+    throw std::runtime_error("CMove needs 3 value inputs");
   }
 
-  Value cond = EvalNode(n->input(0));
+  Value cond = EvalNode(value_inputs[0]);
   if (!cond.is_bool()) {
     throw std::runtime_error("CMove condition must be boolean");
   }
 
   if (cond.as_bool()) {
-    return EvalNode(n->input(1));
+    return EvalNode(value_inputs[1]);
   } else {
-    return EvalNode(n->input(2));
+    return EvalNode(value_inputs[2]);
   }
 }
 
 Value Interpreter::EvalConv2B(const Node* n) {
   // Conv2B: Convert any value to boolean (0 -> 0, non-zero -> 1)
-  // Input(0) = value to convert
-  if (n->num_inputs() < 1) {
-    throw std::runtime_error("Conv2B needs input value");
+  // Use schema-aware accessor
+  auto value_inputs = n->value_inputs();
+  if (value_inputs.empty()) {
+    throw std::runtime_error("Conv2B needs value input");
   }
 
-  Value input = EvalNode(n->input(0));
+  Value input = EvalNode(value_inputs[0]);
 
   // Convert to boolean: 0 -> 0, non-zero -> 1
   if (input.is_i32()) {
@@ -845,13 +1304,14 @@ Value Interpreter::EvalConv2B(const Node* n) {
 }
 
 Value Interpreter::EvalNoOp(const Node* n) {
-  // SafePoint, Opaque1, ParsePredicate: optimization markers, pass through
-  // These nodes typically have a value input that we should pass through
-  if (n->num_inputs() > 0) {
-    // Pass through the first input (typically the value)
-    return EvalNode(n->input(0));
+  // Opaque1: optimization marker, pass through value
+  // Use value_inputs() which respects schema and skips non-value inputs
+  auto vals = n->value_inputs();
+  if (!vals.empty()) {
+    // Pass through the first value input
+    return EvalNode(vals[0]);
   }
-  // If no inputs, return a dummy value (shouldn't happen in practice)
+  // If no value inputs, return a dummy value (shouldn't happen in practice)
   return Value::MakeI32(0);
 }
 

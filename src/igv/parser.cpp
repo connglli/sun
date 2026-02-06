@@ -1,5 +1,6 @@
 #include "suntv/igv/parser.hpp"
 
+#include <cstdlib>
 #include <pugixml.hpp>
 
 #include "suntv/igv/canonicalizer.hpp"
@@ -92,10 +93,10 @@ class IGVParser::Impl {
     opcode_str.erase(0, opcode_str.find_first_not_of(" \t\n\r"));
     opcode_str.erase(opcode_str.find_last_not_of(" \t\n\r") + 1);
     Opcode opcode = StringToOpcode(opcode_str);
-
     if (opcode == Opcode::kUnknown) {
-      Logger::Warn("Unknown opcode: " + opcode_str + ", skipping");
-      return;
+      // Keep unknown nodes so edges remain connected; the interpreter may treat
+      // them as control pass-through or reject them later with a clearer error.
+      Logger::Warn("Unknown opcode: " + opcode_str + ", keeping as Unknown");
     }
 
     // Create node
@@ -111,15 +112,27 @@ class IGVParser::Impl {
       prop_value.erase(0, prop_value.find_first_not_of(" \t\n\r"));
       prop_value.erase(prop_value.find_last_not_of(" \t\n\r") + 1);
 
-      // Try to parse as int32
-      char* end;
-      long val = std::strtol(prop_value.c_str(), &end, 10);
-      if (end != prop_value.c_str() && *end == '\0') {
-        n->set_prop(prop_name, static_cast<int32_t>(val));
-      } else {
-        // Store as string
-        n->set_prop(prop_name, prop_value);
+      // Parse booleans
+      if (prop_value == "true" || prop_value == "false") {
+        n->set_prop(prop_name, prop_value == "true");
+        continue;
       }
+
+      // Try to parse as int64 (covers typical IGV numeric fields)
+      char* end = nullptr;
+      long long val64 = std::strtoll(prop_value.c_str(), &end, 10);
+      if (end != prop_value.c_str() && *end == '\0') {
+        // Store small values as int32 to match existing uses.
+        if (val64 >= INT32_MIN && val64 <= INT32_MAX) {
+          n->set_prop(prop_name, static_cast<int32_t>(val64));
+        } else {
+          n->set_prop(prop_name, static_cast<int64_t>(val64));
+        }
+        continue;
+      }
+
+      // Store as string
+      n->set_prop(prop_name, prop_value);
     }
 
     Logger::Debug("Parsed node " + std::to_string(id) + ": " +

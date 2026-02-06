@@ -330,6 +330,12 @@ Opcode StringToOpcode(const std::string& name) {
     m["ThreadLocal"] = Opcode::kThreadLocal;
     m["CallStaticJava"] = Opcode::kCallStaticJava;
 
+    // Common backend/scheduled forms present in IGV dumps.
+    // For the concrete interpreter we treat these as projections or control
+    // pass-throughs.
+    m["MachProj"] = Opcode::kProj;
+    m["Ret"] = Opcode::kReturn;
+
     return m;
   }();
 
@@ -460,6 +466,7 @@ NodeSchema GetSchema(Opcode op) {
 
     // S1: Control nodes (control input + optional condition)
     case Opcode::kIf:
+    case Opcode::kParsePredicate:  // ParsePredicate branches like If
     case Opcode::kIfTrue:
     case Opcode::kIfFalse:
     case Opcode::kGoto:
@@ -557,7 +564,7 @@ NodeSchema GetSchema(Opcode op) {
     case Opcode::kCMoveP:
     case Opcode::kAddP:
     case Opcode::kOpaque1:
-    case Opcode::kParsePredicate:
+    // case Opcode::kParsePredicate:  // REMOVED - moved to kS1_Control
     case Opcode::kThreadLocal:
       return NodeSchema::kS0_Pure;
 
