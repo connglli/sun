@@ -19,8 +19,11 @@ using namespace sun;
 TEST(RealIGVTest, ListFibonacciOpcodes) {
   // Parse the Fibonacci IGV dump
   IGVParser parser;
-  auto graph = parser.Parse(
-      "/zdata/projects/sontv/sun/tests/fixtures/igv/Fibonacci.xml");
+#ifndef SUN_TEST_FIXTURE_DIR
+#define SUN_TEST_FIXTURE_DIR "tests/fixtures"
+#endif
+  auto graph =
+      parser.Parse(std::string(SUN_TEST_FIXTURE_DIR) + "/igv/Fibonacci.xml");
 
   ASSERT_NE(graph, nullptr) << "Failed to parse Fibonacci.xml";
 
@@ -43,8 +46,11 @@ TEST(RealIGVTest, ListFibonacciOpcodes) {
 TEST(RealIGVTest, DISABLED_InterpretFibonacci) {
   // Parse the Fibonacci IGV dump
   IGVParser parser;
-  auto graph = parser.Parse(
-      "/zdata/projects/sontv/sun/tests/fixtures/igv/Fibonacci.xml");
+#ifndef SUN_TEST_FIXTURE_DIR
+#define SUN_TEST_FIXTURE_DIR "tests/fixtures"
+#endif
+  auto graph =
+      parser.Parse(std::string(SUN_TEST_FIXTURE_DIR) + "/igv/Fibonacci.xml");
 
   ASSERT_NE(graph, nullptr) << "Failed to parse Fibonacci.xml";
 

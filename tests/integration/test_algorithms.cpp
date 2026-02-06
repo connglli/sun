@@ -13,7 +13,10 @@ class AlgorithmTest : public ::testing::Test {
  protected:
   void SetUp() override {
     // Base path for IGV fixtures
-    base_path_ = "/zdata/projects/sontv/sun/tests/fixtures/igv/";
+#ifndef SUN_TEST_FIXTURE_DIR
+#define SUN_TEST_FIXTURE_DIR "tests/fixtures"
+#endif
+    base_path_ = std::string(SUN_TEST_FIXTURE_DIR) + "/igv/";
   }
 
   // Helper to load and execute a graph

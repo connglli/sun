@@ -10,9 +10,12 @@ namespace fs = std::filesystem;
 
 // Helper to get test fixture path
 static std::string getFixturePath(const std::string& filename) {
-  // Use absolute path from project root
-  // This works whether run from build/ or build/tests/
-  return "/zdata/projects/sontv/sun/tests/fixtures/" + filename;
+  // Use compile-time defined fixture directory
+  // This is set by CMake to ${PROJECT_SOURCE_DIR}/tests/fixtures
+#ifndef SUN_TEST_FIXTURE_DIR
+#define SUN_TEST_FIXTURE_DIR "tests/fixtures"
+#endif
+  return std::string(SUN_TEST_FIXTURE_DIR) + "/" + filename;
 }
 
 TEST(IGVParserTest, ParseSimpleReturn) {

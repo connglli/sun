@@ -33,6 +33,10 @@ target_link_libraries(sun_unit_tests
     sunutil
     GTest::gtest_main
 )
+target_compile_definitions(sun_unit_tests
+    PRIVATE
+    SUN_TEST_FIXTURE_DIR="${PROJECT_SOURCE_DIR}/tests/fixtures"
+)
 
 # Integration tests
 add_executable(sun_integration_tests
@@ -49,6 +53,10 @@ target_link_libraries(sun_integration_tests
     sunir
     sunutil
     GTest::gtest_main
+)
+target_compile_definitions(sun_integration_tests
+    PRIVATE
+    SUN_TEST_FIXTURE_DIR="${PROJECT_SOURCE_DIR}/tests/fixtures"
 )
 
 # Register tests with CTest
