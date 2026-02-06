@@ -16,6 +16,8 @@ target_link_libraries(sunir PUBLIC sunutil)
 add_library(sunigv
     igv/parser.cpp
     igv/canonicalizer.cpp
+    igv/igv_util.cpp
+    igv/java2igv.cpp
 )
 target_link_libraries(sunigv PUBLIC sunir sunutil pugixml::pugixml)
 

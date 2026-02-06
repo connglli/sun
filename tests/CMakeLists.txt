@@ -18,6 +18,7 @@ add_executable(sun_unit_tests
     unit/ir/test_node.cpp
     unit/ir/test_graph.cpp
     unit/igv/test_parser.cpp
+    unit/igv/test_igv_util.cpp
     unit/interp/test_value.cpp
     unit/interp/test_heap.cpp
     unit/interp/test_interpreter.cpp
