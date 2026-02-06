@@ -35,6 +35,16 @@ class Interpreter {
    */
   Outcome Execute(const std::vector<Value>& inputs);
 
+  /**
+   * Execute the graph with given input values and initial heap state.
+   * This allows pre-populating the heap with arrays and objects before
+   * execution, which is useful for testing algorithms that take complex
+   * parameters.
+   * Returns the outcome (Return or Throw) with final heap state.
+   */
+  Outcome ExecuteWithHeap(const std::vector<Value>& inputs,
+                          const ConcreteHeap& initial_heap);
+
  private:
   const Graph& graph_;
 

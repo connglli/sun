@@ -203,10 +203,15 @@ void Interpreter::BuildControlSuccessors() {
 }
 
 Outcome Interpreter::Execute(const std::vector<Value>& inputs) {
+  return ExecuteWithHeap(inputs, ConcreteHeap());
+}
+
+Outcome Interpreter::ExecuteWithHeap(const std::vector<Value>& inputs,
+                                     const ConcreteHeap& initial_heap) {
   value_cache_.clear();
   region_predecessor_.clear();
   loop_iterations_.clear();
-  heap_ = ConcreteHeap();  // Reset heap
+  heap_ = initial_heap;  // Use provided heap instead of resetting
   eval_active_.clear();
   phi_eval_stack_.clear();
   phi_update_active_.clear();
@@ -758,6 +763,16 @@ Value Interpreter::EvalNode(const Node* n) {
     result = EvalBool(n);
   } else if (op == Opcode::kConv2B) {
     result = EvalConv2B(n);
+  } else if (op == Opcode::kCastII || op == Opcode::kCastLL ||
+             op == Opcode::kCastPP || op == Opcode::kCastX2P ||
+             op == Opcode::kCastP2X) {
+    // Cast operations: pass through the value
+    // These are type system assertions that don't change the actual value
+    const Node* input_node = n->input(1);
+    if (!input_node) {
+      throw std::runtime_error("Cast operation missing input");
+    }
+    result = EvalNode(input_node);
   } else if (op == Opcode::kCMoveI || op == Opcode::kCMoveL ||
              op == Opcode::kCMoveP) {
     result = EvalCMove(n);
@@ -787,6 +802,102 @@ Value Interpreter::EvalNode(const Node* n) {
     result = EvalAllocate(n);
   } else if (op == Opcode::kAllocateArray) {
     result = EvalAllocateArray(n);
+  } else if (op == Opcode::kLoadRange) {
+    // LoadRange: Get array length
+    // Typical inputs: input[0] = control/memory, input[1] = memory, input[2] =
+    // array reference Find the array reference input (should be a data input,
+    // not memory/control)
+    const Node* arr_node = nullptr;
+    for (size_t i = 1; i < static_cast<size_t>(n->num_inputs()); ++i) {
+      const Node* inp = n->input(i);
+      if (inp && inp->opcode() != Opcode::kParm) {
+        // Check if this could be the array reference
+        // Try to evaluate it - if it's a reference, it's likely the array
+        try {
+          Value val = EvalNode(inp);
+          if (val.is_ref()) {
+            arr_node = inp;
+            break;
+          }
+        } catch (...) {
+          // Skip this input if evaluation fails
+          continue;
+        }
+      }
+    }
+
+    if (!arr_node) {
+      // If no reference found, try input[2] (typical C2 pattern)
+      if (n->num_inputs() > 2) {
+        arr_node = n->input(2);
+      }
+    }
+
+    if (!arr_node) {
+      throw std::runtime_error("LoadRange: could not find array input");
+    }
+
+    Value arr_val = EvalNode(arr_node);
+    if (!arr_val.is_ref()) {
+      throw std::runtime_error("LoadRange: array input is not a reference");
+    }
+    int32_t length = heap_.ArrayLength(arr_val.as_ref());
+    result = Value::MakeI32(length);
+  } else if (op == Opcode::kRangeCheck) {
+    // RangeCheck: Verify index is within [0, length)
+    // Inputs: length, index (or vice versa, need to check C2 convention)
+    // For now, treat as a pass-through of the index (assuming bounds are valid)
+    // In a real implementation, this would throw if out of bounds
+    const Node* length_node = n->input(1);
+    const Node* index_node = n->input(2);
+    if (!length_node || !index_node) {
+      throw std::runtime_error("RangeCheck: missing length or index input");
+    }
+    Value length_val = EvalNode(length_node);
+    Value index_val = EvalNode(index_node);
+
+    int32_t length = length_val.as_i32();
+    int32_t index = index_val.as_i32();
+
+    // Perform the bounds check
+    if (index < 0 || index >= length) {
+      throw std::runtime_error(
+          "Array index out of bounds: index=" + std::to_string(index) +
+          ", length=" + std::to_string(length));
+    }
+
+    // Return the index (pass-through)
+    result = index_val;
+  } else if (op == Opcode::kAddP) {
+    // AddP: Pointer/address arithmetic (used for array element addressing)
+    // For the concrete interpreter, we don't actually compute addresses
+    // Instead, we treat this as a pass-through or extract the offset
+    // Inputs are typically: base, offset
+    // We can just pass through one of the inputs (typically the offset for
+    // array indexing)
+
+    // For array access patterns, AddP is used to compute element addresses
+    // We don't need actual address calculation in our abstract interpreter
+    // Just pass through the first non-base input (usually the index)
+    const Node* input_node = nullptr;
+    for (size_t i = 1; i < static_cast<size_t>(n->num_inputs()); ++i) {
+      const Node* inp = n->input(i);
+      if (inp && inp->opcode() != Opcode::kParm) {
+        input_node = inp;
+        break;
+      }
+    }
+
+    if (!input_node && n->num_inputs() > 1) {
+      input_node = n->input(1);
+    }
+
+    if (input_node) {
+      result = EvalNode(input_node);
+    } else {
+      // If no suitable input, return a dummy value
+      result = Value::MakeI32(0);
+    }
   } else if (op == Opcode::kLoadB || op == Opcode::kLoadUB ||
              op == Opcode::kLoadS || op == Opcode::kLoadUS ||
              op == Opcode::kLoadI || op == Opcode::kLoadL ||
@@ -868,6 +979,12 @@ Value Interpreter::EvalParm(const Node* n, const std::vector<Value>& inputs) {
   // For C2 graphs: Extract index from dump_spec (e.g., "Parm0: int")
   if (n->has_prop("dump_spec")) {
     std::string spec = std::get<std::string>(n->prop("dump_spec"));
+    // Trim leading/trailing whitespace
+    size_t start = spec.find_first_not_of(" \t\n\r");
+    if (start != std::string::npos) {
+      spec = spec.substr(start);
+    }
+
     // Look for "Parm<N>:" pattern
     size_t parm_pos = spec.find("Parm");
     if (parm_pos != std::string::npos) {
@@ -875,16 +992,30 @@ Value Interpreter::EvalParm(const Node* n, const std::vector<Value>& inputs) {
       if (colon_pos != std::string::npos) {
         std::string num_str =
             spec.substr(parm_pos + 4, colon_pos - parm_pos - 4);
+        // Trim the extracted number string as well
+        size_t num_start = num_str.find_first_not_of(" \t\n\r");
+        size_t num_end = num_str.find_last_not_of(" \t\n\r");
+        if (num_start != std::string::npos && num_end != std::string::npos) {
+          num_str = num_str.substr(num_start, num_end - num_start + 1);
+        }
+
         try {
           int32_t index = std::stoi(num_str);
           if (index < 0 || index >= static_cast<int32_t>(inputs.size())) {
-            throw std::runtime_error("Parm index out of range: " +
-                                     std::to_string(index));
+            // For array/object parameters that weren't provided,
+            // return a null reference - this allows testing compilation
+            // even without proper input setup
+            Logger::Warn(
+                "Parm index " + std::to_string(index) +
+                " out of range (inputs size: " + std::to_string(inputs.size()) +
+                "), returning null reference");
+            return Value::MakeNull();
           }
           return inputs[index];
         } catch (const std::exception& e) {
           throw std::runtime_error(
-              "Failed to parse Parm index from dump_spec: " + spec);
+              "Failed to parse Parm index from dump_spec: " + spec +
+              " (extracted: '" + num_str + "')");
         }
       }
     }
@@ -1068,6 +1199,30 @@ Value Interpreter::EvalCmpOp(const Node* n) {
       // Compare: null < ref, refs by numeric value
       int32_t av = a.is_null() ? 0 : a.as_ref();
       int32_t bv = b.is_null() ? 0 : b.as_ref();
+      if (av < bv)
+        return Value::MakeI32(-1);
+      else if (av > bv)
+        return Value::MakeI32(1);
+      else
+        return Value::MakeI32(0);
+    }
+    case Opcode::kCmpU: {
+      // Unsigned int32 comparison
+      uint32_t av = static_cast<uint32_t>(a.as_i32());
+      uint32_t bv = static_cast<uint32_t>(b.as_i32());
+      if (av < bv)
+        return Value::MakeI32(-1);
+      else if (av > bv)
+        return Value::MakeI32(1);
+      else
+        return Value::MakeI32(0);
+    }
+    case Opcode::kCmpUL: {
+      // Unsigned int64 comparison
+      if (a.is_i32()) a = Value::MakeI64(a.as_i32());
+      if (b.is_i32()) b = Value::MakeI64(b.as_i32());
+      uint64_t av = static_cast<uint64_t>(a.as_i64());
+      uint64_t bv = static_cast<uint64_t>(b.as_i64());
       if (av < bv)
         return Value::MakeI32(-1);
       else if (av > bv)

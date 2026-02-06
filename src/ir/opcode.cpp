@@ -172,6 +172,12 @@ std::string OpcodeToString(Opcode op) {
     case Opcode::kAllocateArray:
       return "AllocateArray";
 
+    // Array operations
+    case Opcode::kLoadRange:
+      return "LoadRange";
+    case Opcode::kRangeCheck:
+      return "RangeCheck";
+
     // Parameters
     case Opcode::kParm:
       return "Parm";
@@ -310,6 +316,10 @@ Opcode StringToOpcode(const std::string& name) {
     // Allocation
     m["Allocate"] = Opcode::kAllocate;
     m["AllocateArray"] = Opcode::kAllocateArray;
+
+    // Array operations
+    m["LoadRange"] = Opcode::kLoadRange;
+    m["RangeCheck"] = Opcode::kRangeCheck;
 
     // Parameters
     m["Parm"] = Opcode::kParm;

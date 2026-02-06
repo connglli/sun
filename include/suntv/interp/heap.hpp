@@ -26,6 +26,9 @@ class ConcreteHeap {
   void WriteArray(Ref arr, int32_t index, Value val);
   int32_t ArrayLength(Ref arr) const;
 
+  // Get entire array contents as a vector (for testing/validation)
+  std::vector<Value> GetArrayContents(Ref arr) const;
+
   // Debugging
   std::string Dump() const;
 

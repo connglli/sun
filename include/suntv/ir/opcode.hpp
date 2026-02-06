@@ -108,6 +108,10 @@ enum class Opcode {
   kAllocate,
   kAllocateArray,
 
+  // Array operations
+  kLoadRange,   // Load array length (array.length in Java)
+  kRangeCheck,  // Array bounds check (produces index if valid)
+
   // Parameters
   kParm,  // Method parameter
 

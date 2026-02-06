@@ -66,6 +66,14 @@ int32_t ConcreteHeap::ArrayLength(Ref arr) const {
   return it->second;
 }
 
+std::vector<Value> ConcreteHeap::GetArrayContents(Ref arr) const {
+  auto it = arrays_.find(arr);
+  if (it == arrays_.end()) {
+    throw std::runtime_error("Invalid array reference");
+  }
+  return it->second;
+}
+
 std::string ConcreteHeap::Dump() const {
   std::ostringstream oss;
   oss << "=== Heap Dump ===" << std::endl;
