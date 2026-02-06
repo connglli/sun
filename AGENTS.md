@@ -255,3 +255,9 @@ ALWAYS:
 
 * Title ≤ 50 characters
 * Body explains intent and design impact
+
+## Never unless with User Consent
+
+1. Never push to the remote repository
+2. Never commit broken or untested code
+3. Never bypass code reviews
