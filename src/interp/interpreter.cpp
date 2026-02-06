@@ -793,36 +793,31 @@ const Node* Interpreter::SelectPhiInputNode(const Node* phi,
 
 Value Interpreter::EvalNode(const Node* n) {
   if (!n) {
-    throw std::runtime_error("EvalNode called with null node");
+    throw std::runtime_error("Cannot evaluate null node");
   }
 
-  static int eval_count = 0;
-  if (++eval_count % 1000 == 0) {
-    Logger::Debug("EvalNode call #" + std::to_string(eval_count) + ": node " +
-                  std::to_string(n->id()) + " (" + OpcodeToString(n->opcode()) +
-                  ")");
-  }
-
-  // During loop back-edge Phi updates, force all loop Phi reads to use the
-  // previous-iteration value, regardless of what may already be in the cache.
-  // This gives simultaneous-update semantics for mutually dependent Phis.
-  if (in_phi_update_ && updating_region_ != nullptr &&
-      n->opcode() == Opcode::kPhi && n->region_input() == updating_region_) {
-    auto it_old = phi_old_values_.find(n);
-    if (it_old != phi_old_values_.end()) {
-      if (n != updating_phi_) {
-        return it_old->second;
-      }
-      if (phi_update_active_.count(n) > 0) {
-        return it_old->second;
-      }
-    }
+  // Check cache FIRST, before any cycle detection or guards
+  // This allows cached values to be returned immediately without re-entering
+  // evaluation
+  auto it = value_cache_.find(n);
+  if (it != value_cache_.end()) {
+    return it->second;
   }
 
   // General cycle detection: loops in SoN value graphs should only be via Phi
   // with well-defined predecessor selection. If we see a cycle here, our
   // traversal/predecessor tracking is broken; fail fast instead of segfaulting.
+  // EXCEPTION: Phi nodes can legitimately reference themselves through complex
+  // dependency chains. If a Phi is already being evaluated, check if it's
+  // cached from a previous Region update and return that value.
   if (eval_active_.count(n) > 0) {
+    if (n->opcode() == Opcode::kPhi) {
+      // Phi node cycle - check if we have a cached value from UpdateRegionPhis
+      auto cached_it = value_cache_.find(n);
+      if (cached_it != value_cache_.end()) {
+        return cached_it->second;
+      }
+    }
     throw std::runtime_error(
         "Cyclic value evaluation detected (node=" + std::to_string(n->id()) +
         ", op=" + OpcodeToString(n->opcode()) + ")");
@@ -855,10 +850,20 @@ Value Interpreter::EvalNode(const Node* n) {
                              std::to_string(n->id()) + ")");
   }
 
-  // Check cache first
-  auto it = value_cache_.find(n);
-  if (it != value_cache_.end()) {
-    return it->second;
+  // During loop back-edge Phi updates, force all loop Phi reads to use the
+  // previous-iteration value, regardless of what may already be in the cache.
+  // This gives simultaneous-update semantics for mutually dependent Phis.
+  if (in_phi_update_ && updating_region_ != nullptr &&
+      n->opcode() == Opcode::kPhi && n->region_input() == updating_region_) {
+    auto it_old = phi_old_values_.find(n);
+    if (it_old != phi_old_values_.end()) {
+      if (n != updating_phi_) {
+        return it_old->second;
+      }
+      if (phi_update_active_.count(n) > 0) {
+        return it_old->second;
+      }
+    }
   }
 
   Value result;
@@ -1802,12 +1807,19 @@ void Interpreter::ProcessMemoryChain(const Node* mem) {
 
   Opcode op = mem->opcode();
 
+  // Memory Phi nodes are merge points - stop traversal here
+  // Their values are managed by UpdateRegionPhis during control flow
+  if (op == Opcode::kPhi) {
+    return;
+  }
+
   // If this is a Store, execute it
   if (op == Opcode::kStoreB || op == Opcode::kStoreC || op == Opcode::kStoreI ||
       op == Opcode::kStoreL || op == Opcode::kStoreP || op == Opcode::kStoreN) {
     EvalStore(mem);
   }
-  // If Store has a memory input, process that first (in reverse order)
+
+  // Recursively process memory input (follow the memory chain backwards)
   if (mem->num_inputs() >= 2) {
     ProcessMemoryChain(mem->input(1));
   }
